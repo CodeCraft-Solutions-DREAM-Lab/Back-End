@@ -38,7 +38,7 @@ export default class Database {
     const request = this.poolconnection.request();
     const result = await request.query(query);
 
-    return result.rowsAffected[0];
+    return result;
   }
 
   async create(tableName, data) {
