@@ -10,6 +10,7 @@ jobs:
 
     steps:
     - name: Check PR source branch
+      if: github.event.pull_request.base.ref == 'main'
       run: |
         if [ "${{ github.head_ref }}" != "dev" ] || [ "${{ github.base_ref }}" != "main" ]; then
           echo "Pull requests must come from 'dev' towards 'main'."
