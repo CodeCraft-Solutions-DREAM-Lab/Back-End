@@ -1,18 +1,17 @@
-name: Check pull request source branch
+name: Check PR source branch
+
 on:
   pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
-      - edited
+    types: [opened, reopened, synchronize, edited]
+
 jobs:
-  check-branches:
+  check-pr-branch:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Check branches
-        run: |
-          if [ "${{ github.head_ref }}" != "dev" ] && [ "${{ github.base_ref }}" == "main" ]; then
-            echo "Merge requests to main branch are only allowed from dev branch."
-            exit 1
-          fi
+    - name: Check PR source branch
+      run: |
+        if [ "${{ github.head_ref }}" != "dev" ] || [ "${{ github.base_ref }}" != "main" ]; then
+          echo "Pull requests must come from 'dev' towards 'main'."
+          exit 1
+        fi
