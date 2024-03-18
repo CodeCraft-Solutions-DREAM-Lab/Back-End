@@ -19,6 +19,24 @@ router.get('/', async (_, res) => {
     }
 });
 
+router.get('/usuario/:id', async (req, res) => {
+    try {
+        const usuarioId = req.params.id;
+        console.log(`usuarioId: ${usuarioId}`);
+        if (usuarioId) {
+            const result = await database.executeQuery(
+                `EXEC [dbo].[getReservacionByUser] @idUsuario = ${usuarioId};`
+            );
+            console.log(`reserv: ${JSON.stringify(result)}`);
+            res.status(200).json(result.recordset);
+        } else {
+            res.status(404);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
 router.post('/', async (req, res) => {
     try {
         const reserv = req.body;
