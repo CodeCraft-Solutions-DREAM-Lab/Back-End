@@ -1,6 +1,6 @@
 # Dream Lab Backend
 
-Este proyecto utiliza Express.js.
+Este proyecto utiliza Express.js. 
 
 ## Configuración
 
