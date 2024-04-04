@@ -1,10 +1,6 @@
 import express from 'express';
-import { config } from './config.js';
-import Database from './database.js';
 
 // Import App routes
-// import person from './person.js';
-// import openapi from './openapi.js';
 import usuarios from './controllers/usuarios.js';
 import reservaciones from './controllers/reservaciones.js';
 
