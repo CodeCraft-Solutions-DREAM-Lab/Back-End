@@ -7,6 +7,7 @@ const port = process.env.PORT || 3000;
 
 const app = express();
 
+// Utilizar las rutas definidas en routes
 app.use(router);
 
 // Start the server
