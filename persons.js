@@ -1,6 +1,6 @@
-import express from 'express';
-import { config } from './config.js';
-import Database from './database.js';
+import express from "express";
+import { config } from "./config.js";
+import Database from "./database.js";
 
 const router = express.Router();
 router.use(express.json());
@@ -11,7 +11,7 @@ console.log(config);
 // Create database object
 const database = new Database(config);
 
-router.get('/', async (_, res) => {
+router.get("/", async (_, res) => {
   try {
     // Return a list of persons
     const persons = await database.readAll();
@@ -22,7 +22,7 @@ router.get('/', async (_, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     // Create a person
     const person = req.body;
@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     // Get the person with the specified ID
     const personId = req.params.id;
@@ -51,7 +51,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     // Update the person with the specified ID
     const personId = req.params.id;
@@ -71,7 +71,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     // Delete the person with the specified ID
     const personId = req.params.id;

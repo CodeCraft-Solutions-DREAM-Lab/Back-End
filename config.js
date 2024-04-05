@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv";
 dotenv.config({
-    path: `.env.${process.env.NODE_ENV || "development"}`,
-    debug: true,
+  path: `.env.${process.env.NODE_ENV || "development"}`,
+  debug: true,
 });
 
 const server = process.env.AZURE_SQL_SERVER;
@@ -11,14 +11,14 @@ const user = process.env.AZURE_SQL_USER;
 const password = process.env.AZURE_SQL_PASSWORD;
 
 export const config = {
-    server,
-    port,
-    database,
-    user,
-    password,
-    options: {
-        encrypt: true,
-    },
+  server,
+  port,
+  database,
+  user,
+  password,
+  options: {
+    encrypt: true,
+  },
 };
 /*
     SQL Database Server:
