@@ -173,13 +173,18 @@ INSERT INTO Materiales (idMaterial, nombre, fotoURL) VALUES
 
 -- Sample data for Salas
 INSERT INTO Salas (idSala, nombre, descripcion, cantidadMesas) VALUES
-(1, 'Sala 1', 'Descripción sala 1', 5),
-(2, 'Sala 2', 'Descripción sala 2', 10);
+(1, 'Sala VR', 'Descripción sala 1', 5),
+(2, 'Electric garage', 'Descripción sala 2', 10),
+(3, 'Deep net', 'Descripción sala 2', 5);
 
 -- Sample data for Experiencias
 INSERT INTO Experiencias (idExperiencia, idUF, idSala, nombre, descripcion, esAutoDirigida, portadaURL, fechaInicio, fechaFin, horaFin) VALUES
-(1, 1, 1, 'Experiencia 1', 'Descripción experiencia 1', 1, 'url_portada_1', '2024-01-01', '2024-01-07', '18:00:00'),
-(2, 2, 2, 'Experiencia 2', 'Descripción experiencia 2', 0, 'url_portada_2', '2024-02-01', '2024-02-07', '20:00:00');
+(1, null, 3, 'Hackers Event', 'Descripción experiencia 1', 0, 'url_portada_1', '2024-01-01', '2024-01-07', '18:00:00'),
+(2, null, 3, 'Cisco Experience', 'Descripción experiencia 2', 0, 'url_portada_2', '2024-02-01', '2024-02-07', '20:00:00'),
+(3, null, 1, 'Game jam event', 'Descripción experiencia 1', 0, 'url_portada_3', '2024-01-03', '2024-01-03', '18:00:00'),
+(4, null, 1, 'Presentación Apple Vision Pro', 'Descripción experiencia 2', 0, 'url_portada_4', '2024-03-01', '2024-03-07', '20:00:00'),
+(5, null, 2, 'Creando tu primer circuito', 'Descripción experiencia 1', 0, 'url_portada_5', '2024-01-04', '2024-01-05', '18:00:00'),
+(6, null, 2, 'Introducción a Electrónica', 'Descripción experiencia 1', 1, 'url_portada_6', '2024-01-01', '2024-08-02', '20:00:00');
 
 -- Sample data for Reservaciones
 INSERT INTO Reservaciones (idReservacion, idUsuario, idSala, idExperiencia, horaInicio, duracion, fecha, numMesa) VALUES
