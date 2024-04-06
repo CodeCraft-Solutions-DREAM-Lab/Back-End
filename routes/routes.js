@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.use("/usuarios", usuarios);
 router.use("/reservaciones", reservaciones);
-router.get("/authUsuario", authUsuario);
-router.get("/authToken", authToken);
+router.post("/authUsuario", authUsuario);
+router.post("/authToken", authToken);
 
 export { router };
