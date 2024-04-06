@@ -173,18 +173,18 @@ INSERT INTO Materiales (idMaterial, nombre, fotoURL) VALUES
 
 -- Sample data for Salas
 INSERT INTO Salas (idSala, nombre, descripcion, cantidadMesas) VALUES
-(1, 'Sala VR', 'Descripción sala 1', 5),
-(2, 'Electric garage', 'Descripción sala 2', 10),
-(3, 'Deep net', 'Descripción sala 2', 5);
+(1, 'Sala VR', 'Ideal para experimentar con lentes de realidad virtual ya sean experiencias o videojuegos ', 5),
+(2, 'Electric garage', 'Ideal para temas de electronica ', 10),
+(3, 'Deep net', 'Ideal para experimentar con temas de redes y ciberseguridad', 5);
 
 -- Sample data for Experiencias
 INSERT INTO Experiencias (idExperiencia, idUF, idSala, nombre, descripcion, esAutoDirigida, portadaURL, fechaInicio, fechaFin, horaFin) VALUES
-(1, null, 3, 'Hackers Event', 'Descripción experiencia 1', 0, 'url_portada_1', '2024-01-01', '2024-01-07', '18:00:00'),
-(2, null, 3, 'Cisco Experience', 'Descripción experiencia 2', 0, 'url_portada_2', '2024-02-01', '2024-02-07', '20:00:00'),
-(3, null, 1, 'Game jam event', 'Descripción experiencia 1', 0, 'url_portada_3', '2024-01-03', '2024-01-03', '18:00:00'),
-(4, null, 1, 'Presentación Apple Vision Pro', 'Descripción experiencia 2', 0, 'url_portada_4', '2024-03-01', '2024-03-07', '20:00:00'),
-(5, null, 2, 'Creando tu primer circuito', 'Descripción experiencia 1', 0, 'url_portada_5', '2024-01-04', '2024-01-05', '18:00:00'),
-(6, null, 2, 'Introducción a Electrónica', 'Descripción experiencia 1', 1, 'url_portada_6', '2024-01-01', '2024-08-02', '20:00:00');
+(1, null, 3, 'Hackers Event', 'Evento sobre testing y ciberseguridad', 0, 'url_portada_1', '2024-01-01', '2024-01-07', '18:00:00'),
+(2, null, 3, 'Cisco Experience', 'Uso de routers para redes y ciberseguridad', 0, 'url_portada_2', '2024-02-01', '2024-02-07', '20:00:00'),
+(3, null, 1, 'Game jam event', 'Evento sobre todo tipos de videojuegos incluyendo de distintas ', 0, 'url_portada_3', '2024-01-03', '2024-01-03', '18:00:00'),
+(4, null, 1, 'Presentación Apple Vision Pro', 'Evento donde se hablara de los lentes de realidad virtual de Apple y se prestarán', 0, 'url_portada_4', '2024-03-01', '2024-03-07', '20:00:00'),
+(5, null, 2, 'Creando tu primer circuito', 'Evento para aprender a crear tu primer circuito de electronica.', 0, 'url_portada_5', '2024-01-04', '2024-01-05', '18:00:00'),
+(6, null, 2, 'Introducción a Electrónica', 'Práctica autodirigida donde puedes aprender los primeros pasos en el ámbito de la electrónica ', 1, 'url_portada_6', '2024-01-01', '2024-08-02', '20:00:00');
 
 -- Sample data for Reservaciones
 INSERT INTO Reservaciones (idReservacion, idUsuario, idSala, idExperiencia, horaInicio, duracion, fecha, numMesa) VALUES
