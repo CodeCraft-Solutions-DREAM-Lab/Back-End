@@ -20,9 +20,3 @@ export const config = {
     encrypt: true,
   },
 };
-/*
-    SQL Database Server:
-    Admin Login: dreamlab_eq5
-    Password: q7%Hht%H6!
-
-*/

@@ -18,6 +18,16 @@ app.use(express.urlencoded({ extended: false }));
 // Para poder hacer peticiones desde cualquier origen
 app.use(cors());
 
+// Para poder trabajar con JSONS
+app.use(express.json());
+// Para escribir datos en el body al hacer post o put
+// Si llegaramos a necesitar objetos mas complejos, poner extended en true
+app.use(express.urlencoded({ extended: false }));
+
+// Para poder hacer peticiones desde cualquier origen
+app.use(cors());
+
+// Utilizar las rutas definidas en routes
 app.use(router);
 
 // Start the server
