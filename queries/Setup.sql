@@ -33,7 +33,6 @@ CREATE TABLE Usuarios (
 );
 
 CREATE TABLE Credenciales (
-    token VARCHAR(255) PRIMARY KEY,
     idUsuario VARCHAR(10),
     contrasena VARCHAR(255),
     FOREIGN KEY (idUsuario) REFERENCES Usuarios(idUsuario)
@@ -147,9 +146,10 @@ INSERT INTO Usuarios (idUsuario, nombre, apellidoP, apellidoM, tipo, prioridad) 
 ('L00000000', 'Rolando', 'Pérez', '', 'Profesor', 2);
 
 -- Sample data for Credenciales
-INSERT INTO Credenciales (token, idUsuario, contrasena) VALUES
-('5dc98289890b193dd625ba2479de47abcb07936a2d3b3f06b71b73ed6df1a982fb49932954d5607e09f996a6c51c52952468b4ab31cb256d701536ffa5bd3855', 'A01177767', '3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2'),
-('1fbd43b821c26b801d22dfe5984e36cbed1ef282531d2981de11b707bd4bcdfd6276cfbbafa5075cba9efbeb34d0ce4c06ec5c5bee6079bf9469e76489715113', 'L00000000', '3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2');
+INSERT INTO Credenciales (idUsuario, contrasena) VALUES
+('A01177767', '3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2'),
+('L00000000', '3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2'),
+('test', 'ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff');
 
 -- Sample data for GruposUsuarios
 INSERT INTO GruposUsuarios (idUF, idUsuario) VALUES
