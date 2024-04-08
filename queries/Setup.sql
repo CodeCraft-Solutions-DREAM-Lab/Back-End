@@ -33,7 +33,6 @@ CREATE TABLE Usuarios (
 );
 
 CREATE TABLE Credenciales (
-    token VARCHAR(255) PRIMARY KEY,
     idUsuario VARCHAR(10),
     contrasena VARCHAR(255),
     FOREIGN KEY (idUsuario) REFERENCES Usuarios(idUsuario)
@@ -50,7 +49,7 @@ CREATE TABLE GruposUsuarios (
 CREATE TABLE Logros (
     idLogro INT PRIMARY KEY,
     nombre VARCHAR(255),
-    descripcion VARCHAR(255),
+    descripcion VARCHAR(500),
     prioridadOtorgada INT
 );
 
@@ -72,7 +71,7 @@ CREATE TABLE Materiales (
 CREATE TABLE Salas (
     idSala INT PRIMARY KEY,
     nombre VARCHAR(255),
-    descripcion VARCHAR(255),
+    descripcion VARCHAR(500),
     cantidadMesas INT,
     fotoURL VARCHAR(255)
 );
@@ -82,9 +81,11 @@ CREATE TABLE Experiencias (
     idUF INT,
     idSala INT,
     nombre VARCHAR(255),
-    descripcion VARCHAR(255),
+    descripcion VARCHAR(500),
     esAutoDirigida BIT,
+	esExclusivaUF BIT,
     portadaURL VARCHAR(255),
+	imagenDetallesURL VARCHAR(255),
     fechaInicio DATE,
     fechaFin DATE,
     horaFin TIME,
@@ -145,12 +146,14 @@ INSERT INTO UnidadesFormacion (idUF, nombre) VALUES
 -- Sample data for Usuarios
 INSERT INTO Usuarios (idUsuario, nombre, apellidoP, apellidoM, tipo, prioridad) VALUES
 ('A01177767', 'Christopher Gabriel', 'Pedraza', 'Pohlenz', 'Regular', 1),
-('L00000000', 'Rolando', 'Pérez', '', 'Profesor', 2);
+('L00000000', 'Rolando', 'Pérez', '', 'Profesor', 2),
+('test', 'test', 'test', 'test', 'Regular', 1);
 
 -- Sample data for Credenciales
-INSERT INTO Credenciales (token, idUsuario, contrasena) VALUES
-('5dc98289890b193dd625ba2479de47abcb07936a2d3b3f06b71b73ed6df1a982fb49932954d5607e09f996a6c51c52952468b4ab31cb256d701536ffa5bd3855', 'A01177767', '3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2'),
-('1fbd43b821c26b801d22dfe5984e36cbed1ef282531d2981de11b707bd4bcdfd6276cfbbafa5075cba9efbeb34d0ce4c06ec5c5bee6079bf9469e76489715113', 'L00000000', '3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2');
+INSERT INTO Credenciales (idUsuario, contrasena) VALUES
+('A01177767', '3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2'),
+('L00000000', '3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2'),
+('test', 'ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff');
 
 -- Sample data for GruposUsuarios
 INSERT INTO GruposUsuarios (idUF, idUsuario) VALUES
@@ -188,13 +191,14 @@ INSERT INTO Salas (idSala, nombre, descripcion, cantidadMesas, fotoURL) VALUES
 
 
 -- Sample data for Experiencias
-INSERT INTO Experiencias (idExperiencia, idUF, idSala, nombre, descripcion, esAutoDirigida, portadaURL, fechaInicio, fechaFin, horaFin) VALUES
-(1, null, 3, 'Hackers Event', 'Evento sobre testing y ciberseguridad.', 0, 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '2024-01-01', '2024-01-07', '18:00:00'),
-(2, null, 3, 'Cisco Experience', 'Uso de routers para redes y ciberseguridad.', 0, 'https://images.unsplash.com/photo-1554098415-4052459dc340?q=80&w=1852&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '2024-02-01', '2024-02-07', '20:00:00'),
-(3, null, 1, 'Game jam event', 'Evento sobre todo tipos de videojuegos incluyendo de distintas.', 0, 'https://images.unsplash.com/photo-1580327344181-c1163234e5a0?q=80&w=1767&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '2024-01-03', '2024-01-03', '18:00:00'),
-(4, null, 1, 'Presentación Apple Vision Pro', 'Evento donde se hablara de los lentes de realidad virtual de Apple y se prestarán.', 0, 'https://images.unsplash.com/photo-1698084068220-856ded06c1a4?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '2024-03-01', '2024-03-07', '20:00:00'),
-(5, null, 2, 'Creando tu primer circuito', 'Evento para aprender a crear tu primer circuito de electronica.', 0, 'https://images.unsplash.com/photo-1555664424-778a1e5e1b48?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '2024-01-04', '2024-01-05', '18:00:00'),
-(6, null, 2, 'Introducción a Electrónica', 'Práctica autodirigida donde puedes aprender los primeros pasos en el ámbito de la electrónica.', 1, 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '2024-01-01', '2024-08-02', '20:00:00');
+INSERT INTO Experiencias (idExperiencia, idUF, idSala, nombre, descripcion, esAutoDirigida, esExclusivaUF, portadaURL, imagenDetallesURL, fechaInicio, fechaFin, horaFin) VALUES
+(1, null, 3, 'Hackers Event', 'Únete a nosotros para explorar los últimos avances en ciberseguridad y pruebas de software en nuestro evento exclusivo. Aprende de expertos de la industria y participa en debates interactivos sobre técnicas y herramientas de hacking ético.', 1, 1, 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '/Images/hacker.png', '2024-01-01', '2024-01-07', '18:00:00'),
+(2, null, 3, 'Cisco Experience', 'Sumérgete en el emocionante mundo de la tecnología de red con Cisco Experience. Descubre las últimas innovaciones de Cisco en networking y colaboración, y obtén conocimientos prácticos para impulsar tu carrera en TI.', 0, 0, 'https://images.unsplash.com/photo-1554098415-4052459dc340?q=80&w=1852&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', './Images/router.png', '2024-02-01', '2024-02-07', '20:00:00'),
+(3, null, 1, 'Game jam event', '¡Prepárate para un fin de semana lleno de creatividad y diversión en nuestro evento de Game Jam! Únete a otros desarrolladores para crear juegos originales en un entorno colaborativo y emocionante.', 0, 1, 'https://images.unsplash.com/photo-1580327344181-c1163234e5a0?q=80&w=1767&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', './Images/videogame.jpg', '2024-01-03', '2024-01-03', '18:00:00'),
+(4, null, 1, 'Presentación Apple Vision Pro', 'Explora las nuevas características y posibilidades de Apple Vision Pro en nuestra presentación exclusiva. Descubre cómo esta tecnología revolucionaria está transformando la forma en que interactuamos con el mundo que nos rodea.', 0, 1, 'https://images.unsplash.com/photo-1698084068220-856ded06c1a4?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D','./Images/visionpro.png', '2024-03-01', '2024-03-07', '20:00:00'),
+(5, null, 2, 'Creando tu primer circuito', 'Únete a nuestro taller práctico y aprende los fundamentos de la electrónica mientras creas tu primer circuito. Desde conceptos básicos hasta proyectos prácticos, este evento es perfecto para principiantes que desean explorar el mundo de la electrónica.', 1, 0, 'https://images.unsplash.com/photo-1555664424-778a1e5e1b48?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '/Images/arduino.jpg', '2024-01-04', '2024-01-05', '18:00:00'),
+(6, null, 2, 'Curso de Swift', 'Sumérgete en el fascinante mundo de la programación iOS con nuestro curso de Swift. Aprende los fundamentos del lenguaje de programación Swift y desarrolla habilidades prácticas para crear aplicaciones innovadoras y emocionantes para dispositivos Apple.', 1, 1, 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', './Images/iphone.jpg', '2024-01-01', '2024-08-02', '20:00:00'),
+(7, null, 1, 'Experiencia VR', '¡Explora el Mundo Virtual: Un Viaje Educativo en Realidad Virtual! Únete a nosotros en nuestra escuela para una experiencia única donde los estudiantes se sumergirán en la magia de la realidad virtual. Desde viajar a lugares exóticos hasta aventurarse en mundos históricos, cada experiencia ofrecerá una nueva perspectiva y un aprendizaje interactivo.', 1, 1, 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', './Images/vr.png', '2024-01-01', '2024-08-02', '20:00:00');
 
 -- Sample data for Reservaciones
 INSERT INTO Reservaciones (idReservacion, idUsuario, idSala, idExperiencia, horaInicio, duracion, fecha, numMesa) VALUES
