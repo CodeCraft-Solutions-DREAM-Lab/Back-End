@@ -19,7 +19,7 @@ DROP TABLE IF EXISTS UnidadesFormacion;
 
 -- CREATE THE TABLES
 CREATE TABLE UnidadesFormacion (
-    idUF INT PRIMARY KEY,
+    idUF INT PRIMARY KEY IDENTITY(1,1),
     nombre VARCHAR(255)
 );
 
@@ -33,7 +33,6 @@ CREATE TABLE Usuarios (
 );
 
 CREATE TABLE Credenciales (
-    token VARCHAR(255) PRIMARY KEY,
     idUsuario VARCHAR(10),
     contrasena VARCHAR(255),
     FOREIGN KEY (idUsuario) REFERENCES Usuarios(idUsuario)
@@ -48,9 +47,9 @@ CREATE TABLE GruposUsuarios (
 );
 
 CREATE TABLE Logros (
-    idLogro INT PRIMARY KEY,
+    idLogro INT PRIMARY KEY IDENTITY(1,1),
     nombre VARCHAR(255),
-    descripcion VARCHAR(255),
+    descripcion VARCHAR(500),
     prioridadOtorgada INT
 );
 
@@ -64,26 +63,29 @@ CREATE TABLE UsuariosLogros (
 );
 
 CREATE TABLE Materiales (
-    idMaterial INT PRIMARY KEY,
+    idMaterial INT PRIMARY KEY IDENTITY(1,1),
     nombre VARCHAR(255),
     fotoURL VARCHAR(255)
 );
 
 CREATE TABLE Salas (
-    idSala INT PRIMARY KEY,
+    idSala INT PRIMARY KEY IDENTITY(1,1),
     nombre VARCHAR(255),
-    descripcion VARCHAR(255),
-    cantidadMesas INT
+    descripcion VARCHAR(500),
+    cantidadMesas INT,
+    fotoURL VARCHAR(255)
 );
 
 CREATE TABLE Experiencias (
-    idExperiencia INT PRIMARY KEY,
+    idExperiencia INT PRIMARY KEY IDENTITY(1,1),
     idUF INT,
     idSala INT,
     nombre VARCHAR(255),
-    descripcion VARCHAR(255),
+    descripcion VARCHAR(500),
     esAutoDirigida BIT,
+	esExclusivaUF BIT,
     portadaURL VARCHAR(255),
+	imagenDetallesURL VARCHAR(255),
     fechaInicio DATE,
     fechaFin DATE,
     horaFin TIME,
@@ -92,7 +94,7 @@ CREATE TABLE Experiencias (
 );
 
 CREATE TABLE Reservaciones (
-    idReservacion INT PRIMARY KEY,
+    idReservacion INT PRIMARY KEY IDENTITY(1,1),
     idUsuario VARCHAR(10),
     idSala INT,
     idExperiencia INT,
@@ -137,19 +139,21 @@ CREATE TABLE MaterialesRecomendados (
 
 -- ADD SAMPLE DATA TO THE TABLES
 -- Sample data for UnidadesFormacion
-INSERT INTO UnidadesFormacion (idUF, nombre) VALUES 
-(1, 'Unidad Formación 1'),
-(2, 'Unidad Formación 2');
+INSERT INTO UnidadesFormacion (nombre) VALUES 
+('Unidad Formación 1'),
+('Unidad Formación 2');
 
 -- Sample data for Usuarios
 INSERT INTO Usuarios (idUsuario, nombre, apellidoP, apellidoM, tipo, prioridad) VALUES
 ('A01177767', 'Christopher Gabriel', 'Pedraza', 'Pohlenz', 'Regular', 1),
-('L00000000', 'Rolando', 'Pérez', '', 'Profesor', 2);
+('L00000000', 'Rolando', 'Pérez', '', 'Profesor', 2),
+('test', 'test', 'test', 'test', 'Regular', 1);
 
 -- Sample data for Credenciales
-INSERT INTO Credenciales (token, idUsuario, contrasena) VALUES
-('5dc98289890b193dd625ba2479de47abcb07936a2d3b3f06b71b73ed6df1a982fb49932954d5607e09f996a6c51c52952468b4ab31cb256d701536ffa5bd3855', 'A01177767', '3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2'),
-('1fbd43b821c26b801d22dfe5984e36cbed1ef282531d2981de11b707bd4bcdfd6276cfbbafa5075cba9efbeb34d0ce4c06ec5c5bee6079bf9469e76489715113', 'L00000000', '3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2');
+INSERT INTO Credenciales (idUsuario, contrasena) VALUES
+('A01177767', '3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2'),
+('L00000000', '3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2'),
+('test', 'ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff');
 
 -- Sample data for GruposUsuarios
 INSERT INTO GruposUsuarios (idUF, idUsuario) VALUES
@@ -157,9 +161,9 @@ INSERT INTO GruposUsuarios (idUF, idUsuario) VALUES
 (2, 'L00000000');
 
 -- Sample data for Logros
-INSERT INTO Logros (idLogro, nombre, descripcion, prioridadOtorgada) VALUES
-(1, 'Logro 1', 'Descripción logro 1', 1),
-(2, 'Logro 2', 'Descripción logro 2', 2);
+INSERT INTO Logros (nombre, descripcion, prioridadOtorgada) VALUES
+('Logro 1', 'Descripción logro 1', 1),
+('Logro 2', 'Descripción logro 2', 2);
 
 -- Sample data for UsuariosLogros
 INSERT INTO UsuariosLogros (idLogro, idUsuario, estatus) VALUES
@@ -167,29 +171,38 @@ INSERT INTO UsuariosLogros (idLogro, idUsuario, estatus) VALUES
 (2, 'L00000000', 'Inactivo');
 
 -- Sample data for Materiales
-INSERT INTO Materiales (idMaterial, nombre, fotoURL) VALUES
-(1, 'Material 1', 'url_material_1'),
-(2, 'Material 2', 'url_material_2');
+INSERT INTO Materiales (nombre, fotoURL) VALUES
+('Material 1', 'url_material_1'),
+('Material 2', 'url_material_2');
 
 -- Sample data for Salas
-INSERT INTO Salas (idSala, nombre, descripcion, cantidadMesas) VALUES
-(1, 'Sala VR', 'Ideal para experimentar con lentes de realidad virtual ya sean experiencias o videojuegos', 5),
-(2, 'Electric garage', 'Ideal para temas de electronica', 10),
-(3, 'Deep net', 'Ideal para experimentar con temas de redes y ciberseguridad', 5);
+INSERT INTO Salas (nombre, descripcion, cantidadMesas, fotoURL) VALUES
+('Electric Garage', 'Este espacio dinámico y versátil es un sueño hecho realidad para los entusiastas de la electrónica. Equipado con las últimas herramientas y tecnologías, es el lugar ideal para dar vida a tus proyectos más ambiciosos.', 8, 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?q=80&w=1769&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+('Dimension Forge', 'Un laboratorio de vanguardia donde la creatividad se fusiona con la tecnología. Aquí, los innovadores pueden explorar libremente nuevas ideas y experimentar con las últimas herramientas de diseño y fabricación.', 6, 'https://dreamlabstorage.blob.core.windows.net/archivos/vr-lede.jpg'),
+('New Horizons', 'Inspirado por la curiosidad y el deseo de explorar lo desconocido, New Horizons es un lugar donde los límites de la tecnología se desdibujan. Desde la inteligencia artificial hasta la exploración espacial, aquí se dan los primeros pasos hacia el futuro.', 7, 'https://images.unsplash.com/photo-1580584126903-c17d41830450?q=80&w=1939&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+('Deep Net', 'Sumérgete en las profundidades de la seguridad informática y las redes con Deep Net. Equipado con tecnología de última generación y expertos en el campo, es el lugar perfecto para poner a prueba tus habilidades y descubrir nuevos horizontes en el ciberespacio.', 5, 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1769&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+('Graveyard', 'No es un lugar de descanso, sino de reinvención. Graveyard es donde las ideas obsoletas encuentran una nueva vida y las tecnologías pasadas se transforman en innovaciones futuras. Es el punto de partida para los visionarios y los revolucionarios.', 9, 'https://images.unsplash.com/photo-1540829917886-91ab031b1764?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+('PCB Factory', 'Desde prototipos hasta producción en masa, PCB Factory ofrece un entorno especializado para el diseño y la fabricación de placas de circuito impreso. Con equipos de alta precisión y experiencia técnica, cada proyecto encuentra su camino hacia el éxito.', 10, 'https://images.unsplash.com/photo-1631376178637-392efc9e356b?q=80&w=1973&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+('Hack-Battlefield', 'Adéntrate en un campo de pruebas donde la habilidad y la estrategia son tus armas. Hack-Battlefield es el lugar donde los expertos en seguridad informática se enfrentan para poner a prueba sus habilidades y proteger los sistemas de mañana.', 6, 'https://images.unsplash.com/photo-1567619363836-e5fd63f69b20?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+('Testing Land', 'Un terreno fértil para la innovación y el desarrollo tecnológico. Aquí, los proyectos toman forma y se someten a rigurosas pruebas para garantizar su calidad y fiabilidad. Es el punto de partida para las soluciones del futuro.', 8, 'https://images.unsplash.com/photo-1587355760421-b9de3226a046?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+('War Headquarters', 'El corazón estratégico de las operaciones tecnológicas avanzadas. War Headquarters es donde se planifican y ejecutan los proyectos más ambiciosos, donde la creatividad se encuentra con la ingeniería para dar forma al futuro de la tecnología.', 5, 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+('Biometrics Flexible Hall', 'En un mundo donde la identidad es fundamental, Biometrics Flexible Hall ofrece un entorno adaptable para la investigación y el desarrollo de sistemas biométricos. Desde el reconocimiento facial hasta la autenticación de voz, aquí se están construyendo las soluciones de seguridad del mañana.', 7, 'https://images.unsplash.com/photo-1667453466805-75bbf36e8707?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+('Beyond-Digits', 'Más allá de los límites convencionales de la tecnología, Beyond-Digits es donde las ideas audaces encuentran su hogar. Aquí, los innovadores exploran nuevas fronteras, desde la inteligencia artificial hasta la computación cuántica, dando forma al futuro con cada línea de código.', 9, 'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?q=80&w=2006&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
 
 -- Sample data for Experiencias
-INSERT INTO Experiencias (idExperiencia, idUF, idSala, nombre, descripcion, esAutoDirigida, portadaURL, fechaInicio, fechaFin, horaFin) VALUES
-(1, null, 3, 'Hackers Event', 'Evento sobre testing y ciberseguridad', 0, 'url_portada_1', '2024-01-01', '2024-01-07', '18:00:00'),
-(2, null, 3, 'Cisco Experience', 'Uso de routers para redes y ciberseguridad', 0, 'url_portada_2', '2024-02-01', '2024-02-07', '20:00:00'),
-(3, null, 1, 'Game jam event', 'Evento sobre todo tipos de videojuegos incluyendo de distintas', 0, 'url_portada_3', '2024-01-03', '2024-01-03', '18:00:00'),
-(4, null, 1, 'Presentación Apple Vision Pro', 'Evento donde se hablara de los lentes de realidad virtual de Apple y se prestarán', 0, 'url_portada_4', '2024-03-01', '2024-03-07', '20:00:00'),
-(5, null, 2, 'Creando tu primer circuito', 'Evento para aprender a crear tu primer circuito de electronica.', 0, 'url_portada_5', '2024-01-04', '2024-01-05', '18:00:00'),
-(6, null, 2, 'Introducción a Electrónica', 'Práctica autodirigida donde puedes aprender los primeros pasos en el ámbito de la electrónica', 1, 'url_portada_6', '2024-01-01', '2024-08-02', '20:00:00');
+INSERT INTO Experiencias (idUF, idSala, nombre, descripcion, esAutoDirigida, esExclusivaUF, portadaURL, imagenDetallesURL, fechaInicio, fechaFin, horaFin) VALUES
+(null, 3, 'Hackers Event', 'Únete a nosotros para explorar los últimos avances en ciberseguridad y pruebas de software en nuestro evento exclusivo. Aprende de expertos de la industria y participa en debates interactivos sobre técnicas y herramientas de hacking ético.', 1, 1, 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'experienceImage5', '2024-01-01', '2024-01-07', '18:00:00'),
+(null, 3, 'Cisco Experience', 'Sumérgete en el emocionante mundo de la tecnología de red con Cisco Experience. Descubre las últimas innovaciones de Cisco en networking y colaboración, y obtén conocimientos prácticos para impulsar tu carrera en TI.', 0, 0, 'https://images.unsplash.com/photo-1554098415-4052459dc340?q=80&w=1852&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'experienceImage2', '2024-02-01', '2024-02-07', '20:00:00'),
+(null, 1, 'Game jam event', '¡Prepárate para un fin de semana lleno de creatividad y diversión en nuestro evento de Game Jam! Únete a otros desarrolladores para crear juegos originales en un entorno colaborativo y emocionante.', 0, 1, 'https://images.unsplash.com/photo-1580327344181-c1163234e5a0?q=80&w=1767&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'experienceImage6', '2024-01-03', '2024-01-03', '18:00:00'),
+(null, 1, 'Presentación Apple Vision Pro', 'Explora las nuevas características y posibilidades de Apple Vision Pro en nuestra presentación exclusiva. Descubre cómo esta tecnología revolucionaria está transformando la forma en que interactuamos con el mundo que nos rodea.', 0, 1, 'https://images.unsplash.com/photo-1698084068220-856ded06c1a4?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D','experienceImage7', '2024-03-01', '2024-03-07', '20:00:00'),
+(null, 2, 'Creando tu primer circuito', 'Únete a nuestro taller práctico y aprende los fundamentos de la electrónica mientras creas tu primer circuito. Desde conceptos básicos hasta proyectos prácticos, este evento es perfecto para principiantes que desean explorar el mundo de la electrónica.', 1, 0, 'https://images.unsplash.com/photo-1555664424-778a1e5e1b48?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'experienceImage4', '2024-01-04', '2024-01-05', '18:00:00'),
+(null, 2, 'Curso de Swift', 'Sumérgete en el fascinante mundo de la programación iOS con nuestro curso de Swift. Aprende los fundamentos del lenguaje de programación Swift y desarrolla habilidades prácticas para crear aplicaciones innovadoras y emocionantes para dispositivos Apple.', 1, 1, 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'experienceImage3', '2024-01-01', '2024-08-02', '20:00:00'),
+(null, 1, 'Experiencia VR', '¡Explora el Mundo Virtual: Un Viaje Educativo en Realidad Virtual! Únete a nosotros en nuestra escuela para una experiencia única donde los estudiantes se sumergirán en la magia de la realidad virtual. Desde viajar a lugares exóticos hasta aventurarse en mundos históricos, cada experiencia ofrecerá una nueva perspectiva y un aprendizaje interactivo.', 1, 1, 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'experienceImage', '2024-01-01', '2024-08-02', '20:00:00');
 
 -- Sample data for Reservaciones
-INSERT INTO Reservaciones (idReservacion, idUsuario, idSala, idExperiencia, horaInicio, duracion, fecha, numMesa) VALUES
-(1, 'A01177767', 1, 1, '10:00:00', 2.5, '2024-01-01', 2),
-(2, 'L00000000', 2, 2, '15:00:00', 1.5, '2024-02-01', 1);
+INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia, horaInicio, duracion, fecha, numMesa) VALUES
+('A01177767', 1, 1, '10:00:00', 2.5, '2024-01-01', 2),
+('L00000000', 2, 2, '15:00:00', 1.5, '2024-02-01', 1);
 
 -- Sample data for ReservacionesMateriales
 INSERT INTO ReservacionesMateriales (idReservacion, idMaterial, cantidad, estatus) VALUES
