@@ -20,10 +20,10 @@ async function experienciasAutodirigidas(_, res) {
     try {
         // Leer todas las experiencias de la base de datos
         const experiencias = await database.readAll("Experiencias");
-        
+        console.log(`Experiencias: ${JSON.stringify(experiencias)}`);
         // Filtrar las experiencias para obtener solo las autodirigidas
         const experienciasAutodirigidas = experiencias.filter(experiencia => experiencia.esAutodirigida === 1);
-        
+        console.log(`Autodirigidas: ${JSON.stringify(experienciasAutodirigidas)}`);
         res.status(200).json(experienciasAutodirigidas);
     } catch (err) {
         res.status(500).json({ error: err?.message });
