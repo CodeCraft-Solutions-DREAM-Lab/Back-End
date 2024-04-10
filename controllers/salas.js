@@ -7,7 +7,7 @@ router.use(express.json());
 const database = new Database(config);
 router.get('/', async (_, res) => {
     try {
-        // Regresa todas las experiencias
+        // Regresa todas las salas
         const salas = await database.readAll("Salas");
         console.log(`Salas: ${JSON.stringify(salas)}`);
         res.status(200).json(salas);
