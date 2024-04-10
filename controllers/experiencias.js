@@ -16,8 +16,7 @@ router.get('/', async (_, res) => {
     }
 });
 
-// Obtiene solo las experiencias autodirigidas
-router.get('/autodirigidas', async (_, res) => {
+async function experienciasAutodirigidas(_, res) {
     try {
         // Leer todas las experiencias de la base de datos
         const experiencias = await database.readAll("Experiencias");
@@ -29,10 +28,13 @@ router.get('/autodirigidas', async (_, res) => {
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }
-});
+}
+
+// Exporta la función experienciasAutodirigidas
+export { experienciasAutodirigidas };
 
 // Obtiene las experiencias de las UF del usuario
-router.get('/UFs', async (req, res) => {
+async function experienciasUF(req, res) {
     try {
         const idUsuario = req.idUsuario;
         const ufsUsuario = await database.readAndConditions(
@@ -53,6 +55,10 @@ router.get('/UFs', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }
-});
+}
+
+// Exporta la función experienciasUFs
+export { experienciasUF };
+
 
 export default router;
