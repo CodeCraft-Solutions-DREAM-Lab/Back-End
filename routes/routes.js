@@ -4,6 +4,8 @@ import reservaciones from "../controllers/reservaciones.js";
 import experiencias from "../controllers/experiencias.js";
 import salas from "../controllers/salas.js";
 import { authUsuario, authToken } from "../controllers/auth.js";
+import { experienciasAutodirigidas } from "../controllers/experiencias.js";
+import { experienciasUF } from "../controllers/experiencias.js";
 
 const router = express.Router();
 
@@ -13,5 +15,7 @@ router.use("/experiencias", experiencias);
 router.use("/salas", salas);
 router.post("/authUsuario", authUsuario);
 router.post("/authToken", authToken);
+router.use("/experiencias/autodirigidas", experienciasAutodirigidas);
+router.use("/experiencias/UFs", experienciasUF);
 
 export { router };
