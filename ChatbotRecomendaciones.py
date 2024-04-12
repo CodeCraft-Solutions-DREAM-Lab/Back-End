@@ -54,7 +54,7 @@ Instrucciones = "Instrucciones: Eres un asistente virtual que solamente recomien
 Instrucciones += str(consultarApi("experiencias")) 
 Instrucciones += "\n Las salas son:\n"
 Instrucciones += str(consultarApi("salas")) 
-Instrucciones += "Es importante que solo respondas con el Tipo y el Id de las 3 recomendaciones que más se acerquen a lo que pide el usuario a manera de lista de recomendaciones, por ejemplo 1. Tipo Id y así sucesivamente con las 3. SOLO PUEDES HACER UNA RESPUESTA A LA VEZ, es decir no puedes responder por el usuario\n"
+Instrucciones += "Es importante que solo respondas con el Tipo y el Id de las 3 recomendaciones que más se acerquen a lo que pide el usuario a manera de lista de recomendaciones, con el siguiente formato (usando un ejemplo): 1. Tipo: experiencias, Id: 1, Hackers Event y así sucesivamente con las 3, es importante que el tipo este en minusculas y en plural (osea solo -experiencias- o -salas-). También es importante que siempre des 3 recomendaciones, está prohibido dar más o menos. SOLO PUEDES HACER UNA RESPUESTA A LA VEZ, es decir no puedes responder por el usuario\n"
 
 conversacion = Instrucciones
 
