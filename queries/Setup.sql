@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS MaterialesSalas;
 DROP TABLE IF EXISTS ReservacionesMateriales;
 DROP TABLE IF EXISTS Reservaciones;
 DROP TABLE IF EXISTS Experiencias;
+DROP TABLE IF EXISTS Mesas;
 DROP TABLE IF EXISTS Salas;
 DROP TABLE IF EXISTS Materiales;
 DROP TABLE IF EXISTS UsuariosLogros;
@@ -72,11 +73,16 @@ CREATE TABLE Salas (
     idSala INT PRIMARY KEY IDENTITY(1,1),
     nombre VARCHAR(255),
     descripcion VARCHAR(500),
-    cantidadMesas INT,
     fotoURL VARCHAR(255), -- Remove the comma here
     detallesURL VARCHAR(255)
 );
 
+CREATE TABLE Mesas (
+    idMesa INT PRIMARY KEY IDENTITY(1,1),
+    idSala INT,
+    cupos INT,
+    FOREIGN KEY (idSala) REFERENCES Salas(idSala)
+);
 
 CREATE TABLE Experiencias (
     idExperiencia INT PRIMARY KEY IDENTITY(1,1),
@@ -99,13 +105,15 @@ CREATE TABLE Reservaciones (
     idUsuario VARCHAR(10),
     idSala INT,
     idExperiencia INT,
+    idMesa INT,
     horaInicio TIME,
-    duracion FLOAT,
+    duracion INT,
     fecha DATE,
-    numMesa INT,
+    numPersonas INT,
     FOREIGN KEY (idUsuario) REFERENCES Usuarios(idUsuario),
     FOREIGN KEY (idSala) REFERENCES Salas(idSala),
-    FOREIGN KEY (idExperiencia) REFERENCES Experiencias(idExperiencia)
+    FOREIGN KEY (idExperiencia) REFERENCES Experiencias(idExperiencia),
+    FOREIGN KEY (idMesa) REFERENCES Mesas(idMesa)
 );
 
 CREATE TABLE ReservacionesMateriales (
@@ -135,7 +143,6 @@ CREATE TABLE MaterialesRecomendados (
     FOREIGN KEY (idMaterial) REFERENCES Materiales(idMaterial),
     PRIMARY KEY (idExperiencia, idMaterial)
 );
-
 
 
 -- ADD SAMPLE DATA TO THE TABLES
@@ -178,18 +185,18 @@ INSERT INTO Materiales (nombre, fotoURL) VALUES
 ('Material 2', 'url_material_2');
 
 -- Sample data for Salas
-INSERT INTO Salas (nombre, descripcion, cantidadMesas, fotoURL, detallesURL) VALUES
-('Electric Garage', 'Este espacio dinámico y versátil es un sueño hecho realidad para los entusiastas de la electrónica. Equipado con las últimas herramientas y tecnologías, es el lugar ideal para dar vida a tus proyectos más ambiciosos.', 8, 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?q=80&w=1769&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto'),
-('Dimension Forge', 'Un laboratorio de vanguardia donde la creatividad se fusiona con la tecnología. Aquí, los innovadores pueden explorar libremente nuevas ideas y experimentar con las últimas herramientas de diseño y fabricación.', 6, 'https://dreamlabstorage.blob.core.windows.net/archivos/vr-lede.jpg', 'electricgaragefoto'),
-('New Horizons', 'Inspirado por la curiosidad y el deseo de explorar lo desconocido, New Horizons es un lugar donde los límites de la tecnología se desdibujan. Desde la inteligencia artificial hasta la exploración espacial, aquí se dan los primeros pasos hacia el futuro.', 7, 'https://images.unsplash.com/photo-1580584126903-c17d41830450?q=80&w=1939&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto'),
-('Deep Net', 'Sumérgete en las profundidades de la seguridad informática y las redes con Deep Net. Equipado con tecnología de última generación y expertos en el campo, es el lugar perfecto para poner a prueba tus habilidades y descubrir nuevos horizontes en el ciberespacio.', 5, 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1769&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto'),
-('Graveyard', 'No es un lugar de descanso, sino de reinvención. Graveyard es donde las ideas obsoletas encuentran una nueva vida y las tecnologías pasadas se transforman en innovaciones futuras. Es el punto de partida para los visionarios y los revolucionarios.', 9, 'https://images.unsplash.com/photo-1540829917886-91ab031b1764?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto'),
-('PCB Factory', 'Desde prototipos hasta producción en masa, PCB Factory ofrece un entorno especializado para el diseño y la fabricación de placas de circuito impreso. Con equipos de alta precisión y experiencia técnica, cada proyecto encuentra su camino hacia el éxito.', 10, 'https://images.unsplash.com/photo-1631376178637-392efc9e356b?q=80&w=1973&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto'),
-('Hack-Battlefield', 'Adéntrate en un campo de pruebas donde la habilidad y la estrategia son tus armas. Hack-Battlefield es el lugar donde los expertos en seguridad informática se enfrentan para poner a prueba sus habilidades y proteger los sistemas de mañana.', 6, 'https://images.unsplash.com/photo-1567619363836-e5fd63f69b20?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto'),
-('Testing Land', 'Un terreno fértil para la innovación y el desarrollo tecnológico. Aquí, los proyectos toman forma y se someten a rigurosas pruebas para garantizar su calidad y fiabilidad. Es el punto de partida para las soluciones del futuro.', 8, 'https://images.unsplash.com/photo-1587355760421-b9de3226a046?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto'),
-('War Headquarters', 'El corazón estratégico de las operaciones tecnológicas avanzadas. War Headquarters es donde se planifican y ejecutan los proyectos más ambiciosos, donde la creatividad se encuentra con la ingeniería para dar forma al futuro de la tecnología.', 5, 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto'),
-('Biometrics Flexible Hall', 'En un mundo donde la identidad es fundamental, Biometrics Flexible Hall ofrece un entorno adaptable para la investigación y el desarrollo de sistemas biométricos. Desde el reconocimiento facial hasta la autenticación de voz, aquí se están construyendo las soluciones de seguridad del mañana.', 7, 'https://images.unsplash.com/photo-1667453466805-75bbf36e8707?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto'),
-('Beyond-Digits', 'Más allá de los límites convencionales de la tecnología, Beyond-Digits es donde las ideas audaces encuentran su hogar. Aquí, los innovadores exploran nuevas fronteras, desde la inteligencia artificial hasta la computación cuántica, dando forma al futuro con cada línea de código.', 9, 'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?q=80&w=2006&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto');
+INSERT INTO Salas (nombre, descripcion, fotoURL, detallesURL) VALUES
+('Electric Garage', 'Este espacio dinámico y versátil es un sueño hecho realidad para los entusiastas de la electrónica. Equipado con las últimas herramientas y tecnologías, es el lugar ideal para dar vida a tus proyectos más ambiciosos.', 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?q=80&w=1769&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto'),
+('Dimension Forge', 'Un laboratorio de vanguardia donde la creatividad se fusiona con la tecnología. Aquí, los innovadores pueden explorar libremente nuevas ideas y experimentar con las últimas herramientas de diseño y fabricación.', 'https://dreamlabstorage.blob.core.windows.net/archivos/vr-lede.jpg', 'electricgaragefoto'),
+('New Horizons', 'Inspirado por la curiosidad y el deseo de explorar lo desconocido, New Horizons es un lugar donde los límites de la tecnología se desdibujan. Desde la inteligencia artificial hasta la exploración espacial, aquí se dan los primeros pasos hacia el futuro.', 'https://images.unsplash.com/photo-1580584126903-c17d41830450?q=80&w=1939&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto'),
+('Deep Net', 'Sumérgete en las profundidades de la seguridad informática y las redes con Deep Net. Equipado con tecnología de última generación y expertos en el campo, es el lugar perfecto para poner a prueba tus habilidades y descubrir nuevos horizontes en el ciberespacio.', 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1769&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto'),
+('Graveyard', 'No es un lugar de descanso, sino de reinvención. Graveyard es donde las ideas obsoletas encuentran una nueva vida y las tecnologías pasadas se transforman en innovaciones futuras. Es el punto de partida para los visionarios y los revolucionarios.', 'https://images.unsplash.com/photo-1540829917886-91ab031b1764?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto'),
+('PCB Factory', 'Desde prototipos hasta producción en masa, PCB Factory ofrece un entorno especializado para el diseño y la fabricación de placas de circuito impreso. Con equipos de alta precisión y experiencia técnica, cada proyecto encuentra su camino hacia el éxito.', 'https://images.unsplash.com/photo-1631376178637-392efc9e356b?q=80&w=1973&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto'),
+('Hack-Battlefield', 'Adéntrate en un campo de pruebas donde la habilidad y la estrategia son tus armas. Hack-Battlefield es el lugar donde los expertos en seguridad informática se enfrentan para poner a prueba sus habilidades y proteger los sistemas de mañana.', 'https://images.unsplash.com/photo-1567619363836-e5fd63f69b20?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto'),
+('Testing Land', 'Un terreno fértil para la innovación y el desarrollo tecnológico. Aquí, los proyectos toman forma y se someten a rigurosas pruebas para garantizar su calidad y fiabilidad. Es el punto de partida para las soluciones del futuro.', 'https://images.unsplash.com/photo-1587355760421-b9de3226a046?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto'),
+('War Headquarters', 'El corazón estratégico de las operaciones tecnológicas avanzadas. War Headquarters es donde se planifican y ejecutan los proyectos más ambiciosos, donde la creatividad se encuentra con la ingeniería para dar forma al futuro de la tecnología.', 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto'),
+('Biometrics Flexible Hall', 'En un mundo donde la identidad es fundamental, Biometrics Flexible Hall ofrece un entorno adaptable para la investigación y el desarrollo de sistemas biométricos. Desde el reconocimiento facial hasta la autenticación de voz, aquí se están construyendo las soluciones de seguridad del mañana.', 'https://images.unsplash.com/photo-1667453466805-75bbf36e8707?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto'),
+('Beyond-Digits', 'Más allá de los límites convencionales de la tecnología, Beyond-Digits es donde las ideas audaces encuentran su hogar. Aquí, los innovadores exploran nuevas fronteras, desde la inteligencia artificial hasta la computación cuántica, dando forma al futuro con cada línea de código.', 'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?q=80&w=2006&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 'electricgaragefoto');
 
 -- Sample data for Experiencias
 INSERT INTO Experiencias (idUF, idSala, nombre, descripcion, esAutoDirigida, esExclusivaUF, portadaURL, fechaInicio, fechaFin, horaFin) VALUES
@@ -209,10 +216,24 @@ INSERT INTO Experiencias (idUF, idSala, nombre, descripcion, esAutoDirigida, esE
 (1, 7, 'Taller de Desarrollo Web Moderno', 'Sumérgete en el mundo del desarrollo web moderno en nuestro taller intensivo. Aprende las últimas tecnologías y técnicas para crear sitios web dinámicos y responsivos que se destaquen en el panorama digital actual.', 0, 0, 'https://images.unsplash.com/photo-1669023414171-56f0740e34cd?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '2024-03-15', '2024-03-19', '10:00:00'),
 (2, 8, 'Taller de Machine Learning Práctico', 'Descubre cómo aplicar el aprendizaje automático en proyectos del mundo real en nuestro taller práctico. Aprende a entrenar modelos, realizar análisis de datos y desarrollar soluciones inteligentes utilizando algoritmos de machine learning.', 0, 1, 'https://images.unsplash.com/photo-1644325349124-d1756b79dd42?q=80&w=1775&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '2024-03-25', '2024-03-29', '08:00:00');
 
+-- Sample data for Mesas
+INSERT INTO Mesas(idSala, cupos) VALUES
+(1, 2), (1, 3), (1, 4), (1, 5),
+(2, 2), (2, 3), (2, 4), (2, 5),
+(3, 2), (3, 3), (3, 4), (3, 5),
+(4, 2), (4, 3), (4, 4), (4, 5),
+(5, 2), (5, 3), (5, 4), (5, 5),
+(6, 2), (6, 3), (6, 4), (6, 5),
+(7, 2), (7, 3), (7, 4), (7, 5),
+(8, 2), (8, 3), (8, 4), (8, 5),
+(9, 2), (9, 3), (9, 4), (9, 5),
+(10, 2), (10, 3), (10, 4), (10, 5),
+(11, 2), (11, 3), (11, 4), (11, 5);
+
 -- Sample data for Reservaciones
-INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia, horaInicio, duracion, fecha, numMesa) VALUES
-('A01177767', 1, 1, '10:00:00', 2.5, '2024-01-01', 2),
-('L00000000', 2, 2, '15:00:00', 1.5, '2024-02-01', 1);
+INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia,idMesa, horaInicio, duracion, fecha, numPersonas) VALUES
+('A01177767', 1, 1, 2, '10:00:00', 2, '2024-01-01', 3),
+('L00000000', 2, 2, 5, '15:00:00', 1, '2024-02-01', 2);
 
 -- Sample data for ReservacionesMateriales
 INSERT INTO ReservacionesMateriales (idReservacion, idMaterial, cantidad, estatus) VALUES
@@ -228,3 +249,6 @@ INSERT INTO MaterialesSalas (idSala, idMaterial, cantidad) VALUES
 INSERT INTO MaterialesRecomendados (idExperiencia, idMaterial, cantidad) VALUES
 (1, 1, 3),
 (2, 2, 4);
+
+
+
