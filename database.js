@@ -107,7 +107,6 @@ export default class Database {
     const query = conditions
       .map((condition, index) => `${condition.idName} = @id${index}`)
       .join(" AND ");
-    console.log("user id backend: " + index);
 
     // Add the inputs
     conditions.forEach((condition, index) => {
