@@ -28,6 +28,8 @@ export async function authUsuario(req, res, next) {
     if (result.length === 0) {
       res.status(404).json({});
     } else {
+      
+      req.params.idUsuario = usuario; // Guarda el idUsuario en el objeto de req
       var token = jwt.sign({ usuario: usuario }, TOKEN_SECRET, {
         expiresIn: "7d",
       });

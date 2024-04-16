@@ -9,7 +9,7 @@ router.get('/', async (_, res) => {
     try {
         // Regresa todas las salas
         const salas = await database.readAll("Salas");
-        console.log(`Salas: ${JSON.stringify(salas)}`);
+        //console.log(`Salas: ${JSON.stringify(salas)}`);
         res.status(200).json(salas);
     } catch (err) {
         res.status(500).json({ error: err?.message });
