@@ -234,6 +234,8 @@ INSERT INTO Mesas(idSala, cupos) VALUES
 -- Sample data for Reservaciones
 INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia,idMesa, horaInicio, duracion, fecha, numPersonas) VALUES
 ('A01177767', 1, 1, 2, '10:00:00', 2, '2024-01-01', 3),
+('A01177767', 1, 1, 3, '10:00:00', 2, '2024-01-01', 4),
+('A01177767', 1, 1, 4, '10:00:00', 2, '2024-01-01', 5),
 ('L00000000', 2, 2, 5, '15:00:00', 1, '2024-02-01', 2);
 
 -- Sample data for ReservacionesMateriales
