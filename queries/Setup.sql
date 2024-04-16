@@ -72,6 +72,7 @@ CREATE TABLE Materiales (
 CREATE TABLE Salas (
     idSala INT PRIMARY KEY IDENTITY(1,1),
     nombre VARCHAR(255),
+    cantidadMesas INT,
     descripcion VARCHAR(500),
     fotoURL VARCHAR(255), -- Remove the comma here
     detallesURL VARCHAR(255)
