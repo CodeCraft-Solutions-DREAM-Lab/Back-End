@@ -16,6 +16,24 @@ router.get("/", async (_, res) => {
     }
 });
 
+router.get("/:id", async (req, res) => {
+    try {
+        const experienciaId = req.params.id;
+        console.log(`experienciaId: ${experienciaId}`);
+        if (experienciaId) {
+            const result = await database.executeQuery(
+                `EXEC [dbo].[getExperienciaById] @idExperiencia = ${experienciaId};`
+            );
+            console.log(`experiencia: ${JSON.stringify(result)}`);
+            res.status(200).json(result.recordset);
+        } else {
+            res.status(404);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
 async function experienciasAutodirigidas(_, res) {
     try {
         // Leer todas las experiencias de la base de datos
