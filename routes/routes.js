@@ -18,6 +18,6 @@ router.use("/experiencias", experiencias);
 router.use("/salas", salas);
 router.use("/chatbot", chatbotBridge);
 router.use("/experiencias/autodirigidas", experienciasAutodirigidas);
-router.use("/experiencias/UFs", experienciasUF);
+router.post("/experiencias/UFs", experienciasUF);
 
 export { router };
