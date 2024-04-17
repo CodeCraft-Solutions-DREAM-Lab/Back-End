@@ -15,7 +15,8 @@ router.get('/', async (_, res) => {
     }
 });
 
-router.get("/horasLibres", async (req, res) => {
+router.post("/horasLibres", async (req, res) => {
+    console.log("si llegué a /horasLibres");
     try {
         const { idSala, fecha, personas } = req.body;
 
