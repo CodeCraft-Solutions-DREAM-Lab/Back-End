@@ -33,6 +33,7 @@ router.get("/:idSala", async (req, res) => {
             `EXEC [dbo].[getMaxCuposBySalaId] @idSala = ${salaId};`
           );
           console.log(`experiencia: ${JSON.stringify(result)}`);
+          res.status(200).json(result);
         } catch (err) {
       res.status(500).json({ error: err?.message });
     }
