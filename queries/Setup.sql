@@ -101,12 +101,19 @@ CREATE TABLE Experiencias (
     FOREIGN KEY (idSala) REFERENCES Salas(idSala)
 );
 
+CREATE TABLE Estatus (
+    idEstatus INT PRIMARY KEY IDENTITY(1,1),
+    nombre VARCHAR(50),
+    descripcion VARCHAR(100)
+);
+
 CREATE TABLE Reservaciones (
     idReservacion INT PRIMARY KEY IDENTITY(1,1),
     idUsuario VARCHAR(10),
     idSala INT,
     idExperiencia INT,
     idMesa INT,
+    estatus INT,
     horaInicio TIME,
     duracion INT,
     fecha DATE,
@@ -114,17 +121,19 @@ CREATE TABLE Reservaciones (
     FOREIGN KEY (idUsuario) REFERENCES Usuarios(idUsuario),
     FOREIGN KEY (idSala) REFERENCES Salas(idSala),
     FOREIGN KEY (idExperiencia) REFERENCES Experiencias(idExperiencia),
-    FOREIGN KEY (idMesa) REFERENCES Mesas(idMesa)
+    FOREIGN KEY (idMesa) REFERENCES Mesas(idMesa),
+    FOREIGN KEY (estatus) REFERENCES Estatus(idEstatus)
 );
 
 CREATE TABLE ReservacionesMateriales (
     idReservacion INT,
     idMaterial INT,
     cantidad INT,
-    estatus VARCHAR(50),
+    estatus INT,
     FOREIGN KEY (idReservacion) REFERENCES Reservaciones(idReservacion),
     FOREIGN KEY (idMaterial) REFERENCES Materiales(idMaterial),
-    PRIMARY KEY (idReservacion, idMaterial)
+    PRIMARY KEY (idReservacion, idMaterial),
+    FOREIGN KEY (estatus) REFERENCES Estatus(idEstatus)
 );
 
 CREATE TABLE MaterialesSalas (
@@ -147,6 +156,16 @@ CREATE TABLE MaterialesRecomendados (
 
 
 -- ADD SAMPLE DATA TO THE TABLES
+
+-- Sample data for Estatus
+INSERT INTO Estatus (nombre, descripcion) VALUES
+('Completado','El material ha sido preparado'),
+('En progreso', 'El material esta siendo preparado'),
+('Confirmada','La reserva ha sido confirmada'),
+('Cancelada','La reserva ha sido cancelada'),
+('En espera','La solicitud de reserva esta en espera'),
+('Denegada','La solicitud de reserva ha sido negada');
+
 -- Sample data for UnidadesFormacion
 INSERT INTO UnidadesFormacion (nombre) VALUES 
 ('Unidad Formación 1'),
@@ -232,16 +251,16 @@ INSERT INTO Mesas(idSala, cupos) VALUES
 (11, 2), (11, 3), (11, 4), (11, 5);
 
 -- Sample data for Reservaciones
-INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia,idMesa, horaInicio, duracion, fecha, numPersonas) VALUES
-('A01177767', 1, 1, 2, '10:00:00', 2, '2024-01-01', 3),
-('A01177767', 1, 1, 3, '10:00:00', 2, '2024-01-01', 4),
-('A01177767', 1, 1, 4, '10:00:00', 2, '2024-01-01', 5),
-('L00000000', 2, 2, 5, '15:00:00', 1, '2024-02-01', 2);
+INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia,idMesa, horaInicio, duracion, fecha, numPersonas, estatus) VALUES
+('A01177767', 1, 1, 2, '10:00:00', 2, '2024-01-01', 3, 3),
+('A01177767', 1, 1, 3, '10:00:00', 2, '2024-01-01', 4, 2),
+('A01177767', 1, 1, 4, '10:00:00', 2, '2024-01-01', 5, 4),
+('L00000000', 2, 2, 5, '15:00:00', 1, '2024-02-01', 2, 3);
 
 -- Sample data for ReservacionesMateriales
 INSERT INTO ReservacionesMateriales (idReservacion, idMaterial, cantidad, estatus) VALUES
-(1, 1, 5, 'Completado'),
-(2, 2, 3, 'En progreso');
+(1, 1, 5, 1),
+(2, 2, 3, 2);
 
 -- Sample data for MaterialesSalas
 INSERT INTO MaterialesSalas (idSala, idMaterial, cantidad) VALUES
