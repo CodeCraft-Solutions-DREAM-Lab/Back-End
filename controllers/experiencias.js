@@ -25,12 +25,32 @@ const database = new Database(config);
  *              items:
  *                type: object
  *                properties:
- *                  id:
+ *                  idExperiencia:
  *                    type: integer
- *                  name:
+ *                  idUF:
+ *                    type: integer
+ *                    nullable: true
+ *                  idSala:
+ *                    type: integer
+ *                  nombre:
  *                    type: string
- *                  description:
+ *                  descripcion:
  *                    type: string
+ *                  esAutoDirigida:
+ *                    type: boolean
+ *                  esExclusivaUF:
+ *                    type: boolean
+ *                  portadaURL:
+ *                    type: string
+ *                  fechaInicio:
+ *                    type: string
+ *                    format: date-time
+ *                  fechaFin:
+ *                    type: string
+ *                    format: date-time
+ *                  horaFin:
+ *                    type: string
+ *                    format: date-time
  *      500:
  *        description: Error
  *        content:
@@ -69,12 +89,32 @@ router.get("/", async (_, res) => {
  *              items:
  *                type: object
  *                properties:
- *                  id:
+ *                  idExperiencia:
  *                    type: integer
- *                  name:
+ *                  idUF:
+ *                    type: integer
+ *                    nullable: true
+ *                  idSala:
+ *                    type: integer
+ *                  nombre:
  *                    type: string
- *                  description:
+ *                  descripcion:
  *                    type: string
+ *                  esAutoDirigida:
+ *                    type: boolean
+ *                  esExclusivaUF:
+ *                    type: boolean
+ *                  portadaURL:
+ *                    type: string
+ *                  fechaInicio:
+ *                    type: string
+ *                    format: date-time
+ *                  fechaFin:
+ *                    type: string
+ *                    format: date-time
+ *                  horaFin:
+ *                    type: string
+ *                    format: date-time
  *      500:
  *        description: Error
  *        content:
@@ -121,14 +161,36 @@ router.get("/autodirigidas", async (_, res) => {
  *        content:
  *          application/json:
  *            schema:
- *              type: object
- *              properties:
- *                id:
- *                  type: integer
- *                name:
- *                  type: string
- *                description:
- *                  type: string
+ *              type: array
+ *              items:
+ *                type: object
+ *                properties:
+ *                  idExperiencia:
+ *                    type: integer
+ *                  idUF:
+ *                    type: integer
+ *                    nullable: true
+ *                  idSala:
+ *                    type: integer
+ *                  nombre:
+ *                    type: string
+ *                  descripcion:
+ *                    type: string
+ *                  esAutoDirigida:
+ *                    type: boolean
+ *                  esExclusivaUF:
+ *                    type: boolean
+ *                  portadaURL:
+ *                    type: string
+ *                  fechaInicio:
+ *                    type: string
+ *                    format: date-time
+ *                  fechaFin:
+ *                    type: string
+ *                    format: date-time
+ *                  horaFin:
+ *                    type: string
+ *                    format: date-time
  *      404:
  *        description: Not Found
  *      500:
@@ -185,12 +247,32 @@ router.get("/:id", async (req, res) => {
  *              items:
  *                type: object
  *                properties:
- *                  id:
+ *                  idExperiencia:
  *                    type: integer
- *                  name:
+ *                  idUF:
+ *                    type: integer
+ *                    nullable: true
+ *                  idSala:
+ *                    type: integer
+ *                  nombre:
  *                    type: string
- *                  description:
+ *                  descripcion:
  *                    type: string
+ *                  esAutoDirigida:
+ *                    type: boolean
+ *                  esExclusivaUF:
+ *                    type: boolean
+ *                  portadaURL:
+ *                    type: string
+ *                  fechaInicio:
+ *                    type: string
+ *                    format: date-time
+ *                  fechaFin:
+ *                    type: string
+ *                    format: date-time
+ *                  horaFin:
+ *                    type: string
+ *                    format: date-time
  *      500:
  *        description: Error
  *        content:
