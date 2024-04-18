@@ -3,6 +3,7 @@ import { router } from "./routes/routes.js";
 import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
+import swaggerDocs from "./swagger.js";
 
 dotenv.config({ path: ".env.development" });
 
@@ -25,7 +26,9 @@ app.use(router);
 // Para poder leer el body de las solicitudes http
 app.use(bodyParser.json());
 
+swaggerDocs(app, port);
+
 // Start the server
 app.listen(port, () => {
-  console.log(`Server started on port ${port}`);
+    console.log(`Server started on port ${port}`);
 });

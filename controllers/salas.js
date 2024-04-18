@@ -1,11 +1,52 @@
-import express from 'express';
-import { config } from '../config.js';
-import Database from '../database.js';
+import express from "express";
+import { config } from "../config.js";
+import Database from "../database.js";
 const router = express.Router();
 router.use(express.json());
+
 // Create database object
 const database = new Database(config);
-router.get('/', async (_, res) => {
+
+/**
+ * @openapi
+ * /salas:
+ *  get:
+ *    summary: Obtiene todas las salas
+ *    tags:
+ *     - Salas
+ *    responses:
+ *      200:
+ *        description: OK
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                type: object
+ *                properties:
+ *                  idSala:
+ *                    type: integer
+ *                  nombre:
+ *                    type: string
+ *                  cantidadMesas:
+ *                    type: integer
+ *                  descripcion:
+ *                    type: string
+ *                  fotoURL:
+ *                    type: string
+ *                  detallesURL:
+ *                    type: string
+ *      500:
+ *        description: Error
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                error:
+ *                  type: string
+ */
+router.get("/", async (_, res) => {
     try {
         // Regresa todas las salas
         const salas = await database.readAll("Salas");
@@ -15,6 +56,55 @@ router.get('/', async (_, res) => {
     }
 });
 
+/**
+ * @openapi
+ * /salas/horasLibres:
+ *  post:
+ *    summary: Obtiene las horas libres de una sala
+ *    tags:
+ *     - Salas
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              idSala:
+ *                type: integer
+ *              fecha:
+ *                type: string
+ *                format: date
+ *              personas:
+ *                type: integer
+ *    responses:
+ *      200:
+ *        description: OK
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                type: integer
+ *      400:
+ *        description: Bad Request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                error:
+ *                  type: string
+ *      500:
+ *        description: Error
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                error:
+ *                  type: string
+ */
 router.post("/horasLibres", async (req, res) => {
     console.log("si llegué a /horasLibres");
     try {
@@ -41,16 +131,18 @@ router.post("/horasLibres", async (req, res) => {
         }
 
         const availabilityArray = [];
-        for(let i = 0; i <= 24; i++) {
+        for (let i = 0; i <= 24; i++) {
             availabilityArray.push([...mesasIdsArray]);
         }
 
         resultReservs.recordsets[0].forEach((reserv) => {
-            const hora = reserv.horaInicio.getHours()+6; // UTC-6
+            const hora = reserv.horaInicio.getHours() + 6; // UTC-6
             const duracion = reserv.duracion;
-        
-            for (let i = 0; i < duracion; i++) {    
-                const index = availabilityArray[hora + i].indexOf(reserv.idMesa);
+
+            for (let i = 0; i < duracion; i++) {
+                const index = availabilityArray[hora + i].indexOf(
+                    reserv.idMesa
+                );
                 console.log(index);
                 if (index > -1) {
                     availabilityArray[hora + i].splice(index, 1);
@@ -65,30 +157,77 @@ router.post("/horasLibres", async (req, res) => {
                 freeHoursArray.push(i);
             }
         }
-        
-        return res.status(200).json(freeHoursArray);
 
+        return res.status(200).json(freeHoursArray);
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }
 });
 
+/**
+ * @openapi
+ * /salas/{id}:
+ *  get:
+ *    summary: Obtiene una sala por su ID
+ *    tags:
+ *     - Salas
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: integer
+ *        required: true
+ *        description: ID de la sala
+ *    responses:
+ *      200:
+ *        description: OK
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                type: object
+ *                properties:
+ *                  idSala:
+ *                    type: integer
+ *                  nombre:
+ *                    type: string
+ *                  cantidadMesas:
+ *                    type: integer
+ *                  descripcion:
+ *                    type: string
+ *                  fotoURL:
+ *                    type: string
+ *                  detallesURL:
+ *                    type: string
+ *      404:
+ *        description: Not Found
+ *      500:
+ *        description: Error
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                error:
+ *                  type: string
+ */
 router.get("/:id", async (req, res) => {
     try {
-      const salaId = req.params.id;
-      console.log(`salaId: ${salaId}`);
-      if (salaId) {
-        const result = await database.executeQuery(
-          `EXEC [dbo].[getSalaById] @idSala = ${salaId};`
-        );
-        console.log(`sala: ${JSON.stringify(result)}`);
-        res.status(200).json(result.recordset);
-      } else {
-        res.status(404);
-      }
+        const salaId = req.params.id;
+        console.log(`salaId: ${salaId}`);
+        if (salaId) {
+            const result = await database.executeQuery(
+                `EXEC [dbo].[getSalaById] @idSala = ${salaId};`
+            );
+            console.log(`sala: ${JSON.stringify(result)}`);
+            res.status(200).json(result.recordset);
+        } else {
+            res.status(404);
+        }
     } catch (err) {
-      res.status(500).json({ error: err?.message });
+        res.status(500).json({ error: err?.message });
     }
-  });
+});
 
 export default router;
