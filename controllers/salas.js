@@ -230,4 +230,63 @@ router.get("/:id", async (req, res) => {
     }
 });
 
+/**
+ * @openapi
+ * salas/nameFromExperienceId/{id}:
+ *  get:
+ *    summary: Regresa el nombre de una sala basado en el ID de la experiencia
+ *    tags:
+ *     - Salas
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: integer
+ *          example: 1
+ *        required: true
+ *        description: ID de la experiencia
+ *    responses:
+ *      200:
+ *        description: OK
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                  nombre:
+ *                     type: string
+ *                     example: Electric Garage
+ *      404:
+ *        description: Not Found
+ *      500:
+ *        description: Error
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                error:
+ *                  type: string
+ */
+
+router.get("/nameFromExperienceId/:id", async (req, res) => {
+    try {
+        const experienceId = req.params.id;
+        console.log(`experienceId: ${experienceId}`);
+        if (experienceId) {
+            const result = await database.executeQuery(
+                `EXEC [dbo].[getSalaNameFromExperienceId] @idExperiencia = ${experienceId};`
+            );
+
+            res.status(200).json({
+                nombre: result.recordset[0].nombre,
+            });
+        } else {
+            res.status(404);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
 export default router;
