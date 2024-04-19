@@ -15,6 +15,7 @@ DROP TABLE IF EXISTS GruposUsuarios;
 DROP TABLE IF EXISTS Credenciales;
 DROP TABLE IF EXISTS Usuarios;
 DROP TABLE IF EXISTS UnidadesFormacion;
+DROP TABLE IF EXISTS Estatus;
 
 
 
@@ -239,16 +240,16 @@ INSERT INTO Experiencias (idUF, idSala, nombre, descripcion, esAutoDirigida, esE
 -- Sample data for Mesas
 INSERT INTO Mesas(idSala, cupos) VALUES
 (1, 2), (1, 3), (1, 4), (1, 5),
-(2, 2), (2, 3), (2, 4), (2, 5),
-(3, 2), (3, 3), (3, 4), (3, 5),
-(4, 2), (4, 3), (4, 4), (4, 5),
-(5, 2), (5, 3), (5, 4), (5, 5),
-(6, 2), (6, 3), (6, 4), (6, 5),
-(7, 2), (7, 3), (7, 4), (7, 5),
-(8, 2), (8, 3), (8, 4), (8, 5),
-(9, 2), (9, 3), (9, 4), (9, 5),
+(2, 2), (2, 3), (2, 4), (2, 8),
+(3, 2), (3, 3), (3, 4), (3, 6),
+(4, 2), (4, 3), (4, 4), (4, 4),
+(5, 2), (5, 3), (5, 4), (5, 10),
+(6, 2), (6, 3), (6, 4), (6, 8),
+(7, 2), (7, 3), (7, 4), (7, 4),
+(8, 2), (8, 3), (8, 4), (8, 9),
+(9, 2), (9, 3), (9, 4), (9, 8),
 (10, 2), (10, 3), (10, 4), (10, 5),
-(11, 2), (11, 3), (11, 4), (11, 5);
+(11, 2), (11, 3), (11, 4), (11, 10);
 
 -- Sample data for Reservaciones
 INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia,idMesa, horaInicio, duracion, fecha, numPersonas, estatus) VALUES
