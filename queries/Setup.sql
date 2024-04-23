@@ -1,5 +1,6 @@
 -- SCRIPT TO DROP ALL THE CURRENT TABLES, CREATE THEM AGAIN AND ADD SAMPLE DATA
 
+
 -- DROP ALL TABLES IF THEY EXIST
 DROP TABLE IF EXISTS MaterialesRecomendados;
 DROP TABLE IF EXISTS MaterialesSalas;
@@ -52,13 +53,17 @@ CREATE TABLE Logros (
     idLogro INT PRIMARY KEY IDENTITY(1,1),
     nombre VARCHAR(255),
     descripcion VARCHAR(500),
-    prioridadOtorgada INT
+    prioridadOtorgada INT,
+	iconoURL VARCHAR(255),
+	color VARCHAR(100),
+	valorMax INT
 );
 
 CREATE TABLE UsuariosLogros (
     idLogro INT,
     idUsuario VARCHAR(10),
-    estatus VARCHAR(50),
+	valorActual INT,
+    estatus BIT,
     FOREIGN KEY (idLogro) REFERENCES Logros(idLogro),
     FOREIGN KEY (idUsuario) REFERENCES Usuarios(idUsuario),
     PRIMARY KEY (idLogro, idUsuario)
@@ -174,7 +179,7 @@ INSERT INTO UnidadesFormacion (nombre) VALUES
 
 -- Sample data for Usuarios
 INSERT INTO Usuarios (idUsuario, nombre, apellidoP, apellidoM, tipo, prioridad) VALUES
-('A01177767', 'Christopher Gabriel', 'Pedraza', 'Pohlenz', 'Regular', 1),
+('A01177767', 'Christopher Gabriel', 'Pedraza', 'Pohlenz', 'Regular', 362),
 ('L00000000', 'Rolando', 'Pérez', '', 'Profesor', 2),
 ('test', 'test', 'test', 'test', 'Regular', 1);
 
@@ -191,14 +196,29 @@ INSERT INTO GruposUsuarios (idUF, idUsuario) VALUES
 (2, 'L00000000');
 
 -- Sample data for Logros
-INSERT INTO Logros (nombre, descripcion, prioridadOtorgada) VALUES
-('Logro 1', 'Descripción logro 1', 1),
-('Logro 2', 'Descripción logro 2', 2);
+INSERT INTO Logros (nombre, descripcion, prioridadOtorgada, iconoURL, color, valorMax) VALUES
+('Big Dreamer', 'Reserva 50 veces algún espacio del D.R.E.A.M. Lab.', 1, 'https://dreamlabstorage.blob.core.windows.net/logros/BigDreamer.png', '#AFB7FF', 50),
+('Independent Learner', 'Completa 20 experiencias autodirigidas.', 1, 'https://dreamlabstorage.blob.core.windows.net/logros/IndependentLearner.png', '#C0A2FF', 20),
+('Robot Expert', 'Asiste a 5 eventos dentro del “Electric Garage”.', 1, 'https://dreamlabstorage.blob.core.windows.net/logros/RobotExpert.png', '#78C2F8', 5),
+('Testing Champion', 'Reserva y asiste 5 veces a la sala “Testing Land”.', 1, 'https://dreamlabstorage.blob.core.windows.net/logros/TestingChampion.png', '#FF87E5', 5),
+('Ancient Soul', 'Reserva y asiste 3 veces a la sala “Graveyard”.', 1, 'https://dreamlabstorage.blob.core.windows.net/logros/AncientSoul.png', '#98A6B6', 3),
+('Visionary', 'Reserva y asiste 2 veces a la “Sala VR”.', 1, 'https://dreamlabstorage.blob.core.windows.net/logros/Visionary.png', '#FF6073', 2),
+('Priority Achiever', 'Alcanza un puntaje de prioridad de al menos 500 puntos en una ocasión.', 1, 'https://dreamlabstorage.blob.core.windows.net/logros/PriorityAchiever.png', '#F8E478', 500),
+('Five-Star Player', 'Forma parte del top 5 de usuarios con mayor prioridad.', 1, 'https://dreamlabstorage.blob.core.windows.net/logros/Trustworthy.png', '#A0DE83', 1),
+('Communicator', 'Utiliza 1 vez el sistema de recomendaciones por voz.', 1, 'https://dreamlabstorage.blob.core.windows.net/logros/Communicator.png', '#FEA767', 1);
 
 -- Sample data for UsuariosLogros
-INSERT INTO UsuariosLogros (idLogro, idUsuario, estatus) VALUES
-(1, 'A01177767', 'Activo'),
-(2, 'L00000000', 'Inactivo');
+INSERT INTO UsuariosLogros (idLogro, idUsuario, valorActual, estatus) VALUES
+(1, 'A01177767', 50, 1),
+(2, 'A01177767', 5, 0),
+(3, 'A01177767', 5, 1),
+(4, 'A01177767', 3, 0),
+(5, 'A01177767', 3, 1),
+(6, 'A01177767', 1, 0),
+(7, 'A01177767', 367, 0),
+(8, 'A01177767', 1, 1),
+(9, 'A01177767', 0, 0),
+(1, 'L00000000', 0, 0);
 
 -- Sample data for Materiales
 INSERT INTO Materiales (nombre, fotoURL) VALUES
@@ -252,10 +272,10 @@ INSERT INTO Mesas(idSala, cupos) VALUES
 (11, 2), (11, 3), (11, 4), (11, 10);
 
 -- Sample data for Reservaciones
-INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia,idMesa, horaInicio, duracion, fecha, numPersonas, estatus) VALUES
-('A01177767', 1, 1, 2, '10:00:00', 2, '2024-01-01', 3, 3),
-('A01177767', 1, 1, 3, '10:00:00', 2, '2024-01-01', 4, 2),
-('A01177767', 1, 1, 4, '10:00:00', 2, '2024-01-01', 5, 4),
+INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia, idMesa, horaInicio, duracion, fecha, numPersonas, estatus) VALUES
+('A01177767', 1, 2, 2, '12:00:00', 3, '2024-01-05', 3, 3),
+('A01177767', 1, 3, 3, '09:00:00', 2, '2024-02-10', 4, 2),
+('A01177767', 1, 1, 4, '15:00:00', 1, '2024-03-15', 5, 4),
 ('L00000000', 2, 2, 5, '15:00:00', 1, '2024-02-01', 2, 3);
 
 -- Sample data for ReservacionesMateriales
@@ -272,6 +292,3 @@ INSERT INTO MaterialesSalas (idSala, idMaterial, cantidad) VALUES
 INSERT INTO MaterialesRecomendados (idExperiencia, idMaterial, cantidad) VALUES
 (1, 1, 3),
 (2, 2, 4);
-
-
-
