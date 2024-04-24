@@ -1,6 +1,5 @@
 -- SCRIPT TO DROP ALL THE CURRENT TABLES, CREATE THEM AGAIN AND ADD SAMPLE DATA
 
-
 -- DROP ALL TABLES IF THEY EXIST
 DROP TABLE IF EXISTS MaterialesRecomendados;
 DROP TABLE IF EXISTS MaterialesSalas;
@@ -32,7 +31,8 @@ CREATE TABLE Usuarios (
     apellidoP VARCHAR(255),
     apellidoM VARCHAR(255),
     tipo VARCHAR(50),
-    prioridad INT
+    prioridad INT,
+	logroPrincipal INT
 );
 
 CREATE TABLE Credenciales (
@@ -178,10 +178,10 @@ INSERT INTO UnidadesFormacion (nombre) VALUES
 ('Unidad Formación 2');
 
 -- Sample data for Usuarios
-INSERT INTO Usuarios (idUsuario, nombre, apellidoP, apellidoM, tipo, prioridad) VALUES
-('A01177767', 'Christopher Gabriel', 'Pedraza', 'Pohlenz', 'Regular', 362),
-('L00000000', 'Rolando', 'Pérez', '', 'Profesor', 2),
-('test', 'test', 'test', 'test', 'Regular', 1);
+INSERT INTO Usuarios (idUsuario, nombre, apellidoP, apellidoM, tipo, prioridad, logroPrincipal) VALUES
+('A01177767', 'Christopher Gabriel', 'Pedraza', 'Pohlenz', 'Regular', 362, 1),
+('L00000000', 'Rolando', 'Pérez', '', 'Profesor', 2, 1),
+('test', 'test', 'test', 'test', 'Regular', 1, 1);
 
 -- Sample data for Credenciales
 INSERT INTO Credenciales (idUsuario, contrasena) VALUES
