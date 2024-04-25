@@ -1,11 +1,10 @@
 CREATE PROCEDURE getMaterialesDisponibles(
     @idSala INT,
     @fecha DATE,
-    @horaInicio TIME,
+    @horaInicio TIME(5),
     @duracion INT
 )
 AS
-BEGIN
     -- Obtener los materiales de la sala
     DECLARE @idMaterialesSala TABLE (
         idMaterial INT
@@ -30,7 +29,7 @@ BEGIN
     WHERE s.idSala = @idSala
         AND r.fecha = @fecha
         AND r.horaInicio >= @horaInicio
-        AND r.horaInicio + INTERVAL @duracion MINUTE <= r.horaFin;
+        AND DATEADD(hour, @duracion, r.horaInicio) < r.horaFin;
 
     -- Obtener los materiales disponibles
     DECLARE @idMaterialesDisponibles TABLE (
@@ -38,10 +37,10 @@ BEGIN
         cantidadDisponible INT
     );
 
+	INSERT INTO @idMaterialesDisponibles
     SELECT
         ms.idMaterial,
         ms.cantidad - ISNULL(SUM(rm.cantidad), 0) AS cantidadDisponible
-    INTO @idMaterialesDisponibles
     FROM @idMaterialesSala ms
     LEFT JOIN @idMaterialesReservados rm ON ms.idMaterial = rm.idMaterial
     GROUP BY ms.idMaterial, ms.cantidad;
@@ -52,4 +51,3 @@ BEGIN
         md.cantidadDisponible AS cantidadDisponible
     FROM Materiales m
     JOIN @idMaterialesDisponibles md ON m.idMaterial = md.idMaterial;
-END;
