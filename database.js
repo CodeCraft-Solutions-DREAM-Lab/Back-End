@@ -43,6 +43,27 @@ export default class Database {
         return result;
     }
 
+    async executeProcedure(procedureName, parameters) {
+        await this.connect();
+        const request = this.poolconnection.request();
+
+        for (const key in parameters) {
+            let type = sql.Int;
+            if (typeof parameters[key] === "number") {
+                type = sql.Int;
+            }
+            if (typeof parameters[key] === "string") {
+                type = sql.NVarChar(255);
+            }
+
+            request.input(key, type, parameters[key]);
+        }
+
+        const result = await request.execute(procedureName);
+
+        return result.recordset;
+    }
+
     async create(tableName, data) {
         await this.connect();
         const request = this.poolconnection.request();
