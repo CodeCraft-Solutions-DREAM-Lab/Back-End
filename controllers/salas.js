@@ -85,7 +85,14 @@ router.get("/", async (_, res) => {
  *            schema:
  *              type: array
  *              items:
- *                type: integer
+ *                type: object
+ *                properties:
+ *                  hora:
+ *                    type: integer
+ *                  cupos:
+ *                    type: integer
+ *                  competidores:
+ *                    type: integer
  *      400:
  *        description: Bad Request
  *        content:
@@ -105,10 +112,10 @@ router.get("/", async (_, res) => {
  *                error:
  *                  type: string
  */
+
 router.post("/horasLibres", async (req, res) => {
-    console.log("si llegué a /horasLibres");
     try {
-        const { idSala, fecha, personas } = req.body;
+        let { idSala, fecha, personas } = req.body;
 
         if (!idSala || !fecha) {
             res.status(400).json({ error: "idSala and fecha are required" });
@@ -117,8 +124,12 @@ router.post("/horasLibres", async (req, res) => {
 
         if (!personas) personas = 1;
 
-        const resultReservs = await database.executeQuery(
-            `EXEC [dbo].[getReservacionesFromSalaByDate] @idSala = ${idSala}, @fecha = '${fecha}';`
+        const resultReservsConfirmadas = await database.executeQuery(
+            `EXEC [dbo].[getReservacionesWithStatusFromSalaByDate] @idSala = ${idSala}, @fecha = '${fecha}', @idEstatus = ${3};`
+        );
+
+        const resultReservsPendientes = await database.executeQuery(
+            `EXEC [dbo].[getReservacionesWithStatusFromSalaByDate] @idSala = ${idSala}, @fecha = '${fecha}', @idEstatus = ${5};`
         );
 
         const resultMesas = await database.executeQuery(
@@ -135,15 +146,26 @@ router.post("/horasLibres", async (req, res) => {
             availabilityArray.push([...mesasIdsArray]);
         }
 
-        resultReservs.recordsets[0].forEach((reserv) => {
-            const hora = reserv.horaInicio.getHours() + 6; // UTC-6
+        const competidoresArray = Array(25).fill(0);
+
+        resultReservsPendientes.recordsets[0].forEach((reserv) => {
+            const hora = (reserv.horaInicio.getHours() + 6) % 24; // UTC-6
+            // const hora = reserv.horaInicio.getHours() + 6; // UTC-6
+            const duracion = reserv.duracion;
+
+            for (let i = 0; i < duracion; i++) {
+                competidoresArray[hora + i] += 1;
+            }
+        });
+
+        resultReservsConfirmadas.recordsets[0].forEach((reserv) => {
+            const hora = (reserv.horaInicio.getHours() + 6) % 24; // UTC-6
             const duracion = reserv.duracion;
 
             for (let i = 0; i < duracion; i++) {
                 const index = availabilityArray[hora + i].indexOf(
                     reserv.idMesa
                 );
-                console.log(index);
                 if (index > -1) {
                     availabilityArray[hora + i].splice(index, 1);
                 }
@@ -154,7 +176,11 @@ router.post("/horasLibres", async (req, res) => {
 
         for (let i = 9; i <= 18; i++) {
             if (availabilityArray[i].length > 0) {
-                freeHoursArray.push(i);
+                freeHoursArray.push({
+                    hora: i,
+                    cupos: availabilityArray[i].length,
+                    competidores: competidoresArray[i],
+                });
             }
         }
 
