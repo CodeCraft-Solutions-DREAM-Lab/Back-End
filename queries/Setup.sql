@@ -15,6 +15,7 @@ DROP TABLE IF EXISTS GruposUsuarios;
 DROP TABLE IF EXISTS Credenciales;
 DROP TABLE IF EXISTS Usuarios;
 DROP TABLE IF EXISTS UnidadesFormacion;
+DROP TABLE IF EXISTS Estatus;
 
 
 
@@ -30,7 +31,8 @@ CREATE TABLE Usuarios (
     apellidoP VARCHAR(255),
     apellidoM VARCHAR(255),
     tipo VARCHAR(50),
-    prioridad INT
+    prioridad INT,
+	logroPrincipal INT
 );
 
 CREATE TABLE Credenciales (
@@ -51,13 +53,17 @@ CREATE TABLE Logros (
     idLogro INT PRIMARY KEY IDENTITY(1,1),
     nombre VARCHAR(255),
     descripcion VARCHAR(500),
-    prioridadOtorgada INT
+    prioridadOtorgada INT,
+	iconoURL VARCHAR(255),
+	color VARCHAR(100),
+	valorMax INT
 );
 
 CREATE TABLE UsuariosLogros (
     idLogro INT,
     idUsuario VARCHAR(10),
-    estatus VARCHAR(50),
+	valorActual INT,
+    estatus BIT,
     FOREIGN KEY (idLogro) REFERENCES Logros(idLogro),
     FOREIGN KEY (idUsuario) REFERENCES Usuarios(idUsuario),
     PRIMARY KEY (idLogro, idUsuario)
@@ -172,10 +178,10 @@ INSERT INTO UnidadesFormacion (nombre) VALUES
 ('Unidad Formación 2');
 
 -- Sample data for Usuarios
-INSERT INTO Usuarios (idUsuario, nombre, apellidoP, apellidoM, tipo, prioridad) VALUES
-('A01177767', 'Christopher Gabriel', 'Pedraza', 'Pohlenz', 'Regular', 1),
-('L00000000', 'Rolando', 'Pérez', '', 'Profesor', 2),
-('test', 'test', 'test', 'test', 'Regular', 1);
+INSERT INTO Usuarios (idUsuario, nombre, apellidoP, apellidoM, tipo, prioridad, logroPrincipal) VALUES
+('A01177767', 'Christopher Gabriel', 'Pedraza', 'Pohlenz', 'Regular', 362, 1),
+('L00000000', 'Rolando', 'Pérez', '', 'Profesor', 2, 1),
+('test', 'test', 'test', 'test', 'Regular', 1, 1);
 
 -- Sample data for Credenciales
 INSERT INTO Credenciales (idUsuario, contrasena) VALUES
@@ -190,14 +196,29 @@ INSERT INTO GruposUsuarios (idUF, idUsuario) VALUES
 (2, 'L00000000');
 
 -- Sample data for Logros
-INSERT INTO Logros (nombre, descripcion, prioridadOtorgada) VALUES
-('Logro 1', 'Descripción logro 1', 1),
-('Logro 2', 'Descripción logro 2', 2);
+INSERT INTO Logros (nombre, descripcion, prioridadOtorgada, iconoURL, color, valorMax) VALUES
+('Big Dreamer', 'Reserva 50 veces algún espacio del D.R.E.A.M. Lab.', 1, 'https://dreamlabstorage.blob.core.windows.net/logros/BigDreamer.png', '#AFB7FF', 50),
+('Independent Learner', 'Completa 20 experiencias autodirigidas.', 1, 'https://dreamlabstorage.blob.core.windows.net/logros/IndependentLearner.png', '#C0A2FF', 20),
+('Robot Expert', 'Asiste a 5 eventos dentro del “Electric Garage”.', 1, 'https://dreamlabstorage.blob.core.windows.net/logros/RobotExpert.png', '#78C2F8', 5),
+('Testing Champion', 'Reserva y asiste 5 veces a la sala “Testing Land”.', 1, 'https://dreamlabstorage.blob.core.windows.net/logros/TestingChampion.png', '#FF87E5', 5),
+('Ancient Soul', 'Reserva y asiste 3 veces a la sala “Graveyard”.', 1, 'https://dreamlabstorage.blob.core.windows.net/logros/AncientSoul.png', '#98A6B6', 3),
+('Visionary', 'Reserva y asiste 2 veces a la “Sala VR”.', 1, 'https://dreamlabstorage.blob.core.windows.net/logros/Visionary.png', '#FF6073', 2),
+('Priority Achiever', 'Alcanza un puntaje de prioridad de al menos 500 puntos en una ocasión.', 1, 'https://dreamlabstorage.blob.core.windows.net/logros/PriorityAchiever.png', '#F8E478', 500),
+('Five-Star Player', 'Forma parte del top 5 de usuarios con mayor prioridad.', 1, 'https://dreamlabstorage.blob.core.windows.net/logros/Trustworthy.png', '#A0DE83', 1),
+('Communicator', 'Utiliza 1 vez el sistema de recomendaciones por voz.', 1, 'https://dreamlabstorage.blob.core.windows.net/logros/Communicator.png', '#FEA767', 1);
 
 -- Sample data for UsuariosLogros
-INSERT INTO UsuariosLogros (idLogro, idUsuario, estatus) VALUES
-(1, 'A01177767', 'Activo'),
-(2, 'L00000000', 'Inactivo');
+INSERT INTO UsuariosLogros (idLogro, idUsuario, valorActual, estatus) VALUES
+(1, 'A01177767', 50, 1),
+(2, 'A01177767', 5, 0),
+(3, 'A01177767', 5, 1),
+(4, 'A01177767', 3, 0),
+(5, 'A01177767', 3, 1),
+(6, 'A01177767', 1, 0),
+(7, 'A01177767', 367, 0),
+(8, 'A01177767', 1, 1),
+(9, 'A01177767', 0, 0),
+(1, 'L00000000', 0, 0);
 
 -- Sample data for Materiales
 INSERT INTO Materiales (nombre, fotoURL)
@@ -256,22 +277,22 @@ INSERT INTO Experiencias (idUF, idSala, nombre, descripcion, esAutoDirigida, esE
 -- Sample data for Mesas
 INSERT INTO Mesas(idSala, cupos) VALUES
 (1, 2), (1, 3), (1, 4), (1, 5),
-(2, 2), (2, 3), (2, 4), (2, 5),
-(3, 2), (3, 3), (3, 4), (3, 5),
-(4, 2), (4, 3), (4, 4), (4, 5),
-(5, 2), (5, 3), (5, 4), (5, 5),
-(6, 2), (6, 3), (6, 4), (6, 5),
-(7, 2), (7, 3), (7, 4), (7, 5),
-(8, 2), (8, 3), (8, 4), (8, 5),
-(9, 2), (9, 3), (9, 4), (9, 5),
+(2, 2), (2, 3), (2, 4), (2, 8),
+(3, 2), (3, 3), (3, 4), (3, 6),
+(4, 2), (4, 3), (4, 4), (4, 4),
+(5, 2), (5, 3), (5, 4), (5, 10),
+(6, 2), (6, 3), (6, 4), (6, 8),
+(7, 2), (7, 3), (7, 4), (7, 4),
+(8, 2), (8, 3), (8, 4), (8, 9),
+(9, 2), (9, 3), (9, 4), (9, 8),
 (10, 2), (10, 3), (10, 4), (10, 5),
-(11, 2), (11, 3), (11, 4), (11, 5);
+(11, 2), (11, 3), (11, 4), (11, 10);
 
 -- Sample data for Reservaciones
-INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia,idMesa, horaInicio, duracion, fecha, numPersonas, estatus) VALUES
-('A01177767', 1, 1, 2, '10:00:00', 2, '2024-01-01', 3, 3),
-('A01177767', 1, 1, 3, '10:00:00', 2, '2024-01-01', 4, 2),
-('A01177767', 1, 1, 4, '10:00:00', 2, '2024-01-01', 5, 4),
+INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia, idMesa, horaInicio, duracion, fecha, numPersonas, estatus) VALUES
+('A01177767', 1, 2, 2, '12:00:00', 3, '2024-01-05', 3, 3),
+('A01177767', 1, 3, 3, '09:00:00', 2, '2024-02-10', 4, 2),
+('A01177767', 1, 1, 4, '15:00:00', 1, '2024-03-15', 5, 4),
 ('L00000000', 2, 2, 5, '15:00:00', 1, '2024-02-01', 2, 3);
 
 -- Sample data for ReservacionesMateriales
@@ -302,7 +323,6 @@ INSERT INTO MaterialesSalas (idSala, idMaterial, cantidad) VALUES
 (2, 10, 2),  -- Tablet Android para Dimension Forge (2 unidades)
 (2, 12, 1),  -- Tablet iPad para Dimension Forge (1 unidad)
 (2, 11, 1),  -- Tablet Windows para Dimension Forge (1 unidad)
-(2, 12, 1),  -- Altavoces Bluetooth para Dimension Forge (1 unidad)
 (2, 13, 1),  -- Micrófono para Dimension Forge (1 unidad)
 (2, 14, 1),  -- Router Wi-Fi para Dimension Forge (1 unidad)
 (2, 15, 1),  -- Cable Ethernet para Dimension Forge (1 unidad)
@@ -312,7 +332,6 @@ INSERT INTO MaterialesSalas (idSala, idMaterial, cantidad) VALUES
 (3, 7, 2),  -- PC de escritorio para New Horizons (2 unidades)
 (3, 9, 3),  -- Cámara Digital (DSLR) para New Horizons (3 unidades)
 (3, 10, 2),  -- Tablet Android para New Horizons (2 unidades)
-(3, 12, 2),  -- Tablet iPad para New Horizons (2 unidades)
 (3, 11, 1),  -- Tablet Windows para New Horizons (1 unidad)
 (3, 12, 1),  -- Altavoces Bluetooth para New Horizons (1 unidad)
 (3, 13, 1),  -- Micrófono para New Horizons (1 unidad)
@@ -328,7 +347,6 @@ INSERT INTO MaterialesSalas (idSala, idMaterial, cantidad) VALUES
 (4, 9, 1),  -- Cámara Digital (DSLR) para Deep Net (1 unidad)
 (4, 12, 1),  -- Tablet iPad para Deep Net (1 unidad)
 (4, 11, 1),  -- Tablet Windows para Deep Net (1 unidad)
-(4, 12, 1),  -- Altavoces Bluetooth para Deep Net (1 unidad)
 (4, 13, 1),  -- Micrófono para Deep Net (1 unidad)
 (4, 14, 1),  -- Router Wi-Fi para Deep Net (1 unidad)
 (4, 15, 1),  -- Cable Ethernet para Deep Net (1 unidad)
@@ -336,31 +354,25 @@ INSERT INTO MaterialesSalas (idSala, idMaterial, cantidad) VALUES
 (5, 2, 5),  -- HTC Vive Pro 2 para Graveyard (5 unidades)
 (5, 7, 2),  -- PlayStation VR para Graveyard (2 unidades)
 (5, 1, 4),  -- Laptop Gamer para Graveyard (4 unidades)
-(5, 2, 2),  -- Surface Pro para Graveyard (2 unidades)
 (5, 3, 1),  -- Chromebook para Graveyard (1 unidad)
 (5, 5, 1),  -- Oculus Quest 2 para Graveyard (1 unidad)
 (5, 6, 1),  -- Visor VR para smartphone para Graveyard (1 unidad)
-(5, 7, 1),  -- PC de escritorio para Graveyard (1 unidad)
 (5, 9, 1),  -- Cámara Digital (DSLR) para Graveyard (1 unidad)
 (5, 12, 1),  -- Tablet iPad para Graveyard (1 unidad)
 (5, 11, 1),  -- Tablet Windows para Graveyard (1 unidad)
-(5, 12, 1),  -- Altavoces Bluetooth para Graveyard (1 unidad)
 (5, 13, 1),  -- Micrófono para Graveyard (1 unidad)
 (5, 14, 1),  -- Router Wi-Fi para Graveyard (1 unidad)
 (5, 15, 1),  -- Cable Ethernet para Graveyard (1 unidad)
 (5, 16, 1),  -- Tarjeta de Red para Graveyard (1 unidad)
 (6, 5, 5),  -- Oculus Quest 2 para PCB Factory (5 unidades)
-(6, 6, 3),  -- Visor VR para smartphone para PCB Factory (3 unidades)
 (6, 1, 4),  -- Laptop Gamer para PCB Factory (4 unidades)
 (6, 2, 2),  -- Surface Pro para PCB Factory (2 unidades)
 (6, 3, 1),  -- Chromebook para PCB Factory (1 unidad)
 (6, 6, 1),  -- HTC Vive Pro 2 para PCB Factory (1 unidad)
 (6, 7, 1),  -- PlayStation VR para PCB Factory (1 unidad)
-(6, 7, 1),  -- PC de escritorio para PCB Factory (1 unidad)
 (6, 9, 1),  -- Cámara Digital (DSLR) para PCB Factory (1 unidad)
 (6, 12, 1),  -- Tablet iPad para PCB Factory (1 unidad)
 (6, 11, 1),  -- Tablet Windows para PCB Factory (1 unidad)
-(6, 12, 1),  -- Altavoces Bluetooth para PCB Factory (1 unidad)
 (6, 13, 1),  -- Micrófono para PCB Factory (1 unidad)
 (6, 14, 1),  -- Router Wi-Fi para PCB Factory (1 unidad)
 (6, 15, 1),  -- Cable Ethernet para PCB Factory (1 unidad)
@@ -370,11 +382,9 @@ INSERT INTO MaterialesSalas (idSala, idMaterial, cantidad) VALUES
 (7, 3, 1),  -- Chromebook para Hack-Battlefield (1 unidad)
 (7, 6, 2),  -- HTC Vive Pro 2 para Hack-Battlefield (2 unidades)
 (7, 7, 2),  -- PlayStation VR para Hack-Battlefield (2 unidades)
-(7, 7, 1),  -- PC de escritorio para Hack-Battlefield (1 unidad)
 (7, 9, 1),  -- Cámara Digital (DSLR) para Hack-Battlefield (1 unidad)
 (7, 12, 1),  -- Tablet iPad para Hack-Battlefield (1 unidad)
 (7, 11, 1),  -- Tablet Windows para Hack-Battlefield (1 unidad)
-(7, 12, 1),  -- Altavoces Bluetooth para Hack-Battlefield (1 unidad)
 (7, 13, 1),  -- Micrófono para Hack-Battlefield (1 unidad)
 (7, 14, 1),  -- Router Wi-Fi para Hack-Battlefield (1 unidad)
 (7, 15, 1),  -- Cable Ethernet para Hack-Battlefield (1 unidad)
@@ -388,7 +398,6 @@ INSERT INTO MaterialesSalas (idSala, idMaterial, cantidad) VALUES
 (8, 9, 1),  -- Cámara Digital (DSLR) para Testing Land (1 unidad)
 (8, 12, 1),  -- Tablet iPad para Testing Land (1 unidad)
 (8, 11, 1),  -- Tablet Windows para Testing Land (1 unidad)
-(8, 12, 1),  -- Altavoces Bluetooth para Testing Land (1 unidad)
 (8, 13, 1),  -- Micrófono para Testing Land (1 unidad)
 (8, 14, 1),  -- Router Wi-Fi para Testing Land (1 unidad)
 (8, 15, 1),  -- Cable Ethernet para Testing Land (1 unidad)
@@ -402,7 +411,6 @@ INSERT INTO MaterialesSalas (idSala, idMaterial, cantidad) VALUES
 (9, 9, 1),  -- Cámara Digital (DSLR) para War Headquarters (1 unidad)
 (9, 12, 1),  -- Tablet iPad para War Headquarters (1 unidad)
 (9, 11, 1),  -- Tablet Windows para War Headquarters (1 unidad)
-(9, 12, 1),  -- Altavoces Bluetooth para War Headquarters (1 unidad)
 (9, 13, 1),  -- Micrófono para War Headquarters (1 unidad)
 (9, 14, 1),  -- Router Wi-Fi para War Headquarters (1 unidad)
 (9, 15, 1),  -- Cable Ethernet para War Headquarters (1 unidad)
@@ -441,6 +449,3 @@ INSERT INTO MaterialesSalas (idSala, idMaterial, cantidad) VALUES
 INSERT INTO MaterialesRecomendados (idExperiencia, idMaterial, cantidad) VALUES
 (1, 1, 3),
 (2, 2, 4);
-
-
-
