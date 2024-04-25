@@ -449,3 +449,4 @@ INSERT INTO MaterialesSalas (idSala, idMaterial, cantidad) VALUES
 INSERT INTO MaterialesRecomendados (idExperiencia, idMaterial, cantidad) VALUES
 (1, 1, 3),
 (2, 2, 4);
+

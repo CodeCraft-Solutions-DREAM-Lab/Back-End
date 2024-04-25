@@ -8,7 +8,7 @@ const options = {
             description:
                 "Endpoints para la API de DREAM Lab. Puede encontrar más información en [GitHub](https://github.com/CodeCraft-Solutions-DREAM-Lab).",
             contact: {
-                name: "CodeCarft Solutions",
+                name: "CodeCraft Solutions",
                 url: "https://github.com/CodeCraft-Solutions-DREAM-Lab",
             },
             version: "1.0.0",
@@ -18,10 +18,10 @@ const options = {
                 url: "http://localhost:3000/",
                 description: "Local server",
             },
-            // {
-            //     url: "<your live url here>",
-            //     description: "Live server",
-            // },
+            {
+                url: "http://dreamlab-api.azurewebsites.net/",
+                description: "Live server",
+            },
         ],
     },
     // looks for configuration in specified directories
