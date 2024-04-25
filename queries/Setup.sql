@@ -221,9 +221,26 @@ INSERT INTO UsuariosLogros (idLogro, idUsuario, valorActual, estatus) VALUES
 (1, 'L00000000', 0, 0);
 
 -- Sample data for Materiales
-INSERT INTO Materiales (nombre, fotoURL) VALUES
-('Material 1', 'url_material_1'),
-('Material 2', 'url_material_2');
+INSERT INTO Materiales (nombre, fotoURL)
+VALUES
+    ('Laptop Gamer', 'https://dreamlabstorage.blob.core.windows.net/materiales/laptop-gamer.png'),
+    ('Surface Pro', 'https://dreamlabstorage.blob.core.windows.net/materiales/surface.png'),
+    ('Chromebook', 'https://dreamlabstorage.blob.core.windows.net/materiales/chromebook.png'),
+    ('Oculus Quest 2', 'https://dreamlabstorage.blob.core.windows.net/materiales/oculus.png'),
+    ('HTC Vive Pro 2', 'https://dreamlabstorage.blob.core.windows.net/materiales/vive.png'),
+    ('PlayStation VR', 'https://dreamlabstorage.blob.core.windows.net/materiales/playstationVR.png'),
+    ('Visor VR para smartphone', 'https://dreamlabstorage.blob.core.windows.net/materiales/vr-smartphone.png'),
+    ('PC de escritorio', 'https://dreamlabstorage.blob.core.windows.net/materiales/pc.png'),
+    ('Tablet Android', 'https://dreamlabstorage.blob.core.windows.net/materiales/android-tablet.png'),
+    ('Tablet iPad', 'https://dreamlabstorage.blob.core.windows.net/materiales/ipad.png'),
+    ('Tablet Windows', 'https://dreamlabstorage.blob.core.windows.net/materiales/tablet-windows.png'),
+    ('Cámara Digital (DSLR)', 'https://dreamlabstorage.blob.core.windows.net/materiales/camara.png'),
+    ('Audífonos Over-Ear', 'https://dreamlabstorage.blob.core.windows.net/materiales/audifonos.png'),
+    ('Altavoces Bluetooth', 'https://dreamlabstorage.blob.core.windows.net/materiales/altavoz.png'),
+    ('Micrófono', 'https://dreamlabstorage.blob.core.windows.net/materiales/microfono.png'),
+    ('Router Wi-Fi', 'https://dreamlabstorage.blob.core.windows.net/materiales/router.png'),
+    ('Cable Ethernet', 'https://dreamlabstorage.blob.core.windows.net/materiales/cable-ethernet.png'),
+    ('Tarjeta de Red', 'https://dreamlabstorage.blob.core.windows.net/materiales/tarjeta-red.png');
 
 -- Sample data for Salas
 INSERT INTO Salas (nombre, descripcion, cantidadMesas, fotoURL, detallesURL) VALUES
@@ -285,8 +302,161 @@ INSERT INTO ReservacionesMateriales (idReservacion, idMaterial, cantidad, estatu
 
 -- Sample data for MaterialesSalas
 INSERT INTO MaterialesSalas (idSala, idMaterial, cantidad) VALUES
-(1, 1, 10),
-(2, 2, 8);
+(1, 1, 10),  -- Laptop Gamer para Electric Garage (10 unidades)
+(1, 2, 2),  -- Surface Pro para Electric Garage (2 unidades)
+(1, 3, 3),  -- Chromebook para Electric Garage (3 unidades)
+(1, 5, 2),  -- Oculus Quest 2 para Electric Garage (2 unidades)
+(1, 6, 1),  -- Visor VR para smartphone para Electric Garage (1 unidad)
+(1, 7, 1),  -- PC de escritorio para Electric Garage (1 unidad)
+(1, 9, 1),  -- Cámara Digital (DSLR) para Electric Garage (1 unidad)
+(1, 10, 1),  -- Tablet iPad para Electric Garage (1 unidad)
+(1, 11, 1),  -- Tablet Windows para Electric Garage (1 unidad)
+(1, 12, 2),  -- Altavoces Bluetooth para Electric Garage (2 unidades)
+(1, 13, 1),  -- Micrófono para Electric Garage (1 unidad)
+(1, 14, 1),  -- Router Wi-Fi para Electric Garage (1 unidad)
+(1, 15, 1),  -- Cable Ethernet para Electric Garage (1 unidad)
+(1, 16, 1),  -- Tarjeta de Red para Electric Garage (1 unidad)
+(2, 6, 6),  -- HTC Vive Pro 2 para Dimension Forge (6 unidades)
+(2, 7, 2),  -- PlayStation VR para Dimension Forge (2 unidades)
+(2, 1, 4),  -- Laptop Gamer para Dimension Forge (4 unidades)
+(2, 3, 2),  -- Chromebook para Dimension Forge (2 unidades)
+(2, 10, 2),  -- Tablet Android para Dimension Forge (2 unidades)
+(2, 12, 1),  -- Tablet iPad para Dimension Forge (1 unidad)
+(2, 11, 1),  -- Tablet Windows para Dimension Forge (1 unidad)
+(2, 12, 1),  -- Altavoces Bluetooth para Dimension Forge (1 unidad)
+(2, 13, 1),  -- Micrófono para Dimension Forge (1 unidad)
+(2, 14, 1),  -- Router Wi-Fi para Dimension Forge (1 unidad)
+(2, 15, 1),  -- Cable Ethernet para Dimension Forge (1 unidad)
+(2, 16, 1),  -- Tarjeta de Red para Dimension Forge (1 unidad)
+(3, 5, 3),  -- Oculus Quest 2 para New Horizons (3 unidades)
+(3, 6, 2),  -- Visor VR para smartphone para New Horizons (2 unidades)
+(3, 7, 2),  -- PC de escritorio para New Horizons (2 unidades)
+(3, 9, 3),  -- Cámara Digital (DSLR) para New Horizons (3 unidades)
+(3, 10, 2),  -- Tablet Android para New Horizons (2 unidades)
+(3, 12, 2),  -- Tablet iPad para New Horizons (2 unidades)
+(3, 11, 1),  -- Tablet Windows para New Horizons (1 unidad)
+(3, 12, 1),  -- Altavoces Bluetooth para New Horizons (1 unidad)
+(3, 13, 1),  -- Micrófono para New Horizons (1 unidad)
+(3, 14, 1),  -- Router Wi-Fi para New Horizons (1 unidad)
+(3, 15, 1),  -- Cable Ethernet para New Horizons (1 unidad)
+(3, 16, 1),  -- Tarjeta de Red para New Horizons (1 unidad)
+(4, 1, 6),  -- Laptop Gamer para Deep Net (6 unidades)
+(4, 2, 2),  -- Surface Pro para Deep Net (2 unidades)
+(4, 3, 2),  -- Chromebook para Deep Net (2 unidades)
+(4, 5, 2),  -- Oculus Quest 2 para Deep Net (2 unidades)
+(4, 6, 1),  -- Visor VR para smartphone
+(4, 7, 1),  -- PC de escritorio para Deep Net (1 unidad)
+(4, 9, 1),  -- Cámara Digital (DSLR) para Deep Net (1 unidad)
+(4, 12, 1),  -- Tablet iPad para Deep Net (1 unidad)
+(4, 11, 1),  -- Tablet Windows para Deep Net (1 unidad)
+(4, 12, 1),  -- Altavoces Bluetooth para Deep Net (1 unidad)
+(4, 13, 1),  -- Micrófono para Deep Net (1 unidad)
+(4, 14, 1),  -- Router Wi-Fi para Deep Net (1 unidad)
+(4, 15, 1),  -- Cable Ethernet para Deep Net (1 unidad)
+(4, 16, 1),  -- Tarjeta de Red para Deep Net (1 unidad)
+(5, 2, 5),  -- HTC Vive Pro 2 para Graveyard (5 unidades)
+(5, 7, 2),  -- PlayStation VR para Graveyard (2 unidades)
+(5, 1, 4),  -- Laptop Gamer para Graveyard (4 unidades)
+(5, 2, 2),  -- Surface Pro para Graveyard (2 unidades)
+(5, 3, 1),  -- Chromebook para Graveyard (1 unidad)
+(5, 5, 1),  -- Oculus Quest 2 para Graveyard (1 unidad)
+(5, 6, 1),  -- Visor VR para smartphone para Graveyard (1 unidad)
+(5, 7, 1),  -- PC de escritorio para Graveyard (1 unidad)
+(5, 9, 1),  -- Cámara Digital (DSLR) para Graveyard (1 unidad)
+(5, 12, 1),  -- Tablet iPad para Graveyard (1 unidad)
+(5, 11, 1),  -- Tablet Windows para Graveyard (1 unidad)
+(5, 12, 1),  -- Altavoces Bluetooth para Graveyard (1 unidad)
+(5, 13, 1),  -- Micrófono para Graveyard (1 unidad)
+(5, 14, 1),  -- Router Wi-Fi para Graveyard (1 unidad)
+(5, 15, 1),  -- Cable Ethernet para Graveyard (1 unidad)
+(5, 16, 1),  -- Tarjeta de Red para Graveyard (1 unidad)
+(6, 5, 5),  -- Oculus Quest 2 para PCB Factory (5 unidades)
+(6, 6, 3),  -- Visor VR para smartphone para PCB Factory (3 unidades)
+(6, 1, 4),  -- Laptop Gamer para PCB Factory (4 unidades)
+(6, 2, 2),  -- Surface Pro para PCB Factory (2 unidades)
+(6, 3, 1),  -- Chromebook para PCB Factory (1 unidad)
+(6, 6, 1),  -- HTC Vive Pro 2 para PCB Factory (1 unidad)
+(6, 7, 1),  -- PlayStation VR para PCB Factory (1 unidad)
+(6, 7, 1),  -- PC de escritorio para PCB Factory (1 unidad)
+(6, 9, 1),  -- Cámara Digital (DSLR) para PCB Factory (1 unidad)
+(6, 12, 1),  -- Tablet iPad para PCB Factory (1 unidad)
+(6, 11, 1),  -- Tablet Windows para PCB Factory (1 unidad)
+(6, 12, 1),  -- Altavoces Bluetooth para PCB Factory (1 unidad)
+(6, 13, 1),  -- Micrófono para PCB Factory (1 unidad)
+(6, 14, 1),  -- Router Wi-Fi para PCB Factory (1 unidad)
+(6, 15, 1),  -- Cable Ethernet para PCB Factory (1 unidad)
+(6, 16, 1),  -- Tarjeta de Red para PCB Factory (1 unidad)
+(7, 1, 3),  -- Laptop Gamer para Hack-Battlefield (3 unidades)
+(7, 2, 2),  -- Surface Pro para Hack-Battlefield (2 unidades)
+(7, 3, 1),  -- Chromebook para Hack-Battlefield (1 unidad)
+(7, 6, 2),  -- HTC Vive Pro 2 para Hack-Battlefield (2 unidades)
+(7, 7, 2),  -- PlayStation VR para Hack-Battlefield (2 unidades)
+(7, 7, 1),  -- PC de escritorio para Hack-Battlefield (1 unidad)
+(7, 9, 1),  -- Cámara Digital (DSLR) para Hack-Battlefield (1 unidad)
+(7, 12, 1),  -- Tablet iPad para Hack-Battlefield (1 unidad)
+(7, 11, 1),  -- Tablet Windows para Hack-Battlefield (1 unidad)
+(7, 12, 1),  -- Altavoces Bluetooth para Hack-Battlefield (1 unidad)
+(7, 13, 1),  -- Micrófono para Hack-Battlefield (1 unidad)
+(7, 14, 1),  -- Router Wi-Fi para Hack-Battlefield (1 unidad)
+(7, 15, 1),  -- Cable Ethernet para Hack-Battlefield (1 unidad)
+(7, 16, 1),  -- Tarjeta de Red para Hack-Battlefield (1 unidad)
+(8, 1, 5),  -- Laptop Gamer para Testing Land (5 unidades)
+(8, 2, 2),  -- Surface Pro para Testing Land (2 unidades)
+(8, 3, 1),  -- Chromebook para Testing Land (1 unidad)
+(8, 5, 2),  -- Oculus Quest 2 para Testing Land (2 unidades)
+(8, 6, 2),  -- Visor VR para smartphone para Testing Land (2 unidades)
+(8, 7, 1),  -- PC de escritorio para Testing Land (1 unidad)
+(8, 9, 1),  -- Cámara Digital (DSLR) para Testing Land (1 unidad)
+(8, 12, 1),  -- Tablet iPad para Testing Land (1 unidad)
+(8, 11, 1),  -- Tablet Windows para Testing Land (1 unidad)
+(8, 12, 1),  -- Altavoces Bluetooth para Testing Land (1 unidad)
+(8, 13, 1),  -- Micrófono para Testing Land (1 unidad)
+(8, 14, 1),  -- Router Wi-Fi para Testing Land (1 unidad)
+(8, 15, 1),  -- Cable Ethernet para Testing Land (1 unidad)
+(8, 16, 1),  -- Tarjeta de Red para Testing Land (1 unidad)
+(9, 1, 7),  -- Laptop Gamer para War Headquarters (7 unidades)
+(9, 2, 2),  -- Surface Pro para War Headquarters (2 unidades)
+(9, 3, 2),  -- Chromebook para War Headquarters (2 unidades)
+(9, 5, 1),  -- Oculus Quest 2 para War Headquarters (1 unidad)
+(9, 6, 1),  -- Visor VR para smartphone para War Headquarters (1 unidad)
+(9, 7, 1),  -- PC de escritorio para War Headquarters (1 unidad)
+(9, 9, 1),  -- Cámara Digital (DSLR) para War Headquarters (1 unidad)
+(9, 12, 1),  -- Tablet iPad para War Headquarters (1 unidad)
+(9, 11, 1),  -- Tablet Windows para War Headquarters (1 unidad)
+(9, 12, 1),  -- Altavoces Bluetooth para War Headquarters (1 unidad)
+(9, 13, 1),  -- Micrófono para War Headquarters (1 unidad)
+(9, 14, 1),  -- Router Wi-Fi para War Headquarters (1 unidad)
+(9, 15, 1),  -- Cable Ethernet para War Headquarters (1 unidad)
+(9, 16, 1),  -- Tarjeta de Red para War Headquarters (1 unidad)
+(10, 1, 9),  -- Laptop Gamer para Biometrics Flexible Hall (9 unidades)
+(10, 2, 2),  -- Surface Pro para Biometrics Flexible Hall (2 unidades)
+(10, 3, 1),  -- Chromebook para Biometrics Flexible Hall (1 unidad)
+(10, 5, 1),  -- Oculus Quest 2 para Biometrics Flexible Hall (1 unidad)
+(10, 6, 1),  -- Visor VR para smartphone para Biometrics Flexible Hall (1 unidad)
+(10, 7, 1),  -- PC de escritorio para Biometrics Flexible Hall (1 unidad)
+(10, 9, 2),  -- Cámara Digital (DSLR) para Biometrics Flexible Hall (2 unidades)
+(10, 10, 3),  -- Tablet Android para Biometrics Flexible Hall (3 unidades)
+(10, 11, 1),  -- Tablet Windows para Biometrics Flexible Hall (1 unidad)
+(10, 12, 1),  -- Altavoces Bluetooth para Biometrics Flexible Hall (1 unidad)
+(10, 13, 1),  -- Micrófono para Biometrics Flexible Hall (1 unidad)
+(10, 14, 1),  -- Router Wi-Fi para Biometrics Flexible Hall (1 unidad)
+(10, 15, 1),  -- Cable Ethernet para Biometrics Flexible Hall (1 unidad)
+(10, 16, 1),  -- Tarjeta de Red para Biometrics Flexible Hall (1 unidad)
+(11, 1, 11),  -- Laptop Gamer para Beyond-Digits (11 unidades)
+(11, 2, 2),  -- Surface Pro para Beyond-Digits (2 unidades)
+(11, 3, 1),  -- Chromebook para Beyond-Digits (1 unidad)
+(11, 5, 2),  -- Oculus Quest 2 para Beyond-Digits (2 unidades)
+(11, 6, 1),  -- Visor VR para smartphone para Beyond-Digits (1 unidad)
+(11, 7, 1),  -- PC de escritorio para Beyond-Digits (1 unidad)
+(11, 9, 1),  -- Cámara Digital (DSLR) para Beyond-Digits (1 unidad)
+(11, 10, 2),  -- Tablet Android para Beyond-Digits (2 unidades)
+(11, 11, 1),  -- Tablet Windows para Beyond-Digits (1 unidad)
+(11, 12, 1),  -- Altavoces Bluetooth para Beyond-Digits (1 unidad)
+(11, 13, 1),  -- Micrófono para Beyond-Digits (1 unidad)
+(11, 14, 1),  -- Router Wi-Fi para Beyond-Digits (1 unidad)
+(11, 15, 1),  -- Cable Ethernet para Beyond-Digits (1 unidad)
+(11, 16, 1);  -- Tarjeta de Red para Beyond-Digits (1 unidad)
+
 
 -- Sample data for MaterialesRecomendados
 INSERT INTO MaterialesRecomendados (idExperiencia, idMaterial, cantidad) VALUES
