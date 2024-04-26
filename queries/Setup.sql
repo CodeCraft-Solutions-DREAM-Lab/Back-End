@@ -181,7 +181,7 @@ INSERT INTO UnidadesFormacion (nombre) VALUES
 INSERT INTO Usuarios (idUsuario, nombre, apellidoP, apellidoM, tipo, prioridad, logroPrincipal) VALUES
 ('A01177767', 'Christopher Gabriel', 'Pedraza', 'Pohlenz', 'Regular', 362, 1),
 ('L00000000', 'Rolando', 'Pérez', '', 'Profesor', 2, 1),
-('test', 'test', 'test', 'test', 'Regular', 1, 1);
+('test', 'test', 'test', 'test', 'Regular', 100, 3);
 
 -- Sample data for Credenciales
 INSERT INTO Credenciales (idUsuario, contrasena) VALUES
@@ -218,7 +218,24 @@ INSERT INTO UsuariosLogros (idLogro, idUsuario, valorActual, estatus) VALUES
 (7, 'A01177767', 367, 0),
 (8, 'A01177767', 1, 1),
 (9, 'A01177767', 0, 0),
-(1, 'L00000000', 0, 0);
+(1, 'L00000000', 0, 0),
+(2, 'L00000000', 5, 0),
+(3, 'L00000000', 5, 1),
+(4, 'L00000000', 3, 0),
+(5, 'L00000000', 3, 1),
+(6, 'L00000000', 1, 0),
+(7, 'L00000000', 367, 0),
+(8, 'L00000000', 1, 1),
+(9, 'L00000000', 0, 0),
+(1, 'test', 0, 0),
+(2, 'test', 5, 0),
+(3, 'test', 5, 1),
+(4, 'test', 3, 0),
+(5, 'test', 3, 1),
+(6, 'test', 1, 0),
+(7, 'test', 367, 0),
+(8, 'test', 1, 1),
+(9, 'test', 0, 0);
 
 -- Sample data for Materiales
 INSERT INTO Materiales (nombre, fotoURL)
@@ -293,7 +310,10 @@ INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia, idMesa, horaInicio,
 ('A01177767', 1, 2, 2, '12:00:00', 3, '2024-01-05', 3, 3),
 ('A01177767', 1, 3, 3, '09:00:00', 2, '2024-02-10', 4, 2),
 ('A01177767', 1, 1, 4, '15:00:00', 1, '2024-03-15', 5, 4),
-('L00000000', 2, 2, 5, '15:00:00', 1, '2024-02-01', 2, 3);
+('L00000000', 2, 2, 5, '15:00:00', 1, '2024-02-01', 2, 3),
+('test', 1, 2, 2, '12:00:00', 3, '2024-01-05', 3, 3),
+('test', 2, 3, 3, '09:00:00', 2, '2024-02-10', 4, 3),
+('test', 3, 1, 4, '15:00:00', 1, '2024-03-15', 5, 3);
 
 -- Sample data for ReservacionesMateriales
 INSERT INTO ReservacionesMateriales (idReservacion, idMaterial, cantidad, estatus) VALUES

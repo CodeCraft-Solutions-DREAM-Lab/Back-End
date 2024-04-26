@@ -5,7 +5,8 @@ import salas from "../controllers/salas.js";
 import chatbotBridge from "../controllers/chatbotBridge.js";
 import auth from "../controllers/auth.js";
 import experiencias from "../controllers/experiencias.js";
-import mesas from "../controllers/mesas.js"
+import mesas from "../controllers/mesas.js";
+import videowall from "../controllers/videowall.js";
 
 const router = express.Router();
 
@@ -16,4 +17,6 @@ router.use("/salas", salas);
 router.use("/chatbot", chatbotBridge);
 router.use("/experiencias", experiencias);
 router.use("/mesas", mesas);
+router.use("/videowall", videowall);
+
 export { router };
