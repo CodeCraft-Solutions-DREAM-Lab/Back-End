@@ -7,21 +7,23 @@ CREATE PROCEDURE getMaterialesDisponibles(
 AS
     -- Obtener los materiales de la sala
     DECLARE @idMaterialesSala TABLE (
-        idMaterial INT
+        idMaterial INT,
+      	cantidad INT
     );
 
     INSERT INTO @idMaterialesSala
-    SELECT idMaterial
+    SELECT idMaterial, cantidad
     FROM MaterialesSalas
     WHERE idSala = @idSala;
 
     -- Obtener las reservas de materiales para la sala, fecha y bloque de tiempo
     DECLARE @idMaterialesReservados TABLE (
-        idMaterial INT
+        idMaterial INT,
+      cantidad INT
     );
 
     INSERT INTO @idMaterialesReservados
-    SELECT rm.idMaterial
+    SELECT rm.idMaterial, rm.cantidad
     FROM Reservaciones r
     JOIN ReservacionesMateriales rm ON r.idReservacion = rm.idReservacion
     JOIN Mesas m ON r.idMesa = m.idMesa
@@ -29,7 +31,7 @@ AS
     WHERE s.idSala = @idSala
         AND r.fecha = @fecha
         AND r.horaInicio >= @horaInicio
-        AND DATEADD(hour, @duracion, r.horaInicio) < r.horaFin;
+        AND DATEADD(hour, @duracion, r.horaInicio) < DATEADD(hour, r.duracion, r.horaInicio);
 
     -- Obtener los materiales disponibles
     DECLARE @idMaterialesDisponibles TABLE (
