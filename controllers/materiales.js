@@ -66,9 +66,8 @@ const database = new Database(config);
  *                error:
  *                  type: string
  */
-router.get("/materiales-disponibles", async (req, res) => {
-    const { idSala, fecha, horaInicio, duracion } = req.query;
-    
+router.post("/", async (req, res) => {
+    let { idSala, fecha, horaInicio, duracion } = req.body;
     try {
         const result = await database.executeProcedure(
             "getMaterialesDisponibles",

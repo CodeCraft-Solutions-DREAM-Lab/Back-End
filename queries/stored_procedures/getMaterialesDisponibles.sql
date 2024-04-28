@@ -49,7 +49,9 @@ AS
 
     -- Seleccionar los materiales disponibles con su cantidad
     SELECT
-        m.nombre AS nombreMaterial,
-        md.cantidadDisponible AS cantidadDisponible
+        m.idMaterial AS id,
+        m.nombre AS name,
+        md.cantidadDisponible AS cantidadDisponible,
+        m.fotoURL AS image
     FROM Materiales m
     JOIN @idMaterialesDisponibles md ON m.idMaterial = md.idMaterial;

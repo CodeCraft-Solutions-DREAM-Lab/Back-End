@@ -19,6 +19,6 @@ router.use("/chatbot", chatbotBridge);
 router.use("/experiencias", experiencias);
 router.use("/mesas", mesas);
 router.use("/videowall", videowall);
-router.use("/materiales-disponibles", materiales);
+router.use("/materiales", materiales);
 
 export { router };
