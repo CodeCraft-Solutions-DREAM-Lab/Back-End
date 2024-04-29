@@ -10,6 +10,80 @@ const database = new Database(config);
 
 /**
  * @openapi
+ * /perfil/logros/{idUsuario}:
+ *  get:
+ *    summary: Get achievements by user
+ *    tags:
+ *     - Perfil
+ *    parameters:
+ *     - in: path
+ *       name: idUsuario
+ *       schema:
+ *         type: string
+ *       required: true
+ *       description: Numeric ID of the user to get achievements for
+ *    responses:
+ *      200:
+ *        description: OK
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                logros:
+ *                  type: array
+ *                  items:
+ *                    type: object
+ *                    properties:
+ *                      nombre:
+ *                        type: string
+ *                      iconoURL:
+ *                        type: string
+ *                configuracionLogro:
+ *                  type: array
+ *                  items:
+ *                    type: object
+ *                    properties:
+ *                      nombre:
+ *                        type: string
+ *                      iconoURL:
+ *                        type: string
+ *                      colorPreferido:
+ *                        type: string
+ *                        nullable: true
+ *      500:
+ *        description: Error
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                error:
+ *                  type: string
+ */
+router.get("/logros/:idUsuario", async (req, res) => {
+    try {
+        const logros = await database.executeProcedure("getLogrosByUser", {
+            idUsuario: req.params.idUsuario,
+        });
+        const configuracionLogro = await database.executeProcedure(
+            "getConfiguracionLogro",
+            {
+                idUsuario: req.params.idUsuario,
+            }
+        );
+
+        res.status(200).json({
+            logros: logros,
+            configuracionLogro: configuracionLogro,
+        });
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
+/**
+ * @openapi
  * /perfil/{idUsuario}:
  *  get:
  *    summary: Obtiene todas las salas
