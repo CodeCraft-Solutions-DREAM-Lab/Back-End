@@ -5,10 +5,12 @@ import Database from "../database.js";
 const router = express.Router();
 router.use(express.json());
 
+// Create database object
+const database = new Database(config);
 
 /**
  * @openapi
- * /perfil:
+ * /perfil/{idUsuario}:
  *  get:
  *    summary: Obtiene todas las salas
  *    tags:
@@ -46,7 +48,7 @@ router.use(express.json());
  *                        iconoURL:
  *                          type: string
  *                          format: url
- *                          description: URL del icono del usuario * 
+ *                          description: URL del icono del usuario *
  *                recordset:
  *                  type: array
  *                  items:
@@ -106,9 +108,6 @@ router.use(express.json());
  *                  type: string
  *                  description: Mensaje de error
  */
-// Create database object
-const database = new Database(config);
-
 router.get("/:idUsuario", async (req, res) => {
     try {
         const usuarioId = req.params.idUsuario;
