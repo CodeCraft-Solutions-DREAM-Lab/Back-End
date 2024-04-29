@@ -8,6 +8,7 @@ import experiencias from "../controllers/experiencias.js";
 import mesas from "../controllers/mesas.js";
 import videowall from "../controllers/videowall.js";
 import materiales from "../controllers/materiales.js";
+import perfil from "../controllers/perfil.js";
 
 const router = express.Router();
 
@@ -20,5 +21,6 @@ router.use("/experiencias", experiencias);
 router.use("/mesas", mesas);
 router.use("/videowall", videowall);
 router.use("/materiales", materiales);
+router.use("/perfil", perfil);
 
 export { router };
