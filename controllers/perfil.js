@@ -243,9 +243,9 @@ router.get("/:idUsuario", async (req, res) => {
     try {
         const usuarioId = req.params.idUsuario;
 
-        const result = await database.executeProcedure("getPerfilUsuario", {
-            idUsuario: usuarioId,
-        });
+        const result = await database.executeQuery(
+            `EXEC [dbo].[getPerfilUsuario] @idUsuario = ${usuarioId};`
+        );
 
         res.status(200).json(result);
         console.log(`Perfil: ${JSON.stringify(result)}`);
