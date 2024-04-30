@@ -35,6 +35,8 @@ const database = new Database(config);
  *                  items:
  *                    type: object
  *                    properties:
+ *                      idLogro:
+ *                        type: integer
  *                      nombre:
  *                        type: string
  *                      iconoURL:
@@ -44,6 +46,8 @@ const database = new Database(config);
  *                  items:
  *                    type: object
  *                    properties:
+ *                      idLogro:
+ *                        type: integer
  *                      nombre:
  *                        type: string
  *                      iconoURL:

@@ -7,7 +7,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT l.nombre, l.iconoURL, u.colorPreferido
+    SELECT l.idLogro, l.nombre, l.iconoURL, u.colorPreferido
     	FROM Logros AS l
 		INNER JOIN UsuariosLogros ul ON l.idLogro = ul.idLogro
         INNER JOIN Usuarios u ON ul.idUsuario = u.idUsuario
