@@ -354,6 +354,13 @@ VALUES
         'https://dreamlabstorage.blob.core.windows.net/logros/Communicator.png',
         '#FEA767',
         1
+    ), (
+        'Artistic Alchemist',
+        'Accede por primera vez al menú de personalización de íconos.',
+        1,
+        'https://dreamlabstorage.blob.core.windows.net/logros/ArtisticAlchemist.png',
+        '#FFCCCC',
+        1
     );
 
 -- Sample data for UsuariosLogros
@@ -369,6 +376,7 @@ VALUES
     (7, 'A01177767', 367, 0),
     (8, 'A01177767', 1, 1),
     (9, 'A01177767', 0, 0),
+	(10, 'A01177767', 0, 0),
     (1, 'L00000000', 0, 0),
     (2, 'L00000000', 5, 0),
     (3, 'L00000000', 5, 1),
@@ -378,6 +386,7 @@ VALUES
     (7, 'L00000000', 367, 0),
     (8, 'L00000000', 1, 1),
     (9, 'L00000000', 0, 0),
+	(10, 'L00000000', 0, 0),
     (1, 'test', 0, 0),
     (2, 'test', 5, 0),
     (3, 'test', 5, 1),
@@ -386,7 +395,8 @@ VALUES
     (6, 'test', 1, 0),
     (7, 'test', 367, 0),
     (8, 'test', 1, 1),
-    (9, 'test', 0, 0);
+    (9, 'test', 0, 0),
+	(10, 'test', 0, 0);
 
 -- Sample data for Materiales
 INSERT INTO
