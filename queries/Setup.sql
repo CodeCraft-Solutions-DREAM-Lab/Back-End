@@ -369,7 +369,7 @@ VALUES
     ),
     (
         'Artistic Alchemist',
-        'Accede por primera vez al menú de personalización de íconos.',
+        'Cambia tu icono de perfil por primera vez.',
         1,
         'https://dreamlabstorage.blob.core.windows.net/logros/ArtisticAlchemist.png',
         '#FFCCCC',
