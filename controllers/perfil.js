@@ -21,7 +21,7 @@ const database = new Database(config);
  *       schema:
  *         type: string
  *       required: true
- *       description: Numeric ID of the user to get achievements for
+ *       description: ID del usuario del que se obtendrán los logros
  *    responses:
  *      200:
  *        description: OK
@@ -81,6 +81,59 @@ router.get("/logros/:idUsuario", async (req, res) => {
             logros: logros,
             configuracionLogro: configuracionLogro,
         });
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
+/**
+ * @openapi
+ * /perfil/logros/{idUsuario}:
+ *  post:
+ *    summary: Configura el logro y color preferido del usuario
+ *    tags:
+ *     - Perfil
+ *    parameters:
+ *     - in: path
+ *       name: idUsuario
+ *       schema:
+ *         type: string
+ *       required: true
+ *       description: ID del usuario al que se le configurará el logro y color preferido
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              idLogro:
+ *                type: integer
+ *              colorPreferido:
+ *                type: string
+ *                nullable: true
+ *    responses:
+ *      204:
+ *        description: No Content
+ *      500:
+ *        description: Error
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                error:
+ *                  type: string
+ */
+router.post("/logros/:idUsuario", async (req, res) => {
+    try {
+        const { idLogro, colorPreferido } = req.body;
+        await database.executeProcedure("setConfiguracionLogroUsuario", {
+            idUsuario: req.params.idUsuario,
+            idLogro: idLogro,
+            colorPreferido: colorPreferido,
+        });
+        res.status(204).end();
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }
