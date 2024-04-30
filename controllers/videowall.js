@@ -41,6 +41,8 @@ const database = new Database(config);
  *                    format: date-time
  *                  iconoURL:
  *                    type: string
+ *                  colorPreferido:
+ *                    type: string
  *      500:
  *        description: Error
  *        content:
