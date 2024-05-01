@@ -14,8 +14,8 @@ BEGIN
 	SELECT r.*, e.nombre AS nombre_experiencia, s.nombre AS nombre_sala
 	FROM (
 	SELECT TOP (1000)[idReservacion]
-		   [idSala]
-		  ,[idReservacion]
+		  [idReservacion]
+		  ,[idSala]
 		  ,[idExperiencia]
 		  ,[idMesa]
 		  ,[estatus]
