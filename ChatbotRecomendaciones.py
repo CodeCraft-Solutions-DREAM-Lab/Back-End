@@ -12,7 +12,7 @@ client = OpenAI(api_key=API_KEY)
 
 # Get de todas las experiencias
 def consultarApi(tipo):
-    url = "http://localhost:3000/" 
+    url = "https://dreamlab-api.azurewebsites.net/" 
     if tipo == "experiencias":
         url += "experiencias"
     elif tipo == "salas":
