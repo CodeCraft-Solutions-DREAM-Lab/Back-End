@@ -1,7 +1,7 @@
 name: Jest Tests
 on: push
 jobs:
-  build:
+  jest-tests:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
