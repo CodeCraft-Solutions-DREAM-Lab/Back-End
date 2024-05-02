@@ -1,3 +1,5 @@
+![API DEPLOY](https://github.com/CodeCraft-Solutions-DREAM-Lab/Back-End/actions/workflows/dev_dreamlab-api.yml/badge.svg)
+
 # Dream Lab Backend
 
 Este proyecto utiliza Express.js.
