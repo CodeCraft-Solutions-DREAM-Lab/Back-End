@@ -248,7 +248,6 @@ router.get("/:idUsuario", async (req, res) => {
         );
 
         res.status(200).json(result);
-        console.log(`Perfil: ${JSON.stringify(result)}`);
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }

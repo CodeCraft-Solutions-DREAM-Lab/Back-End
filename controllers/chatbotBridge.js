@@ -42,7 +42,6 @@ const router = express.Router();
 router.post("/", (req, res) => {
     try {
         const { prompt } = req.body;
-        console.log(prompt);
         // Ejecuta el script Python como un proceso secundario
         const pythonProcess = spawn("python", [
             "ChatbotRecomendaciones.py",
@@ -53,7 +52,6 @@ router.post("/", (req, res) => {
 
         // Captura la salida del proceso secundario
         pythonProcess.stdout.on("data", (data) => {
-            console.log("Datos del chatbot: ${data}");
             responseData += data;
         });
 
@@ -65,7 +63,6 @@ router.post("/", (req, res) => {
 
         // Finaliza el proceso y envía la respuesta una vez que haya terminado
         pythonProcess.on("close", (code) => {
-            console.log("Proceso de chatbot finalizado con código ${code}");
             res.status(200).json({ processed_text: responseData.toString() });
         });
     } catch (error) {

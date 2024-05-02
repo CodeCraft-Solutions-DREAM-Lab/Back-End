@@ -60,8 +60,6 @@ router.post("/usuario", async (req, res) => {
         const { usuario, contrasena } = req.body;
         const shaPasword = sha512(String(contrasena));
 
-        console.log(usuario, contrasena, shaPasword);
-
         const result = await database.readAndConditions(
             "Credenciales",
             [
@@ -71,8 +69,6 @@ router.post("/usuario", async (req, res) => {
             "idUsuario"
         );
 
-        console.log(result);
-
         if (result.length === 0) {
             res.status(404).json({});
         } else {
@@ -80,7 +76,6 @@ router.post("/usuario", async (req, res) => {
             var token = jwt.sign({ usuario: usuario }, TOKEN_SECRET, {
                 expiresIn: "7d",
             });
-            console.log("Token: ", token);
             res.status(200).json({ jwt: token });
         }
     } catch (err) {

@@ -45,7 +45,6 @@ router.get("/", async (_, res) => {
     try {
         // Return a list of usuarios
         const usuarios = await database.readAll("Mesas");
-        console.log(`Mesas: ${JSON.stringify(usuarios)}`);
         res.status(200).json(usuarios);
     } catch (err) {
         res.status(500).json({ error: err?.message });
@@ -93,7 +92,6 @@ router.get("/:idSala", async (req, res) => {
         const result = await database.executeQuery(
             `EXEC [dbo].[getMaxCuposBySalaId] @idSala = ${salaId};`
         );
-        console.log(`experiencia: ${JSON.stringify(result)}`);
         res.status(200).json(result.recordset[0]);
     } catch (err) {
         res.status(500).json({ error: err?.message });

@@ -59,7 +59,6 @@ router.get("/", async (_, res) => {
     try {
         // Return a list of reservaciones
         const reservaciones = await database.readAll("Reservaciones");
-        console.log(`Usuarios: ${JSON.stringify(reservaciones)}`);
         res.status(200).json(reservaciones);
     } catch (err) {
         res.status(500).json({ error: err?.message });
@@ -125,12 +124,10 @@ router.get("/", async (_, res) => {
 router.get("/usuario/:id", async (req, res) => {
     try {
         const usuarioId = req.params.id;
-        console.log(`usuarioId: ${usuarioId}`);
         if (usuarioId) {
             const result = await database.executeQuery(
                 `EXEC [dbo].[getReservacionByUser] @idUsuario = ${usuarioId};`
             );
-            console.log(`reserv: ${JSON.stringify(result)}`);
             res.status(200).json(result.recordset);
         } else {
             res.status(404);
@@ -195,7 +192,6 @@ router.get("/usuario/:id", async (req, res) => {
 router.post("/", async (req, res) => {
     try {
         const reserv = req.body;
-        console.log(`reserv: ${JSON.stringify(reserv)}`);
         const rowsAffected = await database.create("Reservaciones", reserv);
         res.status(201).json({ rowsAffected });
     } catch (err) {
@@ -260,14 +256,12 @@ router.post("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     try {
         const reservId = req.params.id;
-        console.log(`reservId: ${reservId}`);
         if (reservId) {
             const result = await database.read(
                 "Reservaciones",
                 "idReservacion",
                 reservId
             );
-            console.log(`reserv: ${JSON.stringify(result)}`);
             res.status(200).json(result);
         } else {
             res.status(404);
@@ -339,7 +333,6 @@ router.get("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
     try {
         const reservId = req.params.id;
-        console.log(`reservId: ${reservId}`);
         const reserv = req.body;
 
         const rowsAffected = await database.update(
@@ -391,7 +384,6 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
     try {
         const reservId = req.params.id;
-        console.log(`reservId: ${reservId}`);
         const rowsAffected = await database.delete(
             "Reservaciones",
             "idReservacion",

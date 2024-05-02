@@ -49,8 +49,6 @@ router.put("/:idUsuario/:idLogro", async (req, res) => {
     try {
         const usuarioId = req.params.idUsuario;
         const logroId = req.params.idLogro;
-        console.log(`usuarioId: ${usuarioId}`);
-        console.log(`logroId: ${logroId}`);
 
         const valor = req.body;
 

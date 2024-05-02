@@ -51,7 +51,6 @@ router.get("/", async (_, res) => {
     try {
         // Return a list of usuarios
         const usuarios = await database.readAll("Usuarios");
-        console.log(`Usuarios: ${JSON.stringify(usuarios)}`);
         res.status(200).json(usuarios);
     } catch (err) {
         res.status(500).json({ error: err?.message });
@@ -109,7 +108,6 @@ router.get("/", async (_, res) => {
 router.put("/:idUsuario", async (req, res) => {
     try {
         const usuarioId = req.params.idUsuario;
-        console.log(`usuarioId: ${usuarioId}`);
         const valor = req.body;
 
         const rowsAffected = await database.update(
