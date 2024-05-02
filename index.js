@@ -7,9 +7,9 @@ import swaggerDocs from "./swagger.js";
 
 dotenv.config({ path: ".env.development" });
 
-const port = process.env.PORT || 3000;
-
 const app = express();
+
+const port = process.env.PORT || 3000;
 
 // Para poder trabajar con JSONS
 app.use(express.json());
@@ -28,7 +28,13 @@ app.use(bodyParser.json());
 
 swaggerDocs(app, port);
 
-// Start the server
-app.listen(port, () => {
-    console.log(`Server started on port ${port}`);
-});
+// Check if the script is being run by Jest
+const isRunningTest = process.argv.some((arg) => arg.includes("jest"));
+
+if (!isRunningTest) {
+    app.listen(port, () => {
+        console.log(`Server started on port ${port}`);
+    });
+} else {
+    module.exports = app;
+}
