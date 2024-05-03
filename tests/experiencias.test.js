@@ -2,8 +2,14 @@ const request = require("supertest");
 const app = require("../index");
 
 describe("Experiencias Tests", () => {
-    afterAll(async () => {
-        await new Promise((resolve) => setTimeout(() => resolve(), 500));
+    let server;
+
+    beforeAll(() => {
+        server = app.listen();
+    });
+
+    afterAll(() => {
+        return server.close();
     });
 
     it("GET /experiencias", async () => {

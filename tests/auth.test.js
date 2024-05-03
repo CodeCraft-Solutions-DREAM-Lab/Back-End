@@ -2,8 +2,14 @@ const request = require("supertest");
 const app = require("../index");
 
 describe("Auth Tests", () => {
-    afterAll(async () => {
-        await new Promise((resolve) => setTimeout(() => resolve(), 500)); // avoid jest open handle error
+    let server;
+
+    beforeAll(() => {
+        server = app.listen();
+    });
+
+    afterAll(() => {
+        return server.close();
     });
 
     it("POST auth/usuario/", async () => {

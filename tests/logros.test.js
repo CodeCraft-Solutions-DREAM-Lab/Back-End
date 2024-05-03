@@ -2,8 +2,14 @@ const request = require("supertest");
 const app = require("../index");
 
 describe("Logros Tests", () => {
-    afterAll(async () => {
-        await new Promise((resolve) => setTimeout(() => resolve(), 500));
+    let server;
+
+    beforeAll(() => {
+        server = app.listen();
+    });
+
+    afterAll(() => {
+        return server.close();
     });
 
     it("PUT /logros/:idUsuario/:idLogro", async () => {
@@ -12,13 +18,15 @@ describe("Logros Tests", () => {
         const valor = {
             idLogro: 1,
             valorActual: 10,
-            obtenido: true
+            obtenido: true,
         };
-        const res = await request(app).put(`/logros/${idUsuario}/${idLogro}`).send(valor);
+        const res = await request(app)
+            .put(`/logros/${idUsuario}/${idLogro}`)
+            .send(valor);
         expect(res.statusCode).toEqual(200);
         expect(res.body).toEqual(
             expect.objectContaining({
-                rowsAffected: expect.any(Number)
+                rowsAffected: expect.any(Number),
             })
         );
     });
