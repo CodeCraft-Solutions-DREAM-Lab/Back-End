@@ -10,38 +10,31 @@ const database = new Database(config);
 
 /**
  * @openapi
- * /materiales-disponibles:
- *  get:
+ * /materiales:
+ *  post:
  *    summary: Obtiene los materiales disponibles dado una sala, fecha, hora de inicio, y duración
  *    tags:
- *     - Materiales
- *    parameters:
- *      - in: query
- *        name: idSala
- *        required: true
- *        description: ID de la sala
- *        schema:
- *          type: integer
- *      - in: query
- *        name: fecha
- *        required: true
- *        description: Fecha de la reservación (YYYY-MM-DD)
- *        schema:
- *          type: string
- *          format: date
- *      - in: query
- *        name: horaInicio
- *        required: true
- *        description: Hora de inicio de la reservación (HH:MM:SS)
- *        schema:
- *          type: string
- *          format: time
- *      - in: query
- *        name: duracion
- *        required: true
- *        description: Duración de la reservación en horas
- *        schema:
- *          type: integer
+ *     - Materials
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              idSala:
+ *                type: integer
+ *                example: 1
+ *              fecha:
+ *                type: string
+ *                format: date
+ *                example: "2022-12-31"
+ *              horaInicio:
+ *                type: string
+ *                example: "12:00"
+ *              duracion:
+ *                type: integer
+ *                example: 2
  *    responses:
  *      200:
  *        description: OK
@@ -52,12 +45,16 @@ const database = new Database(config);
  *              items:
  *                type: object
  *                properties:
- *                  nombreMaterial:
+ *                  id:
+ *                    type: integer
+ *                  name:
  *                    type: string
  *                  cantidadDisponible:
  *                    type: integer
+ *                  image:
+ *                    type: string
  *      500:
- *        description: Error
+ *        description: Internal Server Error
  *        content:
  *          application/json:
  *            schema:
@@ -71,11 +68,11 @@ router.post("/", async (req, res) => {
     try {
         const result = await database.executeProcedure(
             "getMaterialesDisponibles",
-            { 
+            {
                 idSala: parseInt(idSala),
                 fecha: fecha,
                 horaInicio: horaInicio,
-                duracion: parseInt(duracion)
+                duracion: parseInt(duracion),
             }
         );
         res.status(200).json(result);
