@@ -126,9 +126,9 @@ router.post("/token", async (req, res) => {
 
     try {
         var decoded = jwt.verify(token, TOKEN_SECRET);
-        res.status(200).json(true);
+        res.status(200).json({ isAuth: true });
     } catch (err) {
-        res.status(401).json(false);
+        res.status(401).json({ isAuth: false });
     }
 });
 
