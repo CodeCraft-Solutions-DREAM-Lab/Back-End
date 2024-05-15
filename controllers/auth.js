@@ -41,7 +41,7 @@ const TOKEN_SECRET = process.env.TOKEN_SECRET;
  *              properties:
  *                jwt:
  *                  type: string
- *                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiQTAxMTc3NzY3IiwiaWF0IjoxNzEyNjMzMjU2fQ.-ky8LBLfLFCRmENvP0QetksCFuN9D5R0OGC9NiN2WD0
+ *                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiYTAxMTc3NzY3IiwiaWF0IjoxNzE1NzUzNzQzfQ.ml-vMvWq5X8_FdILT9YIPv0oPc9Wlvj3f_N4VhHCAZA
  *      401:
  *        description: Unauthorized
  *        content:
@@ -57,31 +57,45 @@ const TOKEN_SECRET = process.env.TOKEN_SECRET;
  */
 router.post("/usuario", async (req, res) => {
     try {
-        const { usuario, contrasena } = req.body;
-        const shaPasword = sha512(String(contrasena));
+        let { usuario, contrasena, origen } = req.body;
+        usuario = usuario.toLowerCase();
+        origen = origen ? origen.toLowerCase() : null;
 
-        console.log(usuario, contrasena, shaPasword);
+        if (!origen || origen !== "qr") {
+            const shaPasword = sha512(String(contrasena));
 
-        const result = await database.readAndConditions(
-            "Credenciales",
-            [
-                { idName: "idUsuario", id: usuario },
-                { idName: "contrasena", id: shaPasword },
-            ],
-            "idUsuario"
-        );
+            const result = await database.readAndConditions(
+                "Credenciales",
+                [
+                    { idName: "idUsuario", id: usuario },
+                    { idName: "contrasena", id: shaPasword },
+                ],
+                "idUsuario"
+            );
 
-        console.log(result);
-
-        if (result.length === 0) {
-            res.status(404).json({});
+            if (result.length === 0) {
+                res.status(404).json({});
+            } else {
+                var token = jwt.sign({ usuario: usuario }, TOKEN_SECRET, {
+                    expiresIn: "7d",
+                });
+                res.status(200).json({ jwt: token });
+            }
         } else {
-            req.params.idUsuario = usuario; // Guarda el idUsuario en el objeto de req
-            var token = jwt.sign({ usuario: usuario }, TOKEN_SECRET, {
-                expiresIn: "7d",
-            });
-            console.log("Token: ", token);
-            res.status(200).json({ jwt: token });
+            const result = await database.readStringId(
+                "Credenciales",
+                "idUsuario",
+                usuario
+            );
+
+            if (result.length === 0) {
+                res.status(404).json({});
+            } else {
+                var token = jwt.sign({ usuario: usuario }, TOKEN_SECRET, {
+                    expiresIn: "10m",
+                });
+                res.status(200).json({ jwt: token });
+            }
         }
     } catch (err) {
         res.status(401).json({});
@@ -104,7 +118,7 @@ router.post("/usuario", async (req, res) => {
  *            properties:
  *              token:
  *                type: string
- *                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiQTAxMTc3NzY3IiwiaWF0IjoxNzEyNjMzMjU2fQ.-ky8LBLfLFCRmENvP0QetksCFuN9D5R0OGC9NiN2WD0
+ *                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiYTAxMTc3NzY3IiwiaWF0IjoxNzE1NzUzNzQzfQ.ml-vMvWq5X8_FdILT9YIPv0oPc9Wlvj3f_N4VhHCAZA
  *    responses:
  *      200:
  *        description: OK
@@ -126,7 +140,7 @@ router.post("/token", async (req, res) => {
 
     try {
         var decoded = jwt.verify(token, TOKEN_SECRET);
-        res.status(200).json({ isAuth: true });
+        res.status(200).json({ isAuth: true, token_data: decoded });
     } catch (err) {
         res.status(401).json({ isAuth: false });
     }
