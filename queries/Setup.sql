@@ -20,6 +20,8 @@ DROP TABLE IF EXISTS UsuariosLogros;
 
 DROP TABLE IF EXISTS Logros;
 
+DROP TABLE IF EXISTS HistorialPrioridad;
+
 DROP TABLE IF EXISTS GruposUsuarios;
 
 DROP TABLE IF EXISTS Credenciales;
@@ -63,6 +65,15 @@ CREATE TABLE
         FOREIGN KEY (idUF) REFERENCES UnidadesFormacion (idUF),
         FOREIGN KEY (idUsuario) REFERENCES Usuarios (idUsuario),
         PRIMARY KEY (idUF, idUsuario)
+    );
+
+CREATE TABLE
+    HistorialPrioridad (
+        idUsuario VARCHAR(10),
+        fecha DATE,
+        prioridad INT,
+        motivo VARCHAR(255),
+        FOREIGN KEY (idUsuario) REFERENCES Usuarios (idUsuario),
     );
 
 CREATE TABLE
