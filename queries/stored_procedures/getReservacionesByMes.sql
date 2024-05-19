@@ -5,8 +5,8 @@ SET
     NOCOUNT ON;
 
 SELECT
-    DATEPART (YEAR, fecha) AS 'Año',
-    DATEPART (MONTH, fecha) AS 'Mes',
+    DATEPART (YEAR, fecha) AS Year,
+    DATEPART (MONTH, fecha) AS Month,
     COUNT(*) AS ReservacionesTotales,
     SUM(
         CASE
@@ -38,7 +38,7 @@ GROUP BY
     DATEPART (YEAR, fecha),
     DATEPART (MONTH, fecha)
 ORDER BY
-    'Año',
-    'Mes';
+    Year,
+    Month;
 
 END
