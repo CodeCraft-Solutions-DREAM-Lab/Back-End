@@ -48,14 +48,14 @@ const database = new Database(config);
  *                  type: string
  */
 router.get("/", async (_, res) => {
-    try {
-        // Return a list of usuarios
-        const usuarios = await database.readAll("Usuarios");
-        console.log(`Usuarios: ${JSON.stringify(usuarios)}`);
-        res.status(200).json(usuarios);
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
+	try {
+		// Return a list of usuarios
+		const usuarios = await database.readAll("Usuarios");
+		console.log(`Usuarios: ${JSON.stringify(usuarios)}`);
+		res.status(200).json(usuarios);
+	} catch (err) {
+		res.status(500).json({ error: err?.message });
+	}
 });
 
 /**
@@ -107,38 +107,55 @@ router.get("/", async (_, res) => {
  *                  type: string
  */
 router.put("/:idUsuario", async (req, res) => {
-    try {
-        const usuarioId = req.params.idUsuario;
-        console.log(`usuarioId: ${usuarioId}`);
-        const valor = req.body;
+	try {
+		const usuarioId = req.params.idUsuario;
+		console.log(`usuarioId: ${usuarioId}`);
+		const valor = req.body;
 
-        const rowsAffected = await database.update(
-            "Usuarios",
-            "idUsuario",
-            usuarioId,
-            valor
-        );
-        res.status(200).json({ rowsAffected });
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
+		const rowsAffected = await database.update(
+			"Usuarios",
+			"idUsuario",
+			usuarioId,
+			valor
+		);
+		res.status(200).json({ rowsAffected });
+	} catch (err) {
+		res.status(500).json({ error: err?.message });
+	}
 });
 
-router.post("/cambiarPrioridad", async(req, res) => {
-    try {
-        
-        const {idUsuario, puntos, motivo} = req.body;
+router.post("/cambiarPrioridad", async (req, res) => {
+	try {
+		const { idUsuario, puntos, motivo } = req.body;
 
-        if (!idUsuario || !puntos || !motivo) {
-            res.status(400).json({ error: "idUsuario, puntos and motivo are required" });
-            return;
-        }
+		if (!idUsuario || !puntos || !motivo) {
+			res.status(400).json({
+				error: "idUsuario, puntos and motivo are required",
+			});
+			return;
+		}
 
-        
+		await database.executeProcedure("addPrioridadToUser", {
+			idUsuario,
+			prioridad: puntos,
+		});
 
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
+		const currentDate = new Date();
+		const sqlDate = currentDate.toISOString().split("T")[0];
+
+		console.log("sqlDate: ", sqlDate);
+
+		await database.executeProcedure("insertIntoHistorialPrioridad", {
+			idUsuario,
+			fecha: sqlDate,
+			motivo,
+			prioridad: puntos,
+		});
+
+		return res.status(200).json({ message: "Prioridad updated" });
+	} catch (err) {
+		res.status(500).json({ error: err?.message });
+	}
 });
 
 export default router;
