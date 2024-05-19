@@ -17,14 +17,16 @@ BEGIN
     SET @query = '
     SELECT 
         Year,
-        Month, ' + @cols + '
+        Month,
+        TotalMaterials, ' + @cols + '
     FROM 
     (
         SELECT 
             m.nombre AS MaterialName,
             DATEPART(YEAR, r.fecha) AS Year,
             DATEPART(MONTH, r.fecha) AS Month,
-            rm.cantidad
+            rm.cantidad,
+            SUM(rm.cantidad) OVER (PARTITION BY DATEPART(YEAR, r.fecha), DATEPART(MONTH, r.fecha)) AS TotalMaterials
         FROM 
             ReservacionesMateriales rm
         JOIN 
