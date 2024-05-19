@@ -68,6 +68,65 @@ router.get("/", async (_, res) => {
 
 /**
  * @openapi
+ * /reservaciones/cronograma:
+ *  get:
+ *    summary: Obtiene todas las reservaciones confirmadas para el cronograma
+ *    tags:
+ *     - Reservaciones
+ *    responses:
+ *      200:
+ *        description: OK
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                type: object
+ *                properties:
+ *                  id:
+ *                    type: integer
+ *                    description: Identificador único de la reservación
+ *                  group:
+ *                    type: integer
+ *                    description: Identificador del grupo o mesa
+ *                  title:
+ *                    type: string
+ *                    description: Nombre completo del usuario que hizo la reservación
+ *                  start_time:
+ *                    type: string
+ *                    format: date-time
+ *                    description: Fecha y hora de inicio de la reservación
+ *                  end_time:
+ *                    type: string
+ *                    format: date-time
+ *                    description: Fecha y hora de fin de la reservación
+ *      500:
+ *        description: Error del servidor
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                error:
+ *                  type: string
+ */
+router.get("/cronograma", async (_, res) => {
+    try {
+        const result = await database.executeProcedure(
+            "getReservacionesConfirmadasCronograma",
+            { }
+        );
+
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
+
+
+/**
+ * @openapi
  * /reservaciones/usuario/{id}:
  *  get:
  *    summary: Obtiene las reservaciones de un usuario

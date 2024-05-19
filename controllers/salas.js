@@ -58,6 +58,58 @@ router.get("/", async (_, res) => {
 
 /**
  * @openapi
+ * /salas/cronograma:
+ *  get:
+ *    summary: Obtiene el cronograma de salas y mesas intercaladas
+ *    tags:
+ *     - Salas
+ *    responses:
+ *      200:
+ *        description: OK
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                type: object
+ *                properties:
+ *                  id:
+ *                    type: integer
+ *                    description: Identificador único de la sala o mesa
+ *                  title:
+ *                    type: string
+ *                    description: Nombre de la sala o mesa
+ *                  sala:
+ *                    type: boolean
+ *                    description: Indica si es una sala (true) o una mesa (false)
+ *                  idSala:
+ *                    type: integer
+ *                    description: Identificador de la sala a la que pertenece la mesa
+ *      500:
+ *        description: Error del servidor
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                error:
+ *                  type: string
+ */
+router.get("/cronograma", async (_, res) => {
+    try {
+        const result = await database.executeProcedure(
+            "GetSalasYMesasIntercaladasCronograma",
+            {}
+        );
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
+
+/**
+ * @openapi
  * /salas/horasLibres:
  *  post:
  *    summary: Obtiene las horas libres de una sala
