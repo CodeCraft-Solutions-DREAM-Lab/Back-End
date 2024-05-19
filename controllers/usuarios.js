@@ -124,4 +124,21 @@ router.put("/:idUsuario", async (req, res) => {
     }
 });
 
+router.post("/cambiarPrioridad", async(req, res) => {
+    try {
+        
+        const {idUsuario, puntos, motivo} = req.body;
+
+        if (!idUsuario || !puntos || !motivo) {
+            res.status(400).json({ error: "idUsuario, puntos and motivo are required" });
+            return;
+        }
+
+        
+
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
 export default router;
