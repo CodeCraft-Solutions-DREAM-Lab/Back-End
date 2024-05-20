@@ -32,5 +32,8 @@ BEGIN
         r.estatus = @estatus
         AND r.fecha = @currentDate
         AND DATEADD(HOUR, r.duracion, r.horaInicio) > @currentTime
-        AND r.horaInicio <= @currentTime;
+        AND r.horaInicio <= @currentTime
+	ORDER BY
+        r.horaInicio,
+		DATEADD(HOUR, r.duracion, r.horaInicio);
 END
