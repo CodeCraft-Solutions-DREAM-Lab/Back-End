@@ -111,8 +111,9 @@ CREATE TABLE
         nombre VARCHAR(255),
         cantidadMesas INT,
         descripcion VARCHAR(500),
-        fotoURL VARCHAR(255), -- Remove the comma here
-        detallesURL VARCHAR(255)
+        fotoURL VARCHAR(255), 
+        detallesURL VARCHAR(255),
+        bloqueada BIT
     );
 
 CREATE TABLE
@@ -606,7 +607,8 @@ INSERT INTO
         descripcion,
         cantidadMesas,
         fotoURL,
-        detallesURL
+        detallesURL,
+        bloqueada
     )
 VALUES
     (
@@ -1056,6 +1058,57 @@ VALUES
         5,
         3
     );
+
+    -- Reservaciones para el lunes
+INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia, idMesa, horaInicio, duracion, fecha, numPersonas, estatus)
+VALUES ('a01177767', 1, 1, 1, '10:00:00', 2, '2024-05-20', 3, 3),
+       ('a01280601', 2, 1, 1, '13:00:00', 2, '2024-05-20', 4, 3),
+       ('a00833173', 3, 1, 2, '09:00:00', 2, '2024-05-20', 2, 3),
+       ('a01412726', 4, 1, 2, '11:00:00', 2, '2024-05-20', 5, 3),
+       ('a00829814', 5, 1, 3, '14:00:00', 2, '2024-05-20', 3, 3),
+       ('a00833852', 6, 1, 3, '10:00:00', 2, '2024-05-20', 4, 3),
+       ('0012007098', 7, 1, 4, '11:00:00', 2, '2024-05-20', 3, 3);
+
+-- Reservaciones para el martes
+INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia, idMesa, horaInicio, duracion, fecha, numPersonas, estatus)
+VALUES ('a01177767', 1, 1, 1, '11:00:00', 2, '2024-05-21', 3, 3),
+       ('a01280601', 2, 1, 1, '13:00:00', 2, '2024-05-21', 4, 3),
+       ('a00833173', 3, 1, 2, '10:00:00', 2, '2024-05-21', 2, 3),
+       ('a01412726', 4, 1, 2, '11:00:00', 2, '2024-05-21', 5, 3),
+       ('a00829814', 5, 1, 3, '14:00:00', 2, '2024-05-21', 3, 3),
+       ('a00833852', 6, 1, 3, '10:00:00', 2, '2024-05-21', 4, 3),
+       ('0012007098', 7, 1, 4, '18:00:00', 2, '2024-05-21', 3, 3);
+
+-- Reservaciones para el miércoles
+INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia, idMesa, horaInicio, duracion, fecha, numPersonas, estatus)
+VALUES ('a01177767', 1, 1, 1, '10:00:00', 2, '2024-05-22', 3, 3),
+       ('a01280601', 2, 1, 1, '13:00:00', 2, '2024-05-22', 4, 3),
+       ('a00833173', 3, 1, 2, '09:00:00', 2, '2024-05-22', 2, 3),
+       ('a01412726', 4, 1, 2, '11:00:00', 2, '2024-05-22', 5, 3),
+       ('a00829814', 5, 1, 3, '14:00:00', 2, '2024-05-22', 3, 3),
+       ('a00833852', 6, 1, 3, '10:00:00', 2, '2024-05-22', 4, 3),
+       ('0012007098', 7, 1, 4, '11:00:00', 2, '2024-05-22', 3, 3);
+
+-- Reservaciones para el jueves
+INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia, idMesa, horaInicio, duracion, fecha, numPersonas, estatus)
+VALUES ('a01177767', 1, 1, 1, '10:00:00', 2, '2024-05-23', 3, 3),
+       ('a01280601', 2, 1, 1, '13:00:00', 2, '2024-05-23', 4, 3),
+       ('a00833173', 3, 1, 2, '09:00:00', 2, '2024-05-23', 2, 3),
+       ('a01412726', 4, 1, 2, '11:00:00', 2, '2024-05-23', 5, 3),
+       ('a00829814', 5, 1, 3, '14:00:00', 2, '2024-05-23', 3, 3),
+       ('a00833852', 6, 1, 3, '10:00:00', 2, '2024-05-23', 4, 3),
+       ('0012007098', 7, 1, 4, '11:00:00', 2, '2024-05-23', 3, 3);
+
+-- Reservaciones para el viernes
+INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia, idMesa, horaInicio, duracion, fecha, numPersonas, estatus)
+VALUES ('a01177767', 1, 1, 1, '10:00:00', 2, '2024-05-24', 3, 3),
+       ('a01280601', 2, 1, 1, '13:00:00', 2, '2024-05-24', 4, 3),
+       ('a00833173', 3, 1, 2, '09:00:00', 2, '2024-05-24', 2, 3),
+       ('a01412726', 4, 1, 2, '11:00:00', 2, '2024-05-24', 5, 3),
+      ('a00829814', 5, 1, 3, '14:00:00', 2, '2024-05-24', 3, 3),
+       ('a00833852', 6, 1, 3, '10:00:00', 2, '2024-05-24', 4, 3),
+       ('0012007098', 7, 1, 4, '11:00:00', 2, '2024-05-24', 3, 3);
+
 
 -- Sample data for ReservacionesMateriales
 INSERT INTO
