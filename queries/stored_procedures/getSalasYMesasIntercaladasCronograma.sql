@@ -1,5 +1,3 @@
-DROP PROCEDURE IF EXISTS GetSalasYMesasIntercaladasCronograma;
-
 CREATE PROCEDURE GetSalasYMesasIntercaladasCronograma
 AS
 BEGIN
