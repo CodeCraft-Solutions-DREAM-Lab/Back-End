@@ -161,7 +161,6 @@ export default class Database {
         }
 
         for (const key in data) {
-
             let type;
             if (typeof data[key] === "number") {
                 type = sql.Int;
@@ -207,7 +206,7 @@ router.put("/:idUsuario/:idLogro", async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }
-});*/ 
+});*/
 
     async updateTwo(tableName, idName1, idName2, id1, id2, data) {
         await this.connect();
@@ -233,7 +232,7 @@ router.put("/:idUsuario/:idLogro", async (req, res) => {
             if (typeof data[key] === "string") {
                 type = sql.NVarChar(255);
             }
-            if(typeof data[key] === "boolean") {
+            if (typeof data[key] === "boolean") {
                 type = sql.Bit;
             }
 
