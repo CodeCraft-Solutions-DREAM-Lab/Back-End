@@ -301,6 +301,16 @@ VALUES
         '#C0A2FF'
     ),
     (
+        'admin',
+        'Gabriel',
+        'Hernández',
+        'González',
+        'Admin',
+        1000,
+        5,
+        '#C0A2FF'
+    ),
+    (
         '0012007098',
         'Usuario',
         'QR',
@@ -337,6 +347,10 @@ VALUES
     ),
     (
         'a00833852',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f'
+    ),
+    (
+        'admin',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f'
     ),
     (

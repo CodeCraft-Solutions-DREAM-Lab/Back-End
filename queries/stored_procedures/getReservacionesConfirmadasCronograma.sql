@@ -1,5 +1,3 @@
-DROP PROCEDURE IF EXISTS getReservacionesConfirmadasCronograma;
-
 CREATE PROCEDURE getReservacionesConfirmadasCronograma
 AS
 BEGIN
