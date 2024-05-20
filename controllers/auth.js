@@ -146,9 +146,4 @@ router.post("/token", async (req, res) => {
     }
 });
 
-router.get("/test", async (req, res) => {
-    const result = await database.executeProcedure("getSalasDisponibles");
-    res.status(200).json(result);
-});
-
 export default router;

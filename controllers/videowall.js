@@ -56,8 +56,7 @@ const database = new Database(config);
 router.get("/reservaciones", async (req, res) => {
     try {
         const result = await database.executeProcedure(
-            "getReservacionesByStatus",
-            { estatus: 3 }
+            "getReservacionesVideowall"
         );
         res.status(200).json(result);
     } catch (err) {
