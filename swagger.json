@@ -878,32 +878,78 @@
     },
     "/materiales/": {
       "post": {
-        "description": "",
+        "tags": [
+          "Materials"
+        ],
+        "summary": "Obtiene los materiales disponibles dado una sala, fecha, hora de inicio, y duración",
+        "description": "Obtiene los materiales disponibles dado una sala, fecha, hora de inicio, y duración",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "cantidadDisponible": {
+                        "type": "integer"
+                      },
+                      "image": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "idSala": {
-                    "example": "any"
+                    "type": "integer",
+                    "example": 1
                   },
                   "fecha": {
-                    "example": "any"
+                    "type": "string",
+                    "format": "date",
+                    "example": "2022-12-31"
                   },
                   "horaInicio": {
-                    "example": "any"
+                    "type": "string",
+                    "example": "12:00"
                   },
                   "duracion": {
-                    "example": "any"
+                    "type": "integer",
+                    "example": 2
                   }
                 }
               }
