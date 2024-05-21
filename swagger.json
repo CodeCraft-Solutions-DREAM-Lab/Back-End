@@ -1628,13 +1628,67 @@
     },
     "/videowall/reservaciones": {
       "get": {
-        "description": "",
+        "tags": [
+          "Videowall"
+        ],
+        "summary": "Obtener reservaciones para desplegar en el videowall",
+        "description": "Obtener reservaciones para desplegar en el videowall",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idReservacion": {
+                        "type": "integer"
+                      },
+                      "nombre_usuario": {
+                        "type": "string"
+                      },
+                      "nombre_sala": {
+                        "type": "string"
+                      },
+                      "horaInicio": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "duracion": {
+                        "type": "integer"
+                      },
+                      "fecha": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "iconoURL": {
+                        "type": "string"
+                      },
+                      "colorPreferido": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
