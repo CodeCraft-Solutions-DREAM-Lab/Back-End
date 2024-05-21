@@ -20,7 +20,7 @@ const doc = {
             description: "Local server",
         },
         {
-            url: "http://dreamlab-api.azurewebsites.net/",
+            url: "https://dreamlab-api.azurewebsites.net/",
             description: "Live server",
         },
     ],
