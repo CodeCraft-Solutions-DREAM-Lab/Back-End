@@ -1,6 +1,8 @@
 import express from "express";
 import { config } from "../config.js";
 import Database from "../database.js";
+// import * as mailer from "../nodemailer.js";
+import { getHtmlTemplate, sendEmail } from "../emails/nodemailer.js";
 
 const router = express.Router();
 router.use(express.json());
@@ -143,14 +145,32 @@ router.post("/cambiarPrioridad", async (req, res) => {
 		const currentDate = new Date();
 		const sqlDate = currentDate.toISOString().split("T")[0];
 
-		console.log("sqlDate: ", sqlDate);
-
 		await database.executeProcedure("insertIntoHistorialPrioridad", {
 			idUsuario,
 			fecha: sqlDate,
 			motivo,
 			prioridad: puntos,
 		});
+
+        let mensaje = "";
+
+        if (puntos >= 0) {
+            mensaje = "Tu prioridad ha aumentado por " + puntos + " puntos.";
+        } else {
+            mensaje = "Tu prioridad ha disminuido por " + puntos + " puntos.";
+        }
+
+        const htmlTemplate = getHtmlTemplate("emails/templates/updatedPriorityPoints.html", {
+            mensaje: mensaje,
+            motivo: motivo,
+        })
+
+        await sendEmail(
+            `${idUsuario.toUpperCase()}@tec.mx`, 
+            "Prioridad actualizada", 
+            mensaje,
+            htmlTemplate,
+        );
 
 		return res.status(200).json({ message: "Prioridad updated" });
 	} catch (err) {
