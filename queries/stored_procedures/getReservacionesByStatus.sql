@@ -15,7 +15,8 @@ BEGIN
         r.duracion,
         r.fecha,
         l.iconoURL,
-        u.colorPreferido
+        u.colorPreferido,
+        u.prioridad  -- Incluir puntos de prioridad
     FROM
         Reservaciones r
         INNER JOIN Salas s ON r.idSala = s.idSala

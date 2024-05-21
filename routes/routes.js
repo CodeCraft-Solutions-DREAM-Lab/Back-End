@@ -25,5 +25,14 @@ router.use("/materiales", materiales);
 router.use("/perfil", perfil);
 router.use("/logros", logros);
 
+router.post('/organize-reservations', async (req, res) => {
+    try {
+        await organizeReservations();
+        res.status(200).send('Reservation organization executed successfully.');
+    } catch (error) {
+        res.status(500).send('Error organizing reservations: ' + error.message);
+    }
+});
+
 
 export { router };

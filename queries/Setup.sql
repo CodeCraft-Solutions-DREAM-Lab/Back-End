@@ -1083,6 +1083,12 @@ VALUES ('a01177767', 1, 1, 1, '10:00:00', 2, '2024-05-20', 3, 3),
        ('a00833852', 6, 1, 3, '10:00:00', 2, '2024-05-20', 4, 3),
        ('0012007098', 7, 1, 4, '11:00:00', 2, '2024-05-20', 3, 3);
 
+    -- Lunes de la siguiente semana (Pruebas de ordenamiento y asignación de reservaciones)
+INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia, idMesa, horaInicio, duracion, fecha, numPersonas, estatus)
+VALUES ('a01412726', 4, 1, 2, '11:00:00', 2, '2024-05-27', 5, 5), -- Reserva que debe agendarse sin problema
+       ('a00829814', 5, 1, 3, '14:00:00', 2, '2024-05-27', 3, 5), -- Misma reserva que la siguiente
+       ('a01280601', 5, 1, 3, '14:00:00', 2, '2024-05-27', 3, 5); -- Misma reserva que la anterior
+
 -- Reservaciones para el martes
 INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia, idMesa, horaInicio, duracion, fecha, numPersonas, estatus)
 VALUES ('a01177767', 1, 1, 1, '11:00:00', 2, '2024-05-21', 3, 3),

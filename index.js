@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import swaggerDocs from "./swagger.js";
+import scheduleReservations from './scheduledTasks/scheduler.js';
 
 dotenv.config({ path: ".env.development" });
 
@@ -27,6 +28,9 @@ app.use(router);
 app.use(bodyParser.json());
 
 swaggerDocs(app, port);
+
+// Para hacer el ordenamiento y asignación de reservaciones cada 3 horas
+scheduleReservations();
 
 // Check if the script is being run by Jest
 const isRunningTest = process.argv.some((arg) => arg.includes("jest"));
