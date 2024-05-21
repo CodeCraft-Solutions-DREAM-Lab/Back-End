@@ -700,58 +700,199 @@
     },
     "/salas/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Salas"
+        ],
+        "summary": "Obtiene todas las salas",
+        "description": "Obtiene todas las salas",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idSala": {
+                        "type": "integer"
+                      },
+                      "nombre": {
+                        "type": "string"
+                      },
+                      "cantidadMesas": {
+                        "type": "integer"
+                      },
+                      "descripcion": {
+                        "type": "string"
+                      },
+                      "fotoURL": {
+                        "type": "string"
+                      },
+                      "detallesURL": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/salas/cronograma": {
       "get": {
-        "description": "",
+        "tags": [
+          "Salas"
+        ],
+        "summary": "Obtiene el cronograma de salas y mesas intercaladas",
+        "description": "Obtiene el cronograma de salas y mesas intercaladas",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "Identificador único de la sala o mesa"
+                      },
+                      "title": {
+                        "type": "string",
+                        "description": "Nombre de la sala o mesa"
+                      },
+                      "sala": {
+                        "type": "boolean",
+                        "description": "Indica si es una sala (true) o una mesa (false)"
+                      },
+                      "idSala": {
+                        "type": "integer",
+                        "description": "Identificador de la sala a la que pertenece la mesa"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/salas/horasLibres": {
       "post": {
-        "description": "",
+        "tags": [
+          "Salas"
+        ],
+        "summary": "Obtiene las horas libres de una sala",
+        "description": "Obtiene las horas libres de una sala",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "hora": {
+                        "type": "integer"
+                      },
+                      "cupos": {
+                        "type": "integer"
+                      },
+                      "competidores": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "idSala": {
-                    "example": "any"
+                    "type": "integer"
                   },
                   "fecha": {
-                    "example": "any"
+                    "type": "string",
+                    "format": "date"
                   },
                   "personas": {
-                    "example": "any"
+                    "type": "integer"
                   }
                 }
               }
@@ -762,7 +903,11 @@
     },
     "/salas/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Salas"
+        ],
+        "summary": "Obtiene una sala por su ID",
+        "description": "Obtiene una sala por su ID",
         "parameters": [
           {
             "name": "id",
@@ -770,25 +915,72 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "ID de la sala"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idSala": {
+                        "type": "integer"
+                      },
+                      "nombre": {
+                        "type": "string"
+                      },
+                      "cantidadMesas": {
+                        "type": "integer"
+                      },
+                      "descripcion": {
+                        "type": "string"
+                      },
+                      "fotoURL": {
+                        "type": "string"
+                      },
+                      "detallesURL": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "Not Found"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/salas/nameFromExperienceId/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Salas"
+        ],
+        "summary": "Regresa el nombre de una sala basado en el ID de la experiencia",
+        "description": "Regresa el nombre de una sala basado en el ID de la experiencia",
         "parameters": [
           {
             "name": "id",
@@ -796,18 +988,45 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "ID de la experiencia",
+            "example": 1
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nombre": {
+                      "type": "string",
+                      "example": "Electric Garage"
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "Not Found"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
