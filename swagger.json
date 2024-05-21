@@ -829,20 +829,61 @@
     },
     "/mesas/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Mesas"
+        ],
+        "summary": "Obtiene todas las mesas",
+        "description": "Obtiene todas las mesas",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idMesa": {
+                        "type": "integer"
+                      },
+                      "idSala": {
+                        "type": "integer"
+                      },
+                      "cupos": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/mesas/{idSala}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Mesas"
+        ],
+        "summary": "Obtiene las mesas de una sala específica",
+        "description": "Obtiene las mesas de una sala específica",
         "parameters": [
           {
             "name": "idSala",
@@ -850,15 +891,40 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "ID de la sala"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "maxCupos": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
