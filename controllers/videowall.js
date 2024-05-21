@@ -54,6 +54,47 @@ const database = new Database(config);
  *                  type: string
  */
 router.get("/reservaciones", async (req, res) => {
+    /*
+    #swagger.tags = ['Videowall']
+    #swagger.description = 'Obtener reservaciones para desplegar en el videowall'
+    #swagger.summary = 'Obtener reservaciones para desplegar en el videowall'
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            idReservacion: { type: 'integer' },
+                            nombre_usuario: { type: 'string' },
+                            nombre_sala: { type: 'string' },
+                            horaInicio: { type: 'string', format: 'date-time' },
+                            duracion: { type: 'integer' },
+                            fecha: { type: 'string', format: 'date-time' },
+                            iconoURL: { type: 'string' },
+                            colorPreferido: { type: 'string' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         const result = await database.executeProcedure(
             "getReservacionesVideowall"

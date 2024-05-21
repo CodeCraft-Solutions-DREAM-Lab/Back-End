@@ -11,51 +11,59 @@ router.use(express.json());
 const database = new Database(config);
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
 
-/**
- * @openapi
- * /auth/usuario:
- *  post:
- *    summary: Autentica un usuario
- *    tags:
- *     - Auth
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            properties:
- *              usuario:
- *                type: string
- *                example: test
- *              contrasena:
- *                type: string
- *                example: test
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                jwt:
- *                  type: string
- *                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiYTAxMTc3NzY3IiwiaWF0IjoxNzE1NzUzNzQzfQ.ml-vMvWq5X8_FdILT9YIPv0oPc9Wlvj3f_N4VhHCAZA
- *      401:
- *        description: Unauthorized
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *      404:
- *        description: Not Found
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- */
 router.post("/usuario", async (req, res) => {
+    /*
+    #swagger.tags = ['Auth']
+    #swagger.description = 'Autentica un usuario'
+    #swagger.summary = 'Autentica un usuario'
+    #swagger.requestBody = {
+        required: true,
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        usuario: { type: 'string', example: 'test' },
+                        contrasena: { type: 'string', example: 'test' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        jwt: { type: 'string', example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiYTAxMTc3NzY3IiwiaWF0IjoxNzE1NzUzNzQzfQ.ml-vMvWq5X8_FdILT9YIPv0oPc9Wlvj3f_N4VhHCAZA' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[401] = {
+        description: 'Unauthorized',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object'
+                }
+            }
+        }
+    }
+    #swagger.responses[404] = {
+        description: 'Not Found',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object'
+                }
+            }
+        }
+    }
+    */
     try {
         let { usuario, contrasena, origen } = req.body;
         usuario = usuario.toLowerCase();
@@ -102,40 +110,52 @@ router.post("/usuario", async (req, res) => {
     }
 });
 
-/**
- * @openapi
- * /auth/token:
- *  post:
- *    summary: Verifica un token
- *    tags:
- *     - Auth
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            properties:
- *              token:
- *                type: string
- *                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiYTAxMTc3NzY3IiwiaWF0IjoxNzE1NzUzNzQzfQ.ml-vMvWq5X8_FdILT9YIPv0oPc9Wlvj3f_N4VhHCAZA
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: boolean
- *              example: true
- *      401:
- *        description: Unauthorized
- *        content:
- *          application/json:
- *            schema:
- *              type: boolean
- *              example: false
- */
 router.post("/token", async (req, res) => {
+    /*
+    #swagger.tags = ['Auth']
+    #swagger.description = 'Verifica un token'
+    #swagger.summary = 'Verifica un token'
+    #swagger.requestBody = {
+        required: true,
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        token: { type: 'string', example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiYTAxMTc3NzY3IiwiaWF0IjoxNzE1NzUzNzQzfQ.ml-vMvWq5X8_FdILT9YIPv0oPc9Wlvj3f_N4VhHCAZA' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        isAuth: { type: 'boolean', example: true },
+                        token_data: { type: 'object' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[401] = {
+        description: 'Unauthorized',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        isAuth: { type: 'boolean', example: false }
+                    }
+                }
+            }
+        }
+    }
+    */
     const { token } = req.body;
 
     try {
