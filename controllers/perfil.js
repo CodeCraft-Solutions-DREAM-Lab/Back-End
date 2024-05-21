@@ -8,64 +8,66 @@ router.use(express.json());
 // Create database object
 const database = new Database(config);
 
-/**
- * @openapi
- * /perfil/logros/{idUsuario}:
- *  get:
- *    summary: Get achievements by user
- *    tags:
- *     - Perfil
- *    parameters:
- *     - in: path
- *       name: idUsuario
- *       schema:
- *         type: string
- *       required: true
- *       description: ID del usuario del que se obtendrán los logros
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                logros:
- *                  type: array
- *                  items:
- *                    type: object
- *                    properties:
- *                      idLogro:
- *                        type: integer
- *                      nombre:
- *                        type: string
- *                      iconoURL:
- *                        type: string
- *                configuracionLogro:
- *                  type: array
- *                  items:
- *                    type: object
- *                    properties:
- *                      idLogro:
- *                        type: integer
- *                      nombre:
- *                        type: string
- *                      iconoURL:
- *                        type: string
- *                      colorPreferido:
- *                        type: string
- *                        nullable: true
- *      500:
- *        description: Error
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- */
 router.get("/logros/:idUsuario", async (req, res) => {
+    /*
+    #swagger.tags = ['Perfil']
+    #swagger.description = 'Obtener los logros de un usuario'
+    #swagger.summary = 'Obtener logros de usuario'
+    #swagger.parameters['idUsuario'] = {
+        in: 'path',
+        description: 'ID del usuario del que se obtendrán los logros',
+        required: true,
+        type: 'string'
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        logros: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    idLogro: { type: 'integer' },
+                                    nombre: { type: 'string' },
+                                    iconoURL: { type: 'string' }
+                                }
+                            }
+                        },
+                        configuracionLogro: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    idLogro: { type: 'integer' },
+                                    nombre: { type: 'string' },
+                                    iconoURL: { type: 'string' },
+                                    colorPreferido: { type: 'string' }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         const logros = await database.executeProcedure("getLogrosByUser", {
             idUsuario: req.params.idUsuario,
@@ -86,46 +88,48 @@ router.get("/logros/:idUsuario", async (req, res) => {
     }
 });
 
-/**
- * @openapi
- * /perfil/logros/{idUsuario}:
- *  post:
- *    summary: Configura el logro y color preferido del usuario
- *    tags:
- *     - Perfil
- *    parameters:
- *     - in: path
- *       name: idUsuario
- *       schema:
- *         type: string
- *       required: true
- *       description: ID del usuario al que se le configurará el logro y color preferido
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            properties:
- *              idLogro:
- *                type: integer
- *              colorPreferido:
- *                type: string
- *                nullable: true
- *    responses:
- *      204:
- *        description: No Content
- *      500:
- *        description: Error
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- */
 router.post("/logros/:idUsuario", async (req, res) => {
+    /*
+    #swagger.tags = ['Perfil']
+    #swagger.description = 'Configura el logro y color preferido del usuario'
+    #swagger.summary = 'Configura el logro y color preferido del usuario'
+    #swagger.parameters['idUsuario'] = {
+        in: 'path',
+        description: 'ID del usuario al que se le configurará el logro y color preferido',
+        required: true,
+        type: 'string'
+    }
+    #swagger.requestBody = {
+        required: true,
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        idLogro: { type: 'integer' },
+                        colorPreferido: { type: 'string', nullable: true }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[204] = {
+        description: 'No Content'
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         const { idLogro, colorPreferido } = req.body;
         await database.executeProcedure("setConfiguracionLogroUsuario", {
@@ -139,107 +143,84 @@ router.post("/logros/:idUsuario", async (req, res) => {
     }
 });
 
-/**
- * @openapi
- * /perfil/{idUsuario}:
- *  get:
- *    summary: Obtiene todas las salas
- *    tags:
- *     - Perfil
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                recordsets:
- *                  type: array
- *                  items:
- *                    type: array
- *                    items:
- *                      type: object
- *                      properties:
- *                        prioridad:
- *                          type: integer
- *                          description: Prioridad del usuario
- *                        nombre:
- *                          type: string
- *                          description: Nombre del usuario
- *                        apellidoP:
- *                          type: string
- *                          description: Apellido paterno del usuario
- *                        apellidoM:
- *                          type: string
- *                          description: Apellido materno del usuario
- *                        apodo:
- *                          type: string
- *                          description: Apodo del usuario
- *                        iconoURL:
- *                          type: string
- *                          format: url
- *                          description: URL del icono del usuario *
- *                recordset:
- *                  type: array
- *                  items:
- *                    type: object
- *                    properties:
- *                      idSala:
- *                        type: integer
- *                        description: ID de la sala
- *                      idReservacion:
- *                        type: integer
- *                        description: ID de la reservación
- *                      idExperiencia:
- *                        type: integer
- *                        description: ID de la experiencia
- *                      idMesa:
- *                        type: integer
- *                        description: ID de la mesa
- *                      estatus:
- *                        type: integer
- *                        description: Estatus de la reservación
- *                      horaInicio:
- *                        type: string
- *                        format: date-time
- *                        description: Hora de inicio de la reservación
- *                      duracion:
- *                        type: integer
- *                        description: Duración de la reservación en horas
- *                      fecha:
- *                        type: string
- *                        format: date
- *                        description: Fecha de la reservación
- *                      numPersonas:
- *                        type: integer
- *                        description: Número de personas en la reservación
- *                      nombre_experiencia:
- *                        type: string
- *                        description: Nombre de la experiencia asociada a la sala
- *                      nombre_sala:
- *                        type: string
- *                        description: Nombre de la sala
- *                output:
- *                  type: object
- *                  description: Información adicional de salida
- *                rowsAffected:
- *                  type: array
- *                  items:
- *                    type: string
- *                    description: Filas afectadas
- *      500:
- *        description: Error
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- *                  description: Mensaje de error
- */
 router.get("/:idUsuario", async (req, res) => {
+    /*
+    #swagger.tags = ['Perfil']
+    #swagger.description = 'Obtiene todas las salas'
+    #swagger.summary = 'Obtiene todas las salas'
+    #swagger.parameters['idUsuario'] = {
+        in: 'path',
+        description: 'ID del usuario',
+        required: true,
+        type: 'string'
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        recordsets: {
+                            type: 'array',
+                            items: {
+                                type: 'array',
+                                items: {
+                                    type: 'object',
+                                    properties: {
+                                        prioridad: { type: 'integer' },
+                                        nombre: { type: 'string' },
+                                        apellidoP: { type: 'string' },
+                                        apellidoM: { type: 'string' },
+                                        apodo: { type: 'string' },
+                                        iconoURL: { type: 'string' }
+                                    }
+                                }
+                            }
+                        },
+                        recordset: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    idSala: { type: 'integer' },
+                                    idReservacion: { type: 'integer' },
+                                    idExperiencia: { type: 'integer' },
+                                    idMesa: { type: 'integer' },
+                                    estatus: { type: 'integer' },
+                                    horaInicio: { type: 'string' },
+                                    duracion: { type: 'integer' },
+                                    fecha: { type: 'string' },
+                                    numPersonas: { type: 'integer' },
+                                    nombre_experiencia: { type: 'string' },
+                                    nombre_sala: { type: 'string' }
+                                }
+                            }
+                        },
+                        output: { type: 'object' },
+                        rowsAffected: {
+                            type: 'array',
+                            items: { type: 'string' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         const usuarioId = req.params.idUsuario;
 

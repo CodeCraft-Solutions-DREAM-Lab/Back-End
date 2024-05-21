@@ -111,8 +111,9 @@ CREATE TABLE
         nombre VARCHAR(255),
         cantidadMesas INT,
         descripcion VARCHAR(500),
-        fotoURL VARCHAR(255), -- Remove the comma here
-        detallesURL VARCHAR(255)
+        fotoURL VARCHAR(255), 
+        detallesURL VARCHAR(255),
+        bloqueada BIT
     );
 
 CREATE TABLE
@@ -300,6 +301,16 @@ VALUES
         '#C0A2FF'
     ),
     (
+        'admin',
+        'Gabriel',
+        'Hernández',
+        'González',
+        'Admin',
+        1000,
+        5,
+        '#C0A2FF'
+    ),
+    (
         '0012007098',
         'Usuario',
         'QR',
@@ -336,6 +347,10 @@ VALUES
     ),
     (
         'a00833852',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f'
+    ),
+    (
+        'admin',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f'
     ),
     (
@@ -606,7 +621,8 @@ INSERT INTO
         descripcion,
         cantidadMesas,
         fotoURL,
-        detallesURL
+        detallesURL,
+        bloqueada
     )
 VALUES
     (
@@ -614,77 +630,77 @@ VALUES
         'Este espacio dinámico y versátil es un sueño hecho realidad para los entusiastas de la electrónica. Equipado con las últimas herramientas y tecnologías, es el lugar ideal para dar vida a tus proyectos más ambiciosos.',
         8,
         'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?q=80&w=1769&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/electric-garage.webp'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/electric-garage.webp', 0
     ),
     (
         'Dimension Forge',
         'Un laboratorio de vanguardia donde la creatividad se fusiona con la tecnología. Aquí, los innovadores pueden explorar libremente nuevas ideas y experimentar con las últimas herramientas de diseño y fabricación.',
         6,
         'https://dreamlabstorage.blob.core.windows.net/archivos/vr-lede.webp',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/dimension-forge.webp'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/dimension-forge.webp', 0
     ),
     (
         'New Horizons',
         'Inspirado por la curiosidad y el deseo de explorar lo desconocido, New Horizons es un lugar donde los límites de la tecnología se desdibujan. Desde la inteligencia artificial hasta la exploración espacial, aquí se dan los primeros pasos hacia el futuro.',
         7,
         'https://images.unsplash.com/photo-1580584126903-c17d41830450?q=80&w=1939&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/new-horizons.webp'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/new-horizons.webp', 0
     ),
     (
         'Deep Net',
         'Sumérgete en las profundidades de la seguridad informática y las redes con Deep Net. Equipado con tecnología de última generación y expertos en el campo, es el lugar perfecto para poner a prueba tus habilidades y descubrir nuevos horizontes en el ciberespacio.',
         5,
         'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1769&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/deep-net.webp'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/deep-net.webp', 0
     ),
     (
         'Graveyard',
         'No es un lugar de descanso, sino de reinvención. Graveyard es donde las ideas obsoletas encuentran una nueva vida y las tecnologías pasadas se transforman en innovaciones futuras. Es el punto de partida para los visionarios y los revolucionarios.',
         9,
         'https://images.unsplash.com/photo-1540829917886-91ab031b1764?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/graveyard.webp'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/graveyard.webp', 0
     ),
     (
         'PCB Factory',
         'Desde prototipos hasta producción en masa, PCB Factory ofrece un entorno especializado para el diseño y la fabricación de placas de circuito impreso. Con equipos de alta precisión y experiencia técnica, cada proyecto encuentra su camino hacia el éxito.',
         10,
         'https://images.unsplash.com/photo-1631376178637-392efc9e356b?q=80&w=1973&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/pcb-factory.webp'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/pcb-factory.webp', 0
     ),
     (
         'Hack-Battlefield',
         'Adéntrate en un campo de pruebas donde la habilidad y la estrategia son tus armas. Hack-Battlefield es el lugar donde los expertos en seguridad informática se enfrentan para poner a prueba sus habilidades y proteger los sistemas de mañana.',
         6,
         'https://images.unsplash.com/photo-1567619363836-e5fd63f69b20?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/hack-battlefield.webp'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/hack-battlefield.webp', 0
     ),
     (
         'Testing Land',
         'Un terreno fértil para la innovación y el desarrollo tecnológico. Aquí, los proyectos toman forma y se someten a rigurosas pruebas para garantizar su calidad y fiabilidad. Es el punto de partida para las soluciones del futuro.',
         8,
         'https://images.unsplash.com/photo-1587355760421-b9de3226a046?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/testing-land.webp'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/testing-land.webp', 0
     ),
     (
         'War Headquarters',
         'El corazón estratégico de las operaciones tecnológicas avanzadas. War Headquarters es donde se planifican y ejecutan los proyectos más ambiciosos, donde la creatividad se encuentra con la ingeniería para dar forma al futuro de la tecnología.',
         5,
         'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/war-headquarters.webp'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/war-headquarters.webp', 0
     ),
     (
         'Biometrics Flexible Hall',
         'En un mundo donde la identidad es fundamental, Biometrics Flexible Hall ofrece un entorno adaptable para la investigación y el desarrollo de sistemas biométricos. Desde el reconocimiento facial hasta la autenticación de voz, aquí se están construyendo las soluciones de seguridad del mañana.',
         7,
         'https://images.unsplash.com/photo-1667453466805-75bbf36e8707?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/biometrics.webp'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/biometrics.webp', 0
     ),
     (
         'Beyond-Digits',
         'Más allá de los límites convencionales de la tecnología, Beyond-Digits es donde las ideas audaces encuentran su hogar. Aquí, los innovadores exploran nuevas fronteras, desde la inteligencia artificial hasta la computación cuántica, dando forma al futuro con cada línea de código.',
         9,
         'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?q=80&w=2006&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/beyond-digits.webp'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/beyond-digits.webp', 0
     );
 
 -- Sample data for Experiencias
@@ -1056,6 +1072,57 @@ VALUES
         5,
         3
     );
+
+    -- Reservaciones para el lunes
+INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia, idMesa, horaInicio, duracion, fecha, numPersonas, estatus)
+VALUES ('a01177767', 1, null, 1, '10:00:00', 2, '2024-05-20', 3, 3),
+       ('a01280601', 2, null, 5, '13:00:00', 3, '2024-05-20', 4, 3),
+       ('a00833173', 3, null, 9, '09:00:00', 4, '2024-05-20', 2, 3),
+       ('a01412726', 4, null, 13, '11:00:00', 3, '2024-05-20', 5, 3),
+       ('a00829814', 5, null, 17, '14:00:00', 2, '2024-05-20', 3, 3),
+       ('a00833852', 6, null, 21, '10:00:00', 1, '2024-05-20', 4, 3),
+       ('0012007098', 7, null, 25, '11:00:00', 2, '2024-05-20', 3, 3);
+
+-- Reservaciones para el martes
+INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia, idMesa, horaInicio, duracion, fecha, numPersonas, estatus)
+VALUES ('a01177767', 1, null, 2, '10:00:00', 2, '2024-05-21', 3, 3),
+       ('a01280601', 2, null, 6, '13:00:00', 2, '2024-05-21', 4, 3),
+       ('a00833173', 3, null, 10, '09:00:00', 4, '2024-05-21', 2, 3),
+       ('a01412726', 4, null, 14, '11:00:00', 2, '2024-05-21', 5, 3),
+       ('a00829814', 5, null, 18, '14:00:00', 4, '2024-05-21', 3, 3),
+       ('a00833852', 6, null, 22, '10:00:00', 1, '2024-05-21', 4, 3),
+       ('0012007098', 7, null, 26, '11:00:00', 2, '2024-05-21', 3, 3);
+
+-- Reservaciones para el miércoles
+INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia, idMesa, horaInicio, duracion, fecha, numPersonas, estatus)
+VALUES ('a01177767', 1, null, 1, '10:00:00', 3, '2024-05-22', 3, 3),
+       ('a01280601', 2, null, 5, '13:00:00', 2, '2024-05-22', 4, 3),
+       ('a00833173', 3, null, 9, '09:00:00', 3, '2024-05-22', 2, 3),
+       ('a01412726', 4, null, 13, '11:00:00', 2, '2024-05-22', 5, 3),
+       ('a00829814', 5, null, 17, '14:00:00', 2, '2024-05-22', 3, 3),
+       ('a00833852', 6, null, 21, '10:00:00', 1, '2024-05-22', 4, 3),
+       ('0012007098', 7, null, 25, '11:00:00', 4, '2024-05-22', 3, 3);
+
+-- Reservaciones para el jueves
+INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia, idMesa, horaInicio, duracion, fecha, numPersonas, estatus)
+VALUES ('a01177767', 1, null, 3, '10:00:00', 4, '2024-05-23', 3, 3),
+       ('a01280601', 2, null, 7, '13:00:00', 2, '2024-05-23', 4, 3),
+       ('a00833173', 3, null, 11, '09:00:00', 1, '2024-05-23', 2, 3),
+       ('a01412726', 4, null, 15, '11:00:00', 3, '2024-05-23', 5, 3),
+       ('a00829814', 5, null, 19, '14:00:00', 3, '2024-05-23', 3, 3),
+       ('a00833852', 6, null, 23, '10:00:00', 4, '2024-05-23', 4, 3),
+       ('0012007098', 7, null, 27, '11:00:00', 2, '2024-05-23', 3, 3);
+
+-- Reservaciones para el viernes
+INSERT INTO Reservaciones (idUsuario, idSala, idExperiencia, idMesa, horaInicio, duracion, fecha, numPersonas, estatus)
+VALUES ('a01177767', 1, null, 2, '11:00:00', 2, '2024-05-24', 3, 3),
+       ('a01280601', 2, null, 6, '13:00:00', 2, '2024-05-24', 4, 3),
+       ('a00833173', 3, null, 10, '09:00:00', 4, '2024-05-24', 2, 3),
+       ('a01412726', 4, null, 14, '16:00:00', 2, '2024-05-24', 5, 3),
+       ('a00829814', 5, null, 18, '14:00:00', 4, '2024-05-24', 3, 3),
+       ('a00833852', 6, null, 22, '13:00:00', 1, '2024-05-24', 4, 3),
+       ('0012007098', 7, null, 26, '11:00:00', 2, '2024-05-24', 3, 3);
+
 
 -- Sample data for ReservacionesMateriales
 INSERT INTO

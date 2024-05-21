@@ -3,43 +3,51 @@ import { spawn } from "child_process";
 
 const router = express.Router();
 
-/**
- * @openapi
- * /chatbot:
- *  post:
- *    summary: Procesa un mensaje de entrada a través del chatbot
- *    tags:
- *     - Chatbot
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            properties:
- *              prompt:
- *                type: string
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                processed_text:
- *                  type: string
- *      500:
- *        description: Error
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- */
 router.post("/", (req, res) => {
+    /*
+    #swagger.tags = ['Chatbot']
+    #swagger.description = 'Procesa un mensaje de entrada a través del chatbot'
+    #swagger.summary = 'Procesa un mensaje de entrada a través del chatbot'
+    #swagger.requestBody = {
+        required: true,
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        prompt: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        processed_text: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         const { prompt } = req.body;
         console.log(prompt);
