@@ -168,11 +168,12 @@ router.get("/usuario/:id", async (req, res) => {
         const usuarioId = req.params.id;
         console.log(`usuarioId: ${usuarioId}`);
         if (usuarioId) {
-            const result = await database.executeQuery(
-                `EXEC [dbo].[getReservacionByUser] @idUsuario = ${usuarioId};`
+            const result = await database.executeProcedure(
+                "getReservacionByUser",
+                { idUsuario: usuarioId }
             );
             console.log(`reserv: ${JSON.stringify(result)}`);
-            res.status(200).json(result.recordset);
+            res.status(200).json(result);
         } else {
             res.status(404);
         }

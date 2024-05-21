@@ -299,11 +299,11 @@ router.get("/:id", async (req, res) => {
         const salaId = req.params.id;
         console.log(`salaId: ${salaId}`);
         if (salaId) {
-            const result = await database.executeQuery(
-                `EXEC [dbo].[getSalaById] @idSala = ${salaId};`
-            );
+            const result = await database.executeProcedure("getSalaById", {
+                idSala: salaId,
+            });
             console.log(`sala: ${JSON.stringify(result)}`);
-            res.status(200).json(result.recordset);
+            res.status(200).json(result);
         } else {
             res.status(404);
         }
@@ -358,12 +358,15 @@ router.get("/nameFromExperienceId/:id", async (req, res) => {
         const experienceId = req.params.id;
         console.log(`experienceId: ${experienceId}`);
         if (experienceId) {
-            const result = await database.executeQuery(
-                `EXEC [dbo].[getSalaNameFromExperienceId] @idExperiencia = ${experienceId};`
+            const result = await database.executeProcedure(
+                "getSalaNameFromExperienceId",
+                {
+                    idExperiencia: experienceId,
+                }
             );
 
             res.status(200).json({
-                nombre: result.recordset[0].nombre,
+                nombre: result[0].nombre,
             });
         } else {
             res.status(404);

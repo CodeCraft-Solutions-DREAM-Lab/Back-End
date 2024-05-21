@@ -96,11 +96,11 @@ router.get("/:idSala", async (req, res) => {
     try {
         const salaId = req.params.idSala;
 
-        const result = await database.executeQuery(
-            `EXEC [dbo].[getMaxCuposBySalaId] @idSala = ${salaId};`
-        );
+        const result = await database.executeProcedure("getMaxCuposBySalaId", {
+            idSala: salaId,
+        });
         console.log(`experiencia: ${JSON.stringify(result)}`);
-        res.status(200).json(result.recordset[0]);
+        res.status(200).json(result[0]);
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }

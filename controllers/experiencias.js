@@ -181,11 +181,12 @@ router.get("/:id", async (req, res) => {
         const experienciaId = req.params.id;
         console.log(`experienciaId: ${experienciaId}`);
         if (experienciaId) {
-            const result = await database.executeQuery(
-                `EXEC [dbo].[getExperienciaById] @idExperiencia = ${experienciaId};`
+            const result = await database.executeProcedure(
+                "getExperienciaById",
+                { idExperiencia: experienciaId }
             );
             console.log(`experiencia: ${JSON.stringify(result)}`);
-            res.status(200).json(result.recordset);
+            res.status(200).json(result);
         } else {
             res.status(404);
         }
