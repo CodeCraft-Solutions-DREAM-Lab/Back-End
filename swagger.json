@@ -998,7 +998,11 @@
     },
     "/logros/{idUsuario}/{idLogro}": {
       "put": {
-        "description": "",
+        "tags": [
+          "Logros"
+        ],
+        "summary": "Actualiza un logro específico para un usuario",
+        "description": "Actualiza un logro específico para un usuario",
         "parameters": [
           {
             "name": "idUsuario",
@@ -1006,7 +1010,8 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "ID del usuario"
           },
           {
             "name": "idLogro",
@@ -1014,15 +1019,46 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "ID del logro"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "idLogro": {
+                      "type": "integer"
+                    },
+                    "valorActual": {
+                      "type": "integer"
+                    },
+                    "obtenido": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }

@@ -46,6 +46,51 @@ const database = new Database(config);
  *        description: Error
  */
 router.put("/:idUsuario/:idLogro", async (req, res) => {
+    /*
+    #swagger.tags = ['Logros']
+    #swagger.description = 'Actualiza un logro específico para un usuario'
+    #swagger.summary = 'Actualiza un logro específico para un usuario'
+    #swagger.parameters['idUsuario'] = {
+        in: 'path',
+        description: 'ID del usuario',
+        required: true,
+        type: 'string'
+    }
+    #swagger.parameters['idLogro'] = {
+        in: 'path',
+        description: 'ID del logro',
+        required: true,
+        type: 'integer'
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        idLogro: { type: 'integer' },
+                        valorActual: { type: 'integer' },
+                        obtenido: { type: 'boolean' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         const usuarioId = req.params.idUsuario;
         const logroId = req.params.idLogro;
