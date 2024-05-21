@@ -55,6 +55,7 @@ CREATE TABLE
     Credenciales (
         idUsuario VARCHAR(10),
         contrasena VARCHAR(255),
+        tagId VARCHAR(50)
         FOREIGN KEY (idUsuario) REFERENCES Usuarios (idUsuario)
     );
 
