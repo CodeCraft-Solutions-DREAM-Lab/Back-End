@@ -432,23 +432,52 @@
     },
     "/chatbot/": {
       "post": {
-        "description": "",
+        "tags": [
+          "Chatbot"
+        ],
+        "summary": "Procesa un mensaje de entrada a través del chatbot",
+        "description": "Procesa un mensaje de entrada a través del chatbot",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "processed_text": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "prompt": {
-                    "example": "any"
+                    "type": "string"
                   }
                 }
               }
