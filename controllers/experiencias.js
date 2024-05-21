@@ -8,60 +8,51 @@ router.use(express.json());
 // Create database object
 const database = new Database(config);
 
-/**
- * @openapi
- * /experiencias:
- *  get:
- *    summary: Obtiene todas las experiencias
- *    tags:
- *     - Experiencias
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                type: object
- *                properties:
- *                  idExperiencia:
- *                    type: integer
- *                  idUF:
- *                    type: integer
- *                    nullable: true
- *                  idSala:
- *                    type: integer
- *                  nombre:
- *                    type: string
- *                  descripcion:
- *                    type: string
- *                  esAutoDirigida:
- *                    type: boolean
- *                  esExclusivaUF:
- *                    type: boolean
- *                  portadaURL:
- *                    type: string
- *                  fechaInicio:
- *                    type: string
- *                    format: date-time
- *                  fechaFin:
- *                    type: string
- *                    format: date-time
- *                  horaFin:
- *                    type: string
- *                    format: date-time
- *      500:
- *        description: Error
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- */
 router.get("/", async (_, res) => {
+    /*
+    #swagger.tags = ['Experiencias']
+    #swagger.description = 'Obtiene todas las experiencias'
+    #swagger.summary = 'Obtiene todas las experiencias'
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            idExperiencia: { type: 'integer' },
+                            idUF: { type: 'integer', nullable: true },
+                            idSala: { type: 'integer' },
+                            nombre: { type: 'string' },
+                            descripcion: { type: 'string' },
+                            esAutoDirigida: { type: 'boolean' },
+                            esExclusivaUF: { type: 'boolean' },
+                            portadaURL: { type: 'string' },
+                            fechaInicio: { type: 'string', format: 'date-time' },
+                            fechaFin: { type: 'string', format: 'date-time' },
+                            horaFin: { type: 'string', format: 'date-time' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         // Regresa todas las experiencias
         const experiencias = await database.readAll("Experiencias");
@@ -72,60 +63,51 @@ router.get("/", async (_, res) => {
     }
 });
 
-/**
- * @openapi
- * /experiencias/autodirigidas:
- *  get:
- *    summary: Obtiene todas las experiencias autodirigidas
- *    tags:
- *     - Experiencias
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                type: object
- *                properties:
- *                  idExperiencia:
- *                    type: integer
- *                  idUF:
- *                    type: integer
- *                    nullable: true
- *                  idSala:
- *                    type: integer
- *                  nombre:
- *                    type: string
- *                  descripcion:
- *                    type: string
- *                  esAutoDirigida:
- *                    type: boolean
- *                  esExclusivaUF:
- *                    type: boolean
- *                  portadaURL:
- *                    type: string
- *                  fechaInicio:
- *                    type: string
- *                    format: date-time
- *                  fechaFin:
- *                    type: string
- *                    format: date-time
- *                  horaFin:
- *                    type: string
- *                    format: date-time
- *      500:
- *        description: Error
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- */
 router.get("/autodirigidas", async (_, res) => {
+    /*
+    #swagger.tags = ['Experiencias']
+    #swagger.description = 'Obtiene todas las experiencias autodirigidas'
+    #swagger.summary = 'Obtiene todas las experiencias autodirigidas'
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            idExperiencia: { type: 'integer' },
+                            idUF: { type: 'integer', nullable: true },
+                            idSala: { type: 'integer' },
+                            nombre: { type: 'string' },
+                            descripcion: { type: 'string' },
+                            esAutoDirigida: { type: 'boolean' },
+                            esExclusivaUF: { type: 'boolean' },
+                            portadaURL: { type: 'string' },
+                            fechaInicio: { type: 'string', format: 'date-time' },
+                            fechaFin: { type: 'string', format: 'date-time' },
+                            horaFin: { type: 'string', format: 'date-time' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         // Leer todas las experiencias de la base de datos
         const experiencias = await database.readAll("Experiencias");
@@ -141,69 +123,60 @@ router.get("/autodirigidas", async (_, res) => {
     }
 });
 
-/**
- * @openapi
- * /experiencias/{id}:
- *  get:
- *    summary: Obtiene una experiencia por su ID
- *    tags:
- *     - Experiencias
- *    parameters:
- *     - in: path
- *       name: id
- *       schema:
- *         type: integer
- *       required: true
- *       description: ID de la experiencia
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                type: object
- *                properties:
- *                  idExperiencia:
- *                    type: integer
- *                  idUF:
- *                    type: integer
- *                    nullable: true
- *                  idSala:
- *                    type: integer
- *                  nombre:
- *                    type: string
- *                  descripcion:
- *                    type: string
- *                  esAutoDirigida:
- *                    type: boolean
- *                  esExclusivaUF:
- *                    type: boolean
- *                  portadaURL:
- *                    type: string
- *                  fechaInicio:
- *                    type: string
- *                    format: date-time
- *                  fechaFin:
- *                    type: string
- *                    format: date-time
- *                  horaFin:
- *                    type: string
- *                    format: date-time
- *      404:
- *        description: Not Found
- *      500:
- *        description: Error
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- */
 router.get("/:id", async (req, res) => {
+    /*
+    #swagger.tags = ['Experiencias']
+    #swagger.description = 'Obtiene una experiencia por su ID'
+    #swagger.summary = 'Obtiene una experiencia por su ID'
+    #swagger.parameters['id'] = {
+        in: 'path',
+        description: 'ID de la experiencia',
+        required: true,
+        type: 'integer'
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            idExperiencia: { type: 'integer' },
+                            idUF: { type: 'integer', nullable: true },
+                            idSala: { type: 'integer' },
+                            nombre: { type: 'string' },
+                            descripcion: { type: 'string' },
+                            esAutoDirigida: { type: 'boolean' },
+                            esExclusivaUF: { type: 'boolean' },
+                            portadaURL: { type: 'string' },
+                            fechaInicio: { type: 'string', format: 'date-time' },
+                            fechaFin: { type: 'string', format: 'date-time' },
+                            horaFin: { type: 'string', format: 'date-time' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[404] = {
+        description: 'Not Found'
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         const experienciaId = req.params.id;
         console.log(`experienciaId: ${experienciaId}`);
@@ -221,69 +194,64 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-/**
- * @openapi
- * /experiencias/UFs:
- *  post:
- *    summary: Obtiene las experiencias de las UFs de un usuario
- *    tags:
- *     - Experiencias
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            properties:
- *              user:
- *                type: string
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                type: object
- *                properties:
- *                  idExperiencia:
- *                    type: integer
- *                  idUF:
- *                    type: integer
- *                    nullable: true
- *                  idSala:
- *                    type: integer
- *                  nombre:
- *                    type: string
- *                  descripcion:
- *                    type: string
- *                  esAutoDirigida:
- *                    type: boolean
- *                  esExclusivaUF:
- *                    type: boolean
- *                  portadaURL:
- *                    type: string
- *                  fechaInicio:
- *                    type: string
- *                    format: date-time
- *                  fechaFin:
- *                    type: string
- *                    format: date-time
- *                  horaFin:
- *                    type: string
- *                    format: date-time
- *      500:
- *        description: Error
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- */
 router.post("/UFs", async (req, res) => {
+    /*
+    #swagger.tags = ['Experiencias']
+    #swagger.description = 'Obtiene las experiencias de las UFs de un usuario'
+    #swagger.summary = 'Obtiene las experiencias de las UFs de un usuario'
+    #swagger.requestBody = {
+        required: true,
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        user: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            idExperiencia: { type: 'integer' },
+                            idUF: { type: 'integer', nullable: true },
+                            idSala: { type: 'integer' },
+                            nombre: { type: 'string' },
+                            descripcion: { type: 'string' },
+                            esAutoDirigida: { type: 'boolean' },
+                            esExclusivaUF: { type: 'boolean' },
+                            portadaURL: { type: 'string' },
+                            fechaInicio: { type: 'string', format: 'date-time' },
+                            fechaFin: { type: 'string', format: 'date-time' },
+                            horaFin: { type: 'string', format: 'date-time' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         // Obtener el usuario enviado como parámetro desde la solicitud
         const userId = req.body.user; // Obtenemos el user

@@ -488,33 +488,167 @@
     },
     "/experiencias/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Experiencias"
+        ],
+        "summary": "Obtiene todas las experiencias",
+        "description": "Obtiene todas las experiencias",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idExperiencia": {
+                        "type": "integer"
+                      },
+                      "idUF": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "idSala": {
+                        "type": "integer"
+                      },
+                      "nombre": {
+                        "type": "string"
+                      },
+                      "descripcion": {
+                        "type": "string"
+                      },
+                      "esAutoDirigida": {
+                        "type": "boolean"
+                      },
+                      "esExclusivaUF": {
+                        "type": "boolean"
+                      },
+                      "portadaURL": {
+                        "type": "string"
+                      },
+                      "fechaInicio": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "fechaFin": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "horaFin": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/experiencias/autodirigidas": {
       "get": {
-        "description": "",
+        "tags": [
+          "Experiencias"
+        ],
+        "summary": "Obtiene todas las experiencias autodirigidas",
+        "description": "Obtiene todas las experiencias autodirigidas",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idExperiencia": {
+                        "type": "integer"
+                      },
+                      "idUF": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "idSala": {
+                        "type": "integer"
+                      },
+                      "nombre": {
+                        "type": "string"
+                      },
+                      "descripcion": {
+                        "type": "string"
+                      },
+                      "esAutoDirigida": {
+                        "type": "boolean"
+                      },
+                      "esExclusivaUF": {
+                        "type": "boolean"
+                      },
+                      "portadaURL": {
+                        "type": "string"
+                      },
+                      "fechaInicio": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "fechaFin": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "horaFin": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/experiencias/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Experiencias"
+        ],
+        "summary": "Obtiene una experiencia por su ID",
+        "description": "Obtiene una experiencia por su ID",
         "parameters": [
           {
             "name": "id",
@@ -522,41 +656,169 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "ID de la experiencia"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idExperiencia": {
+                        "type": "integer"
+                      },
+                      "idUF": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "idSala": {
+                        "type": "integer"
+                      },
+                      "nombre": {
+                        "type": "string"
+                      },
+                      "descripcion": {
+                        "type": "string"
+                      },
+                      "esAutoDirigida": {
+                        "type": "boolean"
+                      },
+                      "esExclusivaUF": {
+                        "type": "boolean"
+                      },
+                      "portadaURL": {
+                        "type": "string"
+                      },
+                      "fechaInicio": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "fechaFin": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "horaFin": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "Not Found"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/experiencias/UFs": {
       "post": {
-        "description": "",
+        "tags": [
+          "Experiencias"
+        ],
+        "summary": "Obtiene las experiencias de las UFs de un usuario",
+        "description": "Obtiene las experiencias de las UFs de un usuario",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idExperiencia": {
+                        "type": "integer"
+                      },
+                      "idUF": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "idSala": {
+                        "type": "integer"
+                      },
+                      "nombre": {
+                        "type": "string"
+                      },
+                      "descripcion": {
+                        "type": "string"
+                      },
+                      "esAutoDirigida": {
+                        "type": "boolean"
+                      },
+                      "esExclusivaUF": {
+                        "type": "boolean"
+                      },
+                      "portadaURL": {
+                        "type": "string"
+                      },
+                      "fechaInicio": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "fechaFin": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "horaFin": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "user": {
-                    "example": "any"
+                    "type": "string"
                   }
                 }
               }
