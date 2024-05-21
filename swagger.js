@@ -5,7 +5,7 @@ const swaggerAutogen = require("swagger-autogen")({ openapi: "3.1.0" });
 
 const doc = {
     info: {
-        version: "1.0.0",
+        version: "2.0.0",
         title: "DREAM Lab API",
         description:
             "Endpoints para la API de DREAM Lab. Puede encontrar más información en [GitHub](https://github.com/CodeCraft-Solutions-DREAM-Lab).",
