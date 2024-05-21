@@ -8,54 +8,49 @@ router.use(express.json());
 // Create database object
 const database = new Database(config);
 
-/**
- * @openapi
- * /reservaciones:
- *  get:
- *    summary: Obtiene todas las reservaciones
- *    tags:
- *     - Reservaciones
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                type: object
- *                properties:
- *                  idReservacion:
- *                    type: integer
- *                  idUsuario:
- *                    type: string
- *                  idSala:
- *                    type: integer
- *                  idExperiencia:
- *                    type: integer
- *                  idMesa:
- *                    type: integer
- *                  horaInicio:
- *                    type: string
- *                    format: date-time
- *                  duracion:
- *                    type: integer
- *                  fecha:
- *                    type: string
- *                    format: date-time
- *                  numPersonas:
- *                    type: integer
- *      500:
- *        description: Error
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- */
 router.get("/", async (_, res) => {
+    /*
+    #swagger.tags = ['Reservaciones']
+    #swagger.description = 'Obtiene todas las reservaciones'
+    #swagger.summary = 'Obtiene todas las reservaciones'
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            idReservacion: { type: 'integer' },
+                            idUsuario: { type: 'string' },
+                            idSala: { type: 'integer' },
+                            idExperiencia: { type: 'integer' },
+                            idMesa: { type: 'integer' },
+                            horaInicio: { type: 'string', format: 'date-time' },
+                            duracion: { type: 'integer' },
+                            fecha: { type: 'string', format: 'date-time' },
+                            numPersonas: { type: 'integer' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         // Return a list of reservaciones
         const reservaciones = await database.readAll("Reservaciones");
@@ -66,55 +61,49 @@ router.get("/", async (_, res) => {
     }
 });
 
-/**
- * @openapi
- * /reservaciones/cronograma:
- *  get:
- *    summary: Obtiene todas las reservaciones confirmadas para el cronograma
- *    tags:
- *     - Reservaciones
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                type: object
- *                properties:
- *                  id:
- *                    type: integer
- *                    description: Identificador único de la reservación
- *                  group:
- *                    type: integer
- *                    description: Identificador del grupo o mesa
- *                  title:
- *                    type: string
- *                    description: Nombre completo del usuario que hizo la reservación
- *                  start_time:
- *                    type: string
- *                    format: date-time
- *                    description: Fecha y hora de inicio de la reservación
- *                  end_time:
- *                    type: string
- *                    format: date-time
- *                    description: Fecha y hora de fin de la reservación
- *      500:
- *        description: Error del servidor
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- */
 router.get("/cronograma", async (_, res) => {
+    /*
+    #swagger.tags = ['Reservaciones']
+    #swagger.description = 'Obtiene todas las reservaciones confirmadas para el cronograma'
+    #swagger.summary = 'Obtiene todas las reservaciones confirmadas para el cronograma'
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            id: { type: 'integer', description: 'Identificador único de la reservación' },
+                            group: { type: 'integer', description: 'Identificador del grupo o mesa' },
+                            title: { type: 'string', description: 'Nombre completo del usuario que hizo la reservación' },
+                            start_time: { type: 'string', format: 'date-time', description: 'Fecha y hora de inicio de la reservación' },
+                            end_time: { type: 'string', format: 'date-time', description: 'Fecha y hora de fin de la reservación' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error del servidor',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         const result = await database.executeProcedure(
             "getReservacionesConfirmadasCronograma",
-            { }
+            {}
         );
 
         res.status(200).json(result);
@@ -123,65 +112,58 @@ router.get("/cronograma", async (_, res) => {
     }
 });
 
-
-
-/**
- * @openapi
- * /reservaciones/usuario/{id}:
- *  get:
- *    summary: Obtiene las reservaciones de un usuario
- *    tags:
- *     - Reservaciones
- *    parameters:
- *      - in: path
- *        name: id
- *        schema:
- *          type: string
- *        required: true
- *        description: ID del usuario
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                type: object
- *                properties:
- *                  idReservacion:
- *                    type: integer
- *                  idUsuario:
- *                    type: string
- *                  idSala:
- *                    type: integer
- *                  idExperiencia:
- *                    type: integer
- *                  idMesa:
- *                    type: integer
- *                  horaInicio:
- *                    type: string
- *                    format: date-time
- *                  duracion:
- *                    type: integer
- *                  fecha:
- *                    type: string
- *                    format: date-time
- *                  numPersonas:
- *                    type: integer
- *      404:
- *        description: Not Found
- *      500:
- *        description: Error
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- */
 router.get("/usuario/:id", async (req, res) => {
+    /*
+    #swagger.tags = ['Reservaciones']
+    #swagger.description = 'Obtiene las reservaciones de un usuario'
+    #swagger.summary = 'Obtiene las reservaciones de un usuario'
+    #swagger.parameters['id'] = {
+        in: 'path',
+        description: 'ID del usuario',
+        required: true,
+        type: 'string'
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            idReservacion: { type: 'integer' },
+                            idUsuario: { type: 'string' },
+                            idSala: { type: 'integer' },
+                            idExperiencia: { type: 'integer' },
+                            idMesa: { type: 'integer' },
+                            horaInicio: { type: 'string', format: 'date-time' },
+                            duracion: { type: 'integer' },
+                            fecha: { type: 'string', format: 'date-time' },
+                            numPersonas: { type: 'integer' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[404] = {
+        description: 'Not Found'
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         const usuarioId = req.params.id;
         console.log(`usuarioId: ${usuarioId}`);
@@ -199,59 +181,58 @@ router.get("/usuario/:id", async (req, res) => {
     }
 });
 
-/**
- * @openapi
- * /reservaciones:
- *  post:
- *    summary: Crea una nueva reservación
- *    tags:
- *     - Reservaciones
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            properties:
- *              idUsuario:
- *                type: string
- *              idSala:
- *                type: integer
- *              idExperiencia:
- *                type: integer
- *              idMesa:
- *                type: integer
- *              horaInicio:
- *                type: string
- *                format: date-time
- *              duracion:
- *                type: integer
- *              fecha:
- *                type: string
- *                format: date-time
- *              numPersonas:
- *                type: integer
- *    responses:
- *      201:
- *        description: Created
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                rowsAffected:
- *                  type: integer
- *      500:
- *        description: Error
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- */
 router.post("/", async (req, res) => {
+    /*
+    #swagger.tags = ['Reservaciones']
+    #swagger.description = 'Crea una nueva reservación'
+    #swagger.summary = 'Crea una nueva reservación'
+    #swagger.requestBody = {
+        required: true,
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        idUsuario: { type: 'string' },
+                        idSala: { type: 'integer' },
+                        idExperiencia: { type: 'integer' },
+                        idMesa: { type: 'integer' },
+                        horaInicio: { type: 'string', format: 'date-time' },
+                        duracion: { type: 'integer' },
+                        fecha: { type: 'string', format: 'date-time' },
+                        numPersonas: { type: 'integer' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[201] = {
+        description: 'Created',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        rowsAffected: { type: 'integer' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         const reserv = req.body;
         console.log(`reserv: ${JSON.stringify(reserv)}`);
@@ -262,61 +243,55 @@ router.post("/", async (req, res) => {
     }
 });
 
-/**
- * @openapi
- * /reservaciones/{id}:
- *  get:
- *    summary: Obtiene una reservación por su ID
- *    tags:
- *     - Reservaciones
- *    parameters:
- *      - in: path
- *        name: id
- *        schema:
- *          type: integer
- *        required: true
- *        description: ID de la reservación
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                idReservacion:
- *                  type: integer
- *                idUsuario:
- *                  type: string
- *                idSala:
- *                  type: integer
- *                idExperiencia:
- *                  type: integer
- *                idMesa:
- *                  type: integer
- *                horaInicio:
- *                  type: string
- *                  format: date-time
- *                duracion:
- *                  type: integer
- *                fecha:
- *                  type: string
- *                  format: date-time
- *                numPersonas:
- *                  type: integer
- *      404:
- *        description: Not Found
- *      500:
- *        description: Error
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- */
 router.get("/:id", async (req, res) => {
+    /*
+    #swagger.tags = ['Reservaciones']
+    #swagger.description = 'Obtiene una reservación por su ID'
+    #swagger.summary = 'Obtiene una reservación por su ID'
+    #swagger.parameters['id'] = {
+        in: 'path',
+        description: 'ID de la reservación',
+        required: true,
+        type: 'integer'
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        idReservacion: { type: 'integer' },
+                        idUsuario: { type: 'string' },
+                        idSala: { type: 'integer' },
+                        idExperiencia: { type: 'integer' },
+                        idMesa: { type: 'integer' },
+                        horaInicio: { type: 'string', format: 'date-time' },
+                        duracion: { type: 'integer' },
+                        fecha: { type: 'string', format: 'date-time' },
+                        numPersonas: { type: 'integer' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[404] = {
+        description: 'Not Found'
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         const reservId = req.params.id;
         console.log(`reservId: ${reservId}`);
@@ -336,66 +311,64 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-/**
- * @openapi
- * /reservaciones/{id}:
- *  put:
- *    summary: Actualiza una reservación por su ID
- *    tags:
- *     - Reservaciones
- *    parameters:
- *      - in: path
- *        name: id
- *        schema:
- *          type: integer
- *        required: true
- *        description: ID de la reservación
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            properties:
- *              idUsuario:
- *                type: string
- *              idSala:
- *                type: integer
- *              idExperiencia:
- *                type: integer
- *              idMesa:
- *                type: integer
- *              horaInicio:
- *                type: string
- *                format: date-time
- *              duracion:
- *                type: integer
- *              fecha:
- *                type: string
- *                format: date-time
- *              numPersonas:
- *                type: integer
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                rowsAffected:
- *                  type: integer
- *      500:
- *        description: Error
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- */
 router.put("/:id", async (req, res) => {
+    /*
+    #swagger.tags = ['Reservaciones']
+    #swagger.description = 'Actualiza una reservación por su ID'
+    #swagger.summary = 'Actualiza una reservación por su ID'
+    #swagger.parameters['id'] = {
+        in: 'path',
+        description: 'ID de la reservación',
+        required: true,
+        type: 'integer'
+    }
+    #swagger.requestBody = {
+        required: true,
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        idUsuario: { type: 'string' },
+                        idSala: { type: 'integer' },
+                        idExperiencia: { type: 'integer' },
+                        idMesa: { type: 'integer' },
+                        horaInicio: { type: 'string', format: 'date-time' },
+                        duracion: { type: 'integer' },
+                        fecha: { type: 'string', format: 'date-time' },
+                        numPersonas: { type: 'integer' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        rowsAffected: { type: 'integer' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         const reservId = req.params.id;
         console.log(`reservId: ${reservId}`);
@@ -413,41 +386,44 @@ router.put("/:id", async (req, res) => {
     }
 });
 
-/**
- * @openapi
- * /reservaciones/{id}:
- *  delete:
- *    summary: Elimina una reservación por su ID
- *    tags:
- *     - Reservaciones
- *    parameters:
- *      - in: path
- *        name: id
- *        schema:
- *          type: integer
- *        required: true
- *        description: ID de la reservación
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                rowsAffected:
- *                  type: integer
- *      500:
- *        description: Error
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- */
 router.delete("/:id", async (req, res) => {
+    /*
+    #swagger.tags = ['Reservaciones']
+    #swagger.description = 'Elimina una reservación por su ID'
+    #swagger.summary = 'Elimina una reservación por su ID'
+    #swagger.parameters['id'] = {
+        in: 'path',
+        description: 'ID de la reservación',
+        required: true,
+        type: 'integer'
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        rowsAffected: { type: 'integer' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         const reservId = req.params.id;
         console.log(`reservId: ${reservId}`);

@@ -187,44 +187,221 @@
     },
     "/reservaciones/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Reservaciones"
+        ],
+        "summary": "Obtiene todas las reservaciones",
+        "description": "Obtiene todas las reservaciones",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idReservacion": {
+                        "type": "integer"
+                      },
+                      "idUsuario": {
+                        "type": "string"
+                      },
+                      "idSala": {
+                        "type": "integer"
+                      },
+                      "idExperiencia": {
+                        "type": "integer"
+                      },
+                      "idMesa": {
+                        "type": "integer"
+                      },
+                      "horaInicio": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "duracion": {
+                        "type": "integer"
+                      },
+                      "fecha": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "numPersonas": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       },
       "post": {
-        "description": "",
+        "tags": [
+          "Reservaciones"
+        ],
+        "summary": "Crea una nueva reservación",
+        "description": "Crea una nueva reservación",
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "rowsAffected": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idUsuario": {
+                    "type": "string"
+                  },
+                  "idSala": {
+                    "type": "integer"
+                  },
+                  "idExperiencia": {
+                    "type": "integer"
+                  },
+                  "idMesa": {
+                    "type": "integer"
+                  },
+                  "horaInicio": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "duracion": {
+                    "type": "integer"
+                  },
+                  "fecha": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "numPersonas": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/reservaciones/cronograma": {
       "get": {
-        "description": "",
+        "tags": [
+          "Reservaciones"
+        ],
+        "summary": "Obtiene todas las reservaciones confirmadas para el cronograma",
+        "description": "Obtiene todas las reservaciones confirmadas para el cronograma",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "Identificador único de la reservación"
+                      },
+                      "group": {
+                        "type": "integer",
+                        "description": "Identificador del grupo o mesa"
+                      },
+                      "title": {
+                        "type": "string",
+                        "description": "Nombre completo del usuario que hizo la reservación"
+                      },
+                      "start_time": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Fecha y hora de inicio de la reservación"
+                      },
+                      "end_time": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Fecha y hora de fin de la reservación"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/reservaciones/usuario/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Reservaciones"
+        ],
+        "summary": "Obtiene las reservaciones de un usuario",
+        "description": "Obtiene las reservaciones de un usuario",
         "parameters": [
           {
             "name": "id",
@@ -232,25 +409,83 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "ID del usuario"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idReservacion": {
+                        "type": "integer"
+                      },
+                      "idUsuario": {
+                        "type": "string"
+                      },
+                      "idSala": {
+                        "type": "integer"
+                      },
+                      "idExperiencia": {
+                        "type": "integer"
+                      },
+                      "idMesa": {
+                        "type": "integer"
+                      },
+                      "horaInicio": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "duracion": {
+                        "type": "integer"
+                      },
+                      "fecha": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "numPersonas": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "Not Found"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/reservaciones/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Reservaciones"
+        ],
+        "summary": "Obtiene una reservación por su ID",
+        "description": "Obtiene una reservación por su ID",
         "parameters": [
           {
             "name": "id",
@@ -258,23 +493,78 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "ID de la reservación"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "idReservacion": {
+                      "type": "integer"
+                    },
+                    "idUsuario": {
+                      "type": "string"
+                    },
+                    "idSala": {
+                      "type": "integer"
+                    },
+                    "idExperiencia": {
+                      "type": "integer"
+                    },
+                    "idMesa": {
+                      "type": "integer"
+                    },
+                    "horaInicio": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "duracion": {
+                      "type": "integer"
+                    },
+                    "fecha": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "numPersonas": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "Not Found"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       },
       "put": {
-        "description": "",
+        "tags": [
+          "Reservaciones"
+        ],
+        "summary": "Actualiza una reservación por su ID",
+        "description": "Actualiza una reservación por su ID",
         "parameters": [
           {
             "name": "id",
@@ -282,20 +572,87 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "ID de la reservación"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "rowsAffected": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idUsuario": {
+                    "type": "string"
+                  },
+                  "idSala": {
+                    "type": "integer"
+                  },
+                  "idExperiencia": {
+                    "type": "integer"
+                  },
+                  "idMesa": {
+                    "type": "integer"
+                  },
+                  "horaInicio": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "duracion": {
+                    "type": "integer"
+                  },
+                  "fecha": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "numPersonas": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
           }
         }
       },
       "delete": {
-        "description": "",
+        "tags": [
+          "Reservaciones"
+        ],
+        "summary": "Elimina una reservación por su ID",
+        "description": "Elimina una reservación por su ID",
         "parameters": [
           {
             "name": "id",
@@ -303,15 +660,40 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "ID de la reservación"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "rowsAffected": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
