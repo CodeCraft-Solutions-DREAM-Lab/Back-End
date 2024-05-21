@@ -211,6 +211,14 @@
                   "contrasena": {
                     "type": "string",
                     "example": "test"
+                  },
+                  "origen": {
+                    "type": "string",
+                    "example": "qr"
+                  },
+                  "tagId": {
+                    "type": "string",
+                    "example": "test"
                   }
                 }
               }
