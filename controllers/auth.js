@@ -86,9 +86,13 @@ router.post("/usuario", async (req, res) => {
             if (result.length === 0) {
                 res.status(404).json({});
             } else {
-                var token = jwt.sign({ usuario: usuario }, TOKEN_SECRET, {
-                    expiresIn: "7d",
-                });
+                var token = jwt.sign(
+                    { usuario: result.idUsuario.toLowerCase() },
+                    TOKEN_SECRET,
+                    {
+                        expiresIn: "7d",
+                    }
+                );
                 res.status(200).json({ jwt: token });
             }
         } else {
@@ -102,9 +106,13 @@ router.post("/usuario", async (req, res) => {
             if (result.length === 0) {
                 res.status(404).json({});
             } else {
-                var token = jwt.sign({ usuario: usuario }, TOKEN_SECRET, {
-                    expiresIn: "10m",
-                });
+                var token = jwt.sign(
+                    { usuario: result.idUsuario.toLowerCase() },
+                    TOKEN_SECRET,
+                    {
+                        expiresIn: "10m",
+                    }
+                );
                 res.status(200).json({ jwt: token });
             }
         }
