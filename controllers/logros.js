@@ -8,43 +8,6 @@ router.use(express.json());
 // Create database object
 const database = new Database(config);
 
-/**
- * @openapi
- * /logros/{idUsuario}/{idLogro}:
- *  put:
- *    summary: Actualiza un logro específico para un usuario
- *    tags:
- *     - Logros
- *    parameters:
- *      - in: path
- *        name: idUsuario
- *        required: true
- *        description: ID del usuario
- *        schema:
- *          type: string
- *      - in: path
- *        name: idLogro
- *        required: true
- *        description: ID del logro
- *        schema:
- *          type: integer
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                idLogro:
- *                  type: integer
- *                valorActual:
- *                  type: integer
- *                obtenido:
- *                  type: boolean
- *      500:
- *        description: Error
- */
 router.put("/:idUsuario/:idLogro", async (req, res) => {
     /*
     #swagger.tags = ['Logros']
