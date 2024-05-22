@@ -2202,6 +2202,68 @@
           }
         }
       }
+    },
+    "/dashboard/reservacionesByMes": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Obtiene las reservaciones por mes",
+        "description": "Obtiene las reservaciones por mes",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Year": {
+                        "type": "integer"
+                      },
+                      "Month": {
+                        "type": "integer"
+                      },
+                      "ReservacionesTotales": {
+                        "type": "integer"
+                      },
+                      "ReservacionesConfirmadas": {
+                        "type": "integer"
+                      },
+                      "ReservacionesCanceladas": {
+                        "type": "integer"
+                      },
+                      "ReservacionesEnEspera": {
+                        "type": "integer"
+                      },
+                      "ReservacionesDenegadas": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
