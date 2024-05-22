@@ -1,6 +1,8 @@
 DROP PROCEDURE IF EXISTS getSalasDisponibles;
 
-GO CREATE PROCEDURE getSalasDisponibles AS BEGIN
+GO;
+
+CREATE PROCEDURE getSalasDisponibles AS BEGIN
 SET
     NOCOUNT ON;
 

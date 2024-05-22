@@ -2529,6 +2529,56 @@
           }
         }
       }
+    },
+    "/dashboard/penalizacionesByMes": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Obtiene las penalizaciones por mes",
+        "description": "Obtiene las penalizaciones por mes",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Year": {
+                        "type": "integer"
+                      },
+                      "Month": {
+                        "type": "integer"
+                      },
+                      "penalizaciones": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

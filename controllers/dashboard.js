@@ -231,4 +231,51 @@ router.get("/usoMaterialByMes", async (req, res) => {
     }
 });
 
+router.get("/penalizacionesByMes", async (req, res) => {
+    /*
+    #swagger.tags = ['Dashboard']
+    #swagger.description = 'Obtiene las penalizaciones por mes'
+    #swagger.summary = 'Obtiene las penalizaciones por mes'
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            Year: { type: 'integer' },
+                            Month: { type: 'integer' },
+                            penalizaciones: { type: 'integer' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
+    try {
+        const response = await database.executeProcedure(
+            "getPenalizacionesByMes"
+        );
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 export default router;
