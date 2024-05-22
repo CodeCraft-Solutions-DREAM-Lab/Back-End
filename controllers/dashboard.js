@@ -75,17 +75,22 @@ router.get("/reservacionesBySalaByMes", async (req, res) => {
                         properties: {
                             year: { type: 'integer' },
                             month: { type: 'integer' },
-                            'Electric Garage': { type: 'integer', nullable: true },
-                            'Dimension Forge': { type: 'integer', nullable: true },
-                            'New Horizons': { type: 'integer', nullable: true },
-                            'Deep Net': { type: 'integer', nullable: true },
-                            'Graveyard': { type: 'integer', nullable: true },
-                            'PCB Factory': { type: 'integer', nullable: true },
-                            'Hack-Battlefield': { type: 'integer', nullable: true },
-                            'Testing Land': { type: 'integer', nullable: true },
-                            'War Headquarters': { type: 'integer', nullable: true },
-                            'Biometrics Flexible Hall': { type: 'integer', nullable: true },
-                            'Beyond-Digits': { type: 'integer', nullable: true }
+                            salas: {
+                                type: 'object',
+                                properties: {
+                                    'Electric Garage': { type: 'integer', nullable: true },
+                                    'Dimension Forge': { type: 'integer', nullable: true },
+                                    'New Horizons': { type: 'integer', nullable: true },
+                                    'Deep Net': { type: 'integer', nullable: true },
+                                    'Graveyard': { type: 'integer', nullable: true },
+                                    'PCB Factory': { type: 'integer', nullable: true },
+                                    'Hack-Battlefield': { type: 'integer', nullable: true },
+                                    'Testing Land': { type: 'integer', nullable: true },
+                                    'War Headquarters': { type: 'integer', nullable: true },
+                                    'Biometrics Flexible Hall': { type: 'integer', nullable: true },
+                                    'Beyond-Digits': { type: 'integer', nullable: true }
+                                }
+                            }
                         }
                     }
                 }
@@ -107,9 +112,30 @@ router.get("/reservacionesBySalaByMes", async (req, res) => {
     }
     */
     try {
-        const response = await database.executeProcedure(
+        let response = await database.executeProcedure(
             "getReservacionesBySalaByMes"
         );
+
+        // Transformamos la respuesta para que sea más fácil de manejar
+        response = response.map((item) => {
+            const salas = {};
+
+            // Guardamos en 'salas' las salas que no sean 'year' o 'month' y que
+            // no sean null
+            for (const key in item) {
+                if (key !== "year" && key !== "month" && item[key] !== null) {
+                    salas[key] = item[key];
+                }
+            }
+
+            // Devolvemos un objeto con el año, mes y las salas
+            return {
+                year: item.year,
+                month: item.month,
+                salas,
+            };
+        });
+
         res.status(200).json(response);
     } catch (error) {
         res.status(500).json({ error: error.message });

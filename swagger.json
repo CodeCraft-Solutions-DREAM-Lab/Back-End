@@ -2288,49 +2288,54 @@
                       "month": {
                         "type": "integer"
                       },
-                      "Electric Garage": {
-                        "type": "integer",
-                        "nullable": true
-                      },
-                      "Dimension Forge": {
-                        "type": "integer",
-                        "nullable": true
-                      },
-                      "New Horizons": {
-                        "type": "integer",
-                        "nullable": true
-                      },
-                      "Deep Net": {
-                        "type": "integer",
-                        "nullable": true
-                      },
-                      "Graveyard": {
-                        "type": "integer",
-                        "nullable": true
-                      },
-                      "PCB Factory": {
-                        "type": "integer",
-                        "nullable": true
-                      },
-                      "Hack-Battlefield": {
-                        "type": "integer",
-                        "nullable": true
-                      },
-                      "Testing Land": {
-                        "type": "integer",
-                        "nullable": true
-                      },
-                      "War Headquarters": {
-                        "type": "integer",
-                        "nullable": true
-                      },
-                      "Biometrics Flexible Hall": {
-                        "type": "integer",
-                        "nullable": true
-                      },
-                      "Beyond-Digits": {
-                        "type": "integer",
-                        "nullable": true
+                      "salas": {
+                        "type": "object",
+                        "properties": {
+                          "Electric Garage": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "Dimension Forge": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "New Horizons": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "Deep Net": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "Graveyard": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "PCB Factory": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "Hack-Battlefield": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "Testing Land": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "War Headquarters": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "Biometrics Flexible Hall": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "Beyond-Digits": {
+                            "type": "integer",
+                            "nullable": true
+                          }
+                        }
                       }
                     }
                   }
