@@ -5,7 +5,7 @@ SET
     NOCOUNT ON;
 
 SELECT
-    nombre,
+    nombre AS sala,
     bloqueada
 FROM
     Salas;
