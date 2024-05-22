@@ -77,19 +77,7 @@ router.get("/reservacionesBySalaByMes", async (req, res) => {
                             month: { type: 'integer' },
                             salas: {
                                 type: 'object',
-                                properties: {
-                                    'Electric Garage': { type: 'integer', nullable: true },
-                                    'Dimension Forge': { type: 'integer', nullable: true },
-                                    'New Horizons': { type: 'integer', nullable: true },
-                                    'Deep Net': { type: 'integer', nullable: true },
-                                    'Graveyard': { type: 'integer', nullable: true },
-                                    'PCB Factory': { type: 'integer', nullable: true },
-                                    'Hack-Battlefield': { type: 'integer', nullable: true },
-                                    'Testing Land': { type: 'integer', nullable: true },
-                                    'War Headquarters': { type: 'integer', nullable: true },
-                                    'Biometrics Flexible Hall': { type: 'integer', nullable: true },
-                                    'Beyond-Digits': { type: 'integer', nullable: true }
-                                }
+                                additionalProperties: { type: 'integer', nullable: true }
                             }
                         }
                     }
@@ -211,24 +199,10 @@ router.get("/usoMaterialByMes", async (req, res) => {
                             year: { type: 'integer' },
                             month: { type: 'integer' },
                             total: { type: 'integer', nullable: true },
-                            'Laptop Gamer': { type: 'integer', nullable: true },
-                            'Surface Pro': { type: 'integer', nullable: true },
-                            'Chromebook': { type: 'integer', nullable: true },
-                            'Oculus Quest 2': { type: 'integer', nullable: true },
-                            'HTC Vive Pro 2': { type: 'integer', nullable: true },
-                            'PlayStation VR': { type: 'integer', nullable: true },
-                            'Visor VR para smartphone': { type: 'integer', nullable: true },
-                            'PC de escritorio': { type: 'integer', nullable: true },
-                            'Tablet Android': { type: 'integer', nullable: true },
-                            'Tablet iPad': { type: 'integer', nullable: true },
-                            'Tablet Windows': { type: 'integer', nullable: true },
-                            'Cámara Digital (DSLR)': { type: 'integer', nullable: true },
-                            'Audífonos Over-Ear': { type: 'integer', nullable: true },
-                            'Altavoces Bluetooth': { type: 'integer', nullable: true },
-                            'Micrófono': { type: 'integer', nullable: true },
-                            'Router Wi-Fi': { type: 'integer', nullable: true },
-                            'Cable Ethernet': { type: 'integer', nullable: true },
-                            'Tarjeta de Red': { type: 'integer', nullable: true }
+                            materiales: {
+                                type: 'object',
+                                additionalProperties: { type: 'integer', nullable: true }
+                            }
                         }
                     }
                 }
@@ -250,7 +224,34 @@ router.get("/usoMaterialByMes", async (req, res) => {
     }
     */
     try {
-        const response = await database.executeProcedure("getUsoMaterialByMes");
+        let response = await database.executeProcedure("getUsoMaterialByMes");
+
+        // Transform the response
+        response = response.map((item) => {
+            const materiales = {};
+
+            // Loop over the properties of the item
+            for (const key in item) {
+                // If the property is not 'year', 'month' or 'total' and its value is not null, add it to 'materiales'
+                if (
+                    key !== "year" &&
+                    key !== "month" &&
+                    key !== "total" &&
+                    item[key] !== null
+                ) {
+                    materiales[key] = item[key];
+                }
+            }
+
+            // Return the transformed item
+            return {
+                year: item.year,
+                month: item.month,
+                total: item.total,
+                materiales,
+            };
+        });
+
         res.status(200).json(response);
     } catch (error) {
         res.status(500).json({ error: error.message });
