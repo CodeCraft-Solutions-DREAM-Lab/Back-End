@@ -168,4 +168,67 @@ router.get("/salasDisponibles", async (req, res) => {
     }
 });
 
+router.get("/usoMaterialByMes", async (req, res) => {
+    /*
+    #swagger.tags = ['Dashboard']
+    #swagger.description = 'Obtiene el uso de material por mes'
+    #swagger.summary = 'Obtiene el uso de material por mes'
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            Year: { type: 'integer' },
+                            Month: { type: 'integer' },
+                            TotalMaterials: { type: 'integer', nullable: true },
+                            'Laptop Gamer': { type: 'integer', nullable: true },
+                            'Surface Pro': { type: 'integer', nullable: true },
+                            'Chromebook': { type: 'integer', nullable: true },
+                            'Oculus Quest 2': { type: 'integer', nullable: true },
+                            'HTC Vive Pro 2': { type: 'integer', nullable: true },
+                            'PlayStation VR': { type: 'integer', nullable: true },
+                            'Visor VR para smartphone': { type: 'integer', nullable: true },
+                            'PC de escritorio': { type: 'integer', nullable: true },
+                            'Tablet Android': { type: 'integer', nullable: true },
+                            'Tablet iPad': { type: 'integer', nullable: true },
+                            'Tablet Windows': { type: 'integer', nullable: true },
+                            'Cámara Digital (DSLR)': { type: 'integer', nullable: true },
+                            'Audífonos Over-Ear': { type: 'integer', nullable: true },
+                            'Altavoces Bluetooth': { type: 'integer', nullable: true },
+                            'Micrófono': { type: 'integer', nullable: true },
+                            'Router Wi-Fi': { type: 'integer', nullable: true },
+                            'Cable Ethernet': { type: 'integer', nullable: true },
+                            'Tarjeta de Red': { type: 'integer', nullable: true }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
+    try {
+        const response = await database.executeProcedure("getUsoMaterialByMes");
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 export default router;
