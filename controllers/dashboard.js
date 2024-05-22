@@ -22,8 +22,8 @@ router.get("/reservacionesByMes", async (req, res) => {
                     items: {
                         type: 'object',
                         properties: {
-                            Year: { type: 'integer' },
-                            Month: { type: 'integer' },
+                            year: { type: 'integer' },
+                            month: { type: 'integer' },
                             ReservacionesTotales: { type: 'integer' },
                             ReservacionesConfirmadas: { type: 'integer' },
                             ReservacionesCanceladas: { type: 'integer' },
@@ -73,8 +73,8 @@ router.get("/reservacionesBySalaByMes", async (req, res) => {
                     items: {
                         type: 'object',
                         properties: {
-                            Year: { type: 'integer' },
-                            Month: { type: 'integer' },
+                            year: { type: 'integer' },
+                            month: { type: 'integer' },
                             'Electric Garage': { type: 'integer', nullable: true },
                             'Dimension Forge': { type: 'integer', nullable: true },
                             'New Horizons': { type: 'integer', nullable: true },
@@ -182,9 +182,9 @@ router.get("/usoMaterialByMes", async (req, res) => {
                     items: {
                         type: 'object',
                         properties: {
-                            Year: { type: 'integer' },
-                            Month: { type: 'integer' },
-                            TotalMaterials: { type: 'integer', nullable: true },
+                            year: { type: 'integer' },
+                            month: { type: 'integer' },
+                            total: { type: 'integer', nullable: true },
                             'Laptop Gamer': { type: 'integer', nullable: true },
                             'Surface Pro': { type: 'integer', nullable: true },
                             'Chromebook': { type: 'integer', nullable: true },
@@ -245,8 +245,8 @@ router.get("/penalizacionesByMes", async (req, res) => {
                     items: {
                         type: 'object',
                         properties: {
-                            Year: { type: 'integer' },
-                            Month: { type: 'integer' },
+                            year: { type: 'integer' },
+                            month: { type: 'integer' },
                             penalizaciones: { type: 'integer' }
                         }
                     }

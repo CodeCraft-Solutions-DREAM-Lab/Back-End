@@ -7,8 +7,8 @@ SET
     NOCOUNT ON;
 
 SELECT
-    YEAR (fecha) AS Year,
-    MONTH (fecha) AS Month,
+    YEAR (fecha) AS year,
+    MONTH (fecha) AS month,
     COUNT(idUsuario) AS penalizaciones
 FROM
     HistorialPrioridad
@@ -18,8 +18,8 @@ GROUP BY
     YEAR (fecha),
     MONTH (fecha)
 ORDER BY
-    Year,
-    Month;
+    year,
+    month;
 
 END;
 

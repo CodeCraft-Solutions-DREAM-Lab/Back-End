@@ -2220,10 +2220,10 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "Year": {
+                      "year": {
                         "type": "integer"
                       },
-                      "Month": {
+                      "month": {
                         "type": "integer"
                       },
                       "ReservacionesTotales": {
@@ -2282,10 +2282,10 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "Year": {
+                      "year": {
                         "type": "integer"
                       },
-                      "Month": {
+                      "month": {
                         "type": "integer"
                       },
                       "Electric Garage": {
@@ -2424,13 +2424,13 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "Year": {
+                      "year": {
                         "type": "integer"
                       },
-                      "Month": {
+                      "month": {
                         "type": "integer"
                       },
-                      "TotalMaterials": {
+                      "total": {
                         "type": "integer",
                         "nullable": true
                       },
@@ -2547,10 +2547,10 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "Year": {
+                      "year": {
                         "type": "integer"
                       },
-                      "Month": {
+                      "month": {
                         "type": "integer"
                       },
                       "penalizaciones": {
