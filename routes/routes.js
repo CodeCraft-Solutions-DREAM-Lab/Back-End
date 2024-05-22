@@ -10,6 +10,7 @@ import videowall from "../controllers/videowall.js";
 import materiales from "../controllers/materiales.js";
 import perfil from "../controllers/perfil.js";
 import logros from "../controllers/logros.js";
+import dashboard from "../controllers/dashboard.js";
 
 const router = express.Router();
 
@@ -24,6 +25,6 @@ router.use("/videowall", videowall);
 router.use("/materiales", materiales);
 router.use("/perfil", perfil);
 router.use("/logros", logros);
-
+router.use("/dashboard", dashboard);
 
 export { router };

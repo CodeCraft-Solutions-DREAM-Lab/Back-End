@@ -16,17 +16,17 @@ BEGIN
     -- Construct the dynamic SQL query
     SET @query = '
     SELECT 
-        Year,
-        Month,
-        TotalMaterials, ' + @cols + '
+        year,
+        month,
+        total, ' + @cols + '
     FROM 
     (
         SELECT 
             m.nombre AS MaterialName,
-            DATEPART(YEAR, r.fecha) AS Year,
-            DATEPART(MONTH, r.fecha) AS Month,
+            DATEPART(YEAR, r.fecha) AS year,
+            DATEPART(MONTH, r.fecha) AS month,
             rm.cantidad,
-            SUM(rm.cantidad) OVER (PARTITION BY DATEPART(YEAR, r.fecha), DATEPART(MONTH, r.fecha)) AS TotalMaterials
+            SUM(rm.cantidad) OVER (PARTITION BY DATEPART(YEAR, r.fecha), DATEPART(MONTH, r.fecha)) AS total
         FROM 
             ReservacionesMateriales rm
         JOIN 
@@ -40,8 +40,8 @@ BEGIN
         FOR MaterialName IN (' + @cols + ')
     ) pvt
     ORDER BY 
-        Year,
-        Month;';
+        year,
+        month;';
 
     -- Execute the dynamic SQL query
     EXEC sp_executesql @query;
