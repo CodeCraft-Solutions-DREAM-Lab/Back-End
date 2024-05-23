@@ -24,11 +24,11 @@ router.get("/reservacionesByMes", async (req, res) => {
                         properties: {
                             year: { type: 'integer' },
                             month: { type: 'integer' },
-                            ReservacionesTotales: { type: 'integer' },
-                            ReservacionesConfirmadas: { type: 'integer' },
-                            ReservacionesCanceladas: { type: 'integer' },
-                            ReservacionesEnEspera: { type: 'integer' },
-                            ReservacionesDenegadas: { type: 'integer' }
+                            reservacionesTotales: { type: 'integer' },
+                            reservacionesConfirmadas: { type: 'integer' },
+                            reservacionesCanceladas: { type: 'integer' },
+                            reservacionesEnEspera: { type: 'integer' },
+                            reservacionesDenegadas: { type: 'integer' }
                         }
                     }
                 }

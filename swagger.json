@@ -2226,19 +2226,19 @@
                       "month": {
                         "type": "integer"
                       },
-                      "ReservacionesTotales": {
+                      "reservacionesTotales": {
                         "type": "integer"
                       },
-                      "ReservacionesConfirmadas": {
+                      "reservacionesConfirmadas": {
                         "type": "integer"
                       },
-                      "ReservacionesCanceladas": {
+                      "reservacionesCanceladas": {
                         "type": "integer"
                       },
-                      "ReservacionesEnEspera": {
+                      "reservacionesEnEspera": {
                         "type": "integer"
                       },
-                      "ReservacionesDenegadas": {
+                      "reservacionesDenegadas": {
                         "type": "integer"
                       }
                     }
