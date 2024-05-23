@@ -19,7 +19,7 @@ let transporter = nodemailer.createTransport({
 });
 
 export const sendEmail = async (to, subject, text, html) => {
-	if (!to || !subject || !text) {
+	if (!to || !subject) {
 		console.error("Missing parameters on sending email");
 		return;
 	}
@@ -46,13 +46,17 @@ export const sendEmail = async (to, subject, text, html) => {
 	}
 };
 
-export const getHtmlTemplate = (templatePath, replacements) => {
+export const getHtmlTemplate = (templateName, replacements) => {
+	const templatePath = "./emails/templates/" + templateName + ".html";
 	let template = fs.readFileSync(templatePath, "utf-8");
+	console.log(replacements);
 	for (const key in replacements) {
 		template = template.replace(
 			new RegExp(`{{${key}}}`, "g"),
 			replacements[key]
 		);
+
+		console.log(template);
 	}
 	return template;
 };

@@ -26,4 +26,14 @@ router.use("/perfil", perfil);
 router.use("/logros", logros);
 
 
+import sendReminder1dayBefore from "../controllers/schedules/sendReminder1dayBefore.js";
+
+router.get("/testReminder", async (req, res) => {
+    
+    await sendReminder1dayBefore();
+
+    res.status(200).json({ message: "Test reminder" });
+});
+
+
 export { router };
