@@ -57,7 +57,7 @@ const asignarReservaciones = async () => {
         let activeReservations = {};
 
         for (let reservation of reservations) {
-            const { idReservacion, prioridad, fecha, horaInicio, duracion } = reservation;
+            const { idReservacion, prioridad, fecha, horaInicio, duracion, idSala } = reservation;
             let conflictingReservation = false;
 
             if (!activeReservations[fecha]) {
@@ -69,6 +69,10 @@ const asignarReservaciones = async () => {
             const currentEndTime = `${currentEndHours.toString().padStart(2, '0')}:${currentMinutes.toString().padStart(2, '0')}`;
 
             for (let active of activeReservations[fecha]) {
+                if (active.idSala !== idSala) {
+                    continue; // Skip reservations in different labs/rooms
+                }
+
                 const [activeHours, activeMinutes] = active.horaInicio.split(':').map(Number);
                 const activeEndHours = activeHours + active.duracion;
                 const activeEndTime = `${activeEndHours.toString().padStart(2, '0')}:${activeMinutes.toString().padStart(2, '0')}`;
@@ -103,7 +107,27 @@ const asignarReservaciones = async () => {
             }
         }
 
-        // Step 5: Update statuses in the database
+        // Step 5: Assign tables to confirmed reservations
+        for (let reservation of confirmedReservations) {
+            let { idReservacion, idSala, numPersonas } = reservations.find(r => r.idReservacion === reservation);
+            const availableTables = await db.executeProcedure("getMesasFromSalaByCupo", { idSala, cupos: numPersonas });
+
+            if (availableTables.length > 0) {
+                // Sort tables by the number of seats (cupos) in ascending order to find the smallest suitable table
+                availableTables.sort((a, b) => a.cupos - b.cupos);
+                const idMesa = availableTables[0].idMesa;
+                const updateTableQuery = `UPDATE Reservaciones SET idMesa = ${idMesa} WHERE idReservacion = ${idReservacion}`;
+                console.log('Update Table Query:', updateTableQuery);
+                await db.executeQuery(updateTableQuery);
+                console.log(`Table ${idMesa} assigned to reservation ${idReservacion}.`);
+            } else {
+                console.log(`No available table found for reservation ${idReservacion}.`);
+                deniedReservations.push(idReservacion);
+                confirmedReservations = confirmedReservations.filter(r => r !== idReservacion);
+            }
+        }
+
+        // Step 6: Update statuses in the database
         if (confirmedReservations.length > 0) {
             const confirmedQuery = `UPDATE Reservaciones SET estatus = 3 WHERE idReservacion IN (${confirmedReservations.join(', ')})`;
             console.log('Confirmed Query:', confirmedQuery);

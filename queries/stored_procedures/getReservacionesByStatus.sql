@@ -11,9 +11,12 @@ BEGIN
         r.idReservacion,
         CONCAT (u.nombre, ' ', u.apellidoP, ' ', u.apellidoM) AS nombre_usuario,
         s.nombre AS nombre_sala,
+        r.idSala, -- Incluir ID de sala para aplicarse en lógica de asignación de mesas
         r.horaInicio,
         r.duracion,
         r.fecha,
+        r.idMesa, -- Incluir mesa asignada
+        r.numPersonas, -- Incluir cantidad de personas
         l.iconoURL,
         u.colorPreferido,
         u.prioridad  -- Incluir puntos de prioridad
