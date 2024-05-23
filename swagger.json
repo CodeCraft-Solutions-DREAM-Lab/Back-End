@@ -1758,6 +1758,12 @@
                       },
                       "colorPreferido": {
                         "type": "string"
+                      },
+                      "idUsuario": {
+                        "type": "string"
+                      },
+                      "tagId": {
+                        "type": "string"
                       }
                     }
                   }

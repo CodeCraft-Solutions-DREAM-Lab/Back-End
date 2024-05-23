@@ -74,7 +74,9 @@ router.get("/reservaciones", async (req, res) => {
                             duracion: { type: 'integer' },
                             fecha: { type: 'string', format: 'date-time' },
                             iconoURL: { type: 'string' },
-                            colorPreferido: { type: 'string' }
+                            colorPreferido: { type: 'string' },
+                            idUsuario: { type: 'string' },
+                            tagId: { type: 'string' }
                         }
                     }
                 }
