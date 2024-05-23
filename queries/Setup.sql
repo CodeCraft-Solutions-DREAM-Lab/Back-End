@@ -579,6 +579,16 @@ VALUES
         362,
         1,
         '#78C2F8'
+    ), 
+	(
+        '0012007098',
+        'Rolando',
+        'Martínez',
+        'Hernández',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
     );
 
 -- Sample data for Credenciales
@@ -698,7 +708,7 @@ VALUES
     (
         'a00829814',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        NULL
+        '1234'
     ),
     (
         'a00833173',
@@ -754,6 +764,11 @@ VALUES
         'l00000020',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
         '125122131173'
+    ), 
+	(
+        '0012007098',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '0012007098'
     );
 
 -- Sample data for GruposUsuarios
@@ -793,7 +808,9 @@ VALUES
     (1, 'a00833968'),
     (1, 'a00832807'),
     (1, 'l00000010'),
-    (1, 'l00000020');
+    (1, 'l00000020'),
+	(1, '0012007098')
+;
 
 -- Sample data for Logros
 INSERT INTO
@@ -891,6 +908,16 @@ VALUES
 INSERT INTO
     UsuariosLogros (idLogro, idUsuario, valorActual, obtenido)
 VALUES
+	(1, '0012007098', 50, 1),
+    (2, '0012007098', 5, 0),
+    (3, '0012007098', 5, 1),
+    (4, '0012007098', 3, 0),
+    (5, '0012007098', 3, 1),
+    (6, '0012007098', 1, 0),
+    (7, '0012007098', 367, 0),
+    (8, '0012007098', 1, 1),
+    (9, '0012007098', 0, 0),
+    (10, '0012007098', 0, 0),
     -- Para A01368580
     (1, 'a01368580', 50, 1),
     (2, 'a01368580', 5, 0),
