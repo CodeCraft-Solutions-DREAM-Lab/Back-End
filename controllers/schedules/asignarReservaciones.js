@@ -6,81 +6,94 @@ const db = new Database(config);
 
 const asignarReservaciones = async () => {
     try {
-        // Ensure the database connection is established
-        await db.ensureConnected();
+        // Connect to the database
+        await db.connect();
+        console.log('Connected to the database.');
 
-        // Step 1: Retrieve all pending reservations using the stored procedure
+        // Step 1: Retrieve all pending reservations
         const pendingReservations = await db.executeProcedure(
-            "getReservacionesByStatus",
-            { estatus: 5 }
+            "getReservacionesByStatus", { estatus: 5 }
         );
 
-        // Debug: Log the retrieved reservations
-        console.log('Pending Reservations:', pendingReservations);
-
-        // Step 2: Sort reservations by priority, then by date, then by start time
         let reservations = pendingReservations;
+
+        if (reservations.length === 0) {
+            console.log('No pending reservations found.');
+            return;
+        }
+
+        console.log('Pending reservations:', reservations);
+
+        // Step 2: Parse the date and time
+        reservations.forEach(reservation => {
+            if (typeof reservation.fecha !== 'string') {
+                reservation.fecha = reservation.fecha.toISOString().split('T')[0]; // Convert to ISO string and keep only the date part
+            }
+            if (typeof reservation.horaInicio !== 'string') {
+                reservation.horaInicio = reservation.horaInicio.toISOString().split('T')[1].slice(0, 8); // Convert to ISO string and keep only the time part
+            }
+        });
+
+        console.log('Parsed reservations:', reservations);
+
+        // Step 3: Sort reservations by priority points, then by date, then by start time, then by idReservacion
         reservations.sort((a, b) => {
-            // Sort by priority (descending order)
-            if (a.prioridad > b.prioridad) return -1;
+            if (a.prioridad > b.prioridad) return -1; // Sort by priority points descending
             if (a.prioridad < b.prioridad) return 1;
-
-            // If priorities are equal, sort by date
-            const dateA = new Date(a.fecha);
-            const dateB = new Date(b.fecha);
-            if (dateA < dateB) return -1;
-            if (dateA > dateB) return 1;
-
-            // If dates are equal, sort by start time
-            const timeA = typeof a.horaInicio === 'string' ? a.horaInicio.split(":") : [];
-            const timeB = typeof b.horaInicio === 'string' ? b.horaInicio.split(":") : [];
-            const dateTimeA = new Date(dateA);
-            dateTimeA.setHours(timeA[0] || 0, timeA[1] || 0, timeA[2] || 0);
-            const dateTimeB = new Date(dateB);
-            dateTimeB.setHours(timeB[0] || 0, timeB[1] || 0, timeB[2] || 0);
-
-            if (dateTimeA < dateTimeB) return -1;
-            if (dateTimeA > dateTimeB) return 1;
-
+            if (a.fecha < b.fecha) return -1; // Sort by date ascending
+            if (a.fecha > b.fecha) return 1;
+            if (a.horaInicio < b.horaInicio) return -1; // Sort by start time ascending
+            if (a.horaInicio > b.horaInicio) return 1;
+            if (a.idReservacion < b.idReservacion) return -1; // Sort by reservation id ascending (earlier requests first)
+            if (a.idReservacion > b.idReservacion) return 1;
             return 0;
         });
 
-        // Debug: Log the sorted reservations
-        console.log('Sorted Reservations:', reservations);
+        console.log('Sorted reservations:', reservations);
 
-        // Step 3: Check for conflicts and assign reservations
+        // Step 4: Check for conflicts and assign reservations
         let confirmedReservations = [];
         let deniedReservations = [];
         let activeReservations = {};
 
         for (let reservation of reservations) {
-            const { idReservacion, fecha, horaInicio, duracion } = reservation;
+            const { idReservacion, prioridad, fecha, horaInicio, duracion } = reservation;
             let conflictingReservation = false;
-
-            const reservationDate = new Date(fecha);
 
             if (!activeReservations[fecha]) {
                 activeReservations[fecha] = [];
             }
 
+            const [currentHours, currentMinutes] = horaInicio.split(':').map(Number);
+            const currentEndHours = currentHours + duracion;
+            const currentEndTime = `${currentEndHours.toString().padStart(2, '0')}:${currentMinutes.toString().padStart(2, '0')}`;
+
             for (let active of activeReservations[fecha]) {
-                const activeStartDate = new Date(active.fecha);
-                const activeStartTime = typeof active.horaInicio === 'string' ? active.horaInicio.split(":") : [];
-                activeStartDate.setHours(activeStartTime[0] || 0, activeStartTime[1] || 0, activeStartTime[2] || 0);
-                const activeEndTime = new Date(activeStartDate);
-                activeEndTime.setMinutes(activeEndTime.getMinutes() + active.duracion);
+                const [activeHours, activeMinutes] = active.horaInicio.split(':').map(Number);
+                const activeEndHours = activeHours + active.duracion;
+                const activeEndTime = `${activeEndHours.toString().padStart(2, '0')}:${activeMinutes.toString().padStart(2, '0')}`;
 
-                const currentStartTime = new Date(reservationDate);
-                const startTime = typeof horaInicio === 'string' ? horaInicio.split(":") : [];
-                currentStartTime.setHours(startTime[0] || 0, startTime[1] || 0, startTime[2] || 0);
-                const currentEndTime = new Date(currentStartTime);
-                currentEndTime.setMinutes(currentEndTime.getMinutes() + duracion);
+                console.log(`Comparing current reservation ${idReservacion} (start: ${horaInicio}, end: ${currentEndTime}) with active reservation ${active.idReservacion} (start: ${active.horaInicio}, end: ${activeEndTime})`);
 
-                if (currentStartTime < activeEndTime && currentEndTime > activeStartDate) {
-                    // Conflict found, deny the current reservation
-                    conflictingReservation = true;
-                    deniedReservations.push(idReservacion);
-                    break;
+                // Check for time conflicts
+                if (
+                    (horaInicio < activeEndTime && currentEndTime > active.horaInicio) ||
+                    (horaInicio === active.horaInicio)
+                ) {
+                    // If there's a conflict based on time and duration, check priority
+                    console.log(`Conflict detected. Current reservation priority: ${prioridad}, Active reservation priority: ${active.prioridad}`);
+                    if (prioridad > active.prioridad) {
+                        // If current reservation has higher priority, deny the active one
+                        console.log(`Current reservation ${idReservacion} has higher priority. Denying active reservation ${active.idReservacion}.`);
+                        deniedReservations.push(active.idReservacion);
+                        activeReservations[fecha] = activeReservations[fecha].filter(r => r.idReservacion !== active.idReservacion);
+                    } else {
+                        // If active reservation has higher or equal priority, deny this one
+                        console.log(`Active reservation ${active.idReservacion} has higher or equal priority. Denying current reservation ${idReservacion}.`);
+                        conflictingReservation = true;
+                        deniedReservations.push(idReservacion);
+                        break;
+                    }
                 }
             }
 
@@ -90,13 +103,19 @@ const asignarReservaciones = async () => {
             }
         }
 
-        // Step 4: Update statuses in the database
+        // Step 5: Update statuses in the database
         if (confirmedReservations.length > 0) {
-            await db.executeQuery(`UPDATE Reservaciones SET estatus = 3 WHERE idReservacion IN (${confirmedReservations.join(', ')})`);
+            const confirmedQuery = `UPDATE Reservaciones SET estatus = 3 WHERE idReservacion IN (${confirmedReservations.join(', ')})`;
+            console.log('Confirmed Query:', confirmedQuery);
+            await db.executeQuery(confirmedQuery);
+            console.log('Confirmed reservations updated successfully.');
         }
 
         if (deniedReservations.length > 0) {
-            await db.executeQuery(`UPDATE Reservaciones SET estatus = 6 WHERE idReservacion IN (${deniedReservations.join(', ')})`);
+            const deniedQuery = `UPDATE Reservaciones SET estatus = 6 WHERE idReservacion IN (${deniedReservations.join(', ')})`;
+            console.log('Denied Query:', deniedQuery);
+            await db.executeQuery(deniedQuery);
+            console.log('Denied reservations updated successfully.');
         }
 
         console.log('Reservation organization completed successfully.');
@@ -104,6 +123,7 @@ const asignarReservaciones = async () => {
         console.error('Error organizing reservations:', err);
     } finally {
         await db.disconnect();
+        console.log('Disconnected from the database.');
     }
 };
 
