@@ -33,6 +33,6 @@ BEGIN
         AND r.fecha = @currentDate
         AND DATEADD(HOUR, r.duracion, r.horaInicio) > @currentTime
 	ORDER BY
-        r.horaInicio,
-		DATEADD(HOUR, r.duracion, r.horaInicio);
+        r.horaInicio ASC,
+		DATEADD(HOUR, r.duracion, r.horaInicio) ASC;
 END
