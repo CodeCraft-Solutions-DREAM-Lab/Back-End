@@ -2289,10 +2289,17 @@
                         "type": "integer"
                       },
                       "salas": {
-                        "type": "object",
-                        "additionalProperties": {
-                          "type": "integer",
-                          "nullable": true
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string"
+                            },
+                            "value": {
+                              "type": "integer"
+                            }
+                          }
                         }
                       }
                     }
@@ -2393,15 +2400,18 @@
                       "month": {
                         "type": "integer"
                       },
-                      "total": {
-                        "type": "integer",
-                        "nullable": true
-                      },
                       "materiales": {
-                        "type": "object",
-                        "additionalProperties": {
-                          "type": "integer",
-                          "nullable": true
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "material": {
+                              "type": "string"
+                            },
+                            "uso": {
+                              "type": "integer"
+                            }
+                          }
                         }
                       }
                     }

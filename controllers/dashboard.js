@@ -76,8 +76,14 @@ router.get("/reservacionesBySalaByMes", async (req, res) => {
                             year: { type: 'integer' },
                             month: { type: 'integer' },
                             salas: {
-                                type: 'object',
-                                additionalProperties: { type: 'integer', nullable: true }
+                                type: 'array',
+                                items: {
+                                    type: 'object',
+                                    properties: {
+                                        name: { type: 'string' },
+                                        value: { type: 'integer' }
+                                    }
+                                }
                             }
                         }
                     }
@@ -105,24 +111,27 @@ router.get("/reservacionesBySalaByMes", async (req, res) => {
         );
 
         // Transformamos la respuesta para que sea más fácil de manejar
-        response = response.map((item) => {
-            const salas = {};
+        let groupedResponse = {};
 
-            // Guardamos en 'salas' las salas que no sean 'year' o 'month' y que
-            // no sean null
-            for (const key in item) {
-                if (key !== "year" && key !== "month" && item[key] !== null) {
-                    salas[key] = item[key];
-                }
+        response.forEach((item) => {
+            const key = `${item.year}-${item.month}`;
+
+            if (!groupedResponse[key]) {
+                groupedResponse[key] = {
+                    year: item.year,
+                    month: item.month,
+                    salas: [],
+                };
             }
 
-            // Devolvemos un objeto con el año, mes y las salas
-            return {
-                year: item.year,
-                month: item.month,
-                salas,
-            };
+            groupedResponse[key].salas.push({
+                name: item.name,
+                value: item.value,
+            });
         });
+
+        // Convert the grouped response object to an array
+        response = Object.values(groupedResponse);
 
         res.status(200).json(response);
     } catch (error) {
@@ -198,10 +207,15 @@ router.get("/usoMaterialByMes", async (req, res) => {
                         properties: {
                             year: { type: 'integer' },
                             month: { type: 'integer' },
-                            total: { type: 'integer', nullable: true },
                             materiales: {
-                                type: 'object',
-                                additionalProperties: { type: 'integer', nullable: true }
+                                type: 'array',
+                                items: {
+                                    type: 'object',
+                                    properties: {
+                                        material: { type: 'string' },
+                                        uso: { type: 'integer' }
+                                    }
+                                }
                             }
                         }
                     }
@@ -227,30 +241,27 @@ router.get("/usoMaterialByMes", async (req, res) => {
         let response = await database.executeProcedure("getUsoMaterialByMes");
 
         // Transform the response
-        response = response.map((item) => {
-            const materiales = {};
+        let groupedResponse = {};
 
-            // Loop over the properties of the item
-            for (const key in item) {
-                // If the property is not 'year', 'month' or 'total' and its value is not null, add it to 'materiales'
-                if (
-                    key !== "year" &&
-                    key !== "month" &&
-                    key !== "total" &&
-                    item[key] !== null
-                ) {
-                    materiales[key] = item[key];
-                }
+        response.forEach((item) => {
+            const key = `${item.year}-${item.month}`;
+
+            if (!groupedResponse[key]) {
+                groupedResponse[key] = {
+                    year: item.year,
+                    month: item.month,
+                    materiales: [],
+                };
             }
 
-            // Return the transformed item
-            return {
-                year: item.year,
-                month: item.month,
-                total: item.total,
-                materiales,
-            };
+            groupedResponse[key].materiales.push({
+                material: item.material,
+                uso: item.uso,
+            });
         });
+
+        // Convert the grouped response object to an array
+        response = Object.values(groupedResponse);
 
         res.status(200).json(response);
     } catch (error) {
