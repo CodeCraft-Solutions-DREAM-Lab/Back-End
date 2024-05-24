@@ -182,6 +182,28 @@ router.get("/usuario/:id", async (req, res) => {
     }
 });
 
+router.post("/ultimas", async (req, res) => {
+    /*
+    Documentación de swagger
+    */
+    try {
+        const usuarioId = req.body.user;
+        console.log(`userId: ${usuarioId}`);
+        if (usuarioId) {
+            const result = await database.executeProcedure(
+                "getUltimasReservaciones",
+                { idUsuario: usuarioId }
+            );
+            console.log(`Ultimas reservas: ${JSON.stringify(result)}`);
+            res.status(200).json(result);
+        } else {
+            res.status(404);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
 router.post("/", async (req, res) => {
     /*
     #swagger.tags = ['Reservaciones']
