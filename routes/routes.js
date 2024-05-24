@@ -11,6 +11,8 @@ import materiales from "../controllers/materiales.js";
 import perfil from "../controllers/perfil.js";
 import logros from "../controllers/logros.js";
 
+import scheduler from "../scheduledTaks/scheduler.js";
+
 const router = express.Router();
 
 router.use("/usuarios", usuarios);
@@ -25,15 +27,16 @@ router.use("/materiales", materiales);
 router.use("/perfil", perfil);
 router.use("/logros", logros);
 
+for (const key in scheduler) {
+	scheduler[key]();
+}
 
 import sendReminder1dayBefore from "../controllers/schedules/sendReminder1dayBefore.js";
 
 router.get("/testReminder", async (req, res) => {
-    
-    await sendReminder1dayBefore();
+	await sendReminder1dayBefore();
 
-    res.status(200).json({ message: "Test reminder" });
+	res.status(200).json({ message: "Test reminder" });
 });
-
 
 export { router };
