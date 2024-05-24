@@ -152,6 +152,88 @@
         }
       }
     },
+    "/usuarios/cambiarPrioridad": {
+      "post": {
+        "tags": [
+          "Usuarios",
+          "Prioridad"
+        ],
+        "summary": "Cambia los puntos de prioridad de un usuario",
+        "description": "Cambia los puntos de prioridad de un usuario, lo guarda en el historial de cambios y envía un correo al usuario",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Prioridad updated"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Faltan datos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "idUsuario, puntos and motivo are required"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idUsuario": {
+                    "type": "string",
+                    "example": "a00833173"
+                  },
+                  "puntos": {
+                    "type": "integer",
+                    "example": 10
+                  },
+                  "motivo": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/auth/usuario": {
       "post": {
         "tags": [
