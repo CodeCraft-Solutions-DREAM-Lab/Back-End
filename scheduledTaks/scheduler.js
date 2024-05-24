@@ -3,13 +3,13 @@ import cron from "node-cron";
 import sendReminder1dayBefore from "../controllers/schedules/sendReminder1dayBefore.js";
 import sendReminder2hrsBefore from "../controllers/schedules/sendReminder2hrsBefore.js";
 
-// const scheduleReservationOrganization = () => {
-//     // Schedule the function to run every three hours
-//     cron.schedule('*/20 * * * * *', async () => { //'0 0,3,6,9,12,15,18,21 * * *'
-//         console.log('Running scheduled reservation organization');
-//         await asignarReservaciones();
-//     });
-// };
+const scheduleReservationOrganization = () => {
+    // Schedule the function to run every three hours
+    cron.schedule('*/20 * * * * *', async () => { //'0 0,3,6,9,12,15,18,21 * * *'
+        console.log('Running scheduled reservation organization');
+        // await asignarReservaciones();
+    });
+};
 
 const scheduleReservationReminders = () => {
 	// Schedule the function to run every three hours
@@ -21,6 +21,6 @@ const scheduleReservationReminders = () => {
 };
 
 export default {
-	// scheduleReservationOrganization,
+	scheduleReservationOrganization,
 	scheduleReservationReminders,
 };
