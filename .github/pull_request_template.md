@@ -1,11 +1,8 @@
 ## Descripción de cambios
-- <!--- Descripción -->
-
-## Error que resuelve o característica que se implementa
-- <!--- Número y enlace -->
+-   <!--- Descripción -->
 
 ## Lista de Verificación
-- [ ] Revisé a detalle mi código.
-- [ ] Si se trata de una característica esencial, he realizado las pruebas correspondientes.
-- [ ] Agregué comentarios a mi código.
-- [ ] Mis cambios no generan ninguna alerta.
+-   [ ] Agregué comentarios a mi código.
+-   [ ] Mis cambios no generan ninguna alerta.
+-   [ ] En caso de requerirse, actualicé o generé la documentación de swagger correspondiente.
+-   [ ] En caso de requerirse, actualicé o generé las pruebas de Jest correspondientes.

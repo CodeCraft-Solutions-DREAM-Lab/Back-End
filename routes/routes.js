@@ -10,6 +10,8 @@ import videowall from "../controllers/videowall.js";
 import materiales from "../controllers/materiales.js";
 import perfil from "../controllers/perfil.js";
 import logros from "../controllers/logros.js";
+import dashboard from "../controllers/dashboard.js";
+import asignarReservaciones from "../controllers/schedules/asignarReservaciones.js";
 
 const router = express.Router();
 
@@ -24,6 +26,17 @@ router.use("/videowall", videowall);
 router.use("/materiales", materiales);
 router.use("/perfil", perfil);
 router.use("/logros", logros);
+router.use("/dashboard", dashboard);
+// Endpoint para correr manualmente la función para asignar reservaciones
+router.get("/correr-asignacion", async (req, res) => {
+    try {
+        await asignarReservaciones();
+        res.status(200).send("Reservations asignadas correctamente.");
+    } catch (err) {
+        console.error("Error al intentar asignar reservaciones.", err);
+        res.status(500).send("Hubo un error al intentar asignar reservaciones.");
+    }
+});
 
 
 export { router };
