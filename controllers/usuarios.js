@@ -216,17 +216,17 @@ router.post("/cambiarPrioridad", async (req, res) => {
 		}
 
 		const htmlTemplate = getHtmlTemplate(
-			"emails/templates/updatedPriorityPoints.html",
+			"updatedPriorityPoints",
 			{
 				mensaje: mensaje,
 				motivo: motivo,
 			}
 		);
 
-		await sendEmail(
+		sendEmail(
 			`${idUsuario.toUpperCase()}@tec.mx`,
 			"Prioridad actualizada",
-			mensaje,
+			"",
 			htmlTemplate
 		);
 

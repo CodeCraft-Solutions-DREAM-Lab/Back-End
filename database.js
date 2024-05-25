@@ -27,10 +27,20 @@ export default class Database {
 
     async disconnect() {
         try {
-            this.poolconnection.close();
-            console.log("Database connection closed");
+            if (this.poolconnection) {
+                await this.poolconnection.close();
+                this.connected = false;
+                console.log("Database connection closed");
+            }
         } catch (error) {
             console.error(`Error closing database connection: ${error}`);
+        }
+    }
+
+    async ensureConnected() {
+        if (!this.poolconnection || !this.poolconnection.connected) {
+            this.connected = false;
+            await this.connect();
         }
     }
 
