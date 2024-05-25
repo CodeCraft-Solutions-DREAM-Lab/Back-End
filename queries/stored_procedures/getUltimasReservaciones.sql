@@ -1,14 +1,30 @@
+DROP PROCEDURE IF EXISTS getUltimasReservaciones;
+
 CREATE PROCEDURE getUltimasReservaciones
     @idUsuario varchar(10)
 AS
 BEGIN
     SET NOCOUNT ON;
 
-	SELECT TOP 5 r.idSala, r.idExperiencia, s.nombre AS nombreSala, s.fotoURL, s.detallesURL, e.nombre AS nombreExperiencia, e.portadaURL
-	FROM [dbo].[Reservaciones] r
-	LEFT JOIN [dbo].[Salas] s ON r.idSala = s.idSala
-    LEFT JOIN [dbo].[Experiencias] e ON r.idExperiencia = e.idExperiencia
-    WHERE r.idUsuario = @idUsuario
-	ORDER BY r.fecha ASC;
+    -- Seleccionar las últimas 5 reservaciones cronológicamente
+    WITH UltimasReservaciones AS (
+        SELECT TOP 5 r.idReservacion, r.idSala, r.idExperiencia, r.fecha
+        FROM [dbo].[Reservaciones] r
+        WHERE r.idUsuario = @idUsuario
+        ORDER BY r.fecha DESC
+    )
+
+	-- Seleccionar salas únicas
+    SELECT DISTINCT null, s.idSala, s.nombre, s.fotoURL AS 'URL', 'sala' AS tipo
+    FROM UltimasReservaciones ur
+    JOIN [dbo].[Salas] s ON ur.idSala = s.idSala
+
+	UNION
+
+    -- Seleccionar experiencias únicas
+    SELECT DISTINCT e.idExperiencia, e.idSala, e.nombre, e.portadaURL AS 'URL', 'experiencia' AS tipo
+    FROM UltimasReservaciones ur
+    JOIN [dbo].[Experiencias] e ON ur.idExperiencia = e.idExperiencia
+    WHERE ur.idExperiencia IS NOT NULL  
 
 END;
