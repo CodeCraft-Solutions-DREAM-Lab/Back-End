@@ -5,40 +5,40 @@ SET
     NOCOUNT ON;
 
 SELECT
-    DATEPART (YEAR, fecha) AS Year,
-    DATEPART (MONTH, fecha) AS Month,
-    COUNT(*) AS ReservacionesTotales,
+    DATEPART (YEAR, fecha) AS year,
+    DATEPART (MONTH, fecha) AS month,
+    COUNT(*) AS reservacionesTotales,
     SUM(
         CASE
             WHEN estatus = 3 THEN 1
             ELSE 0
         END
-    ) AS ReservacionesConfirmadas,
+    ) AS reservacionesConfirmadas,
     SUM(
         CASE
             WHEN estatus = 4 THEN 1
             ELSE 0
         END
-    ) AS ReservacionesCanceladas,
+    ) AS reservacionesCanceladas,
     SUM(
         CASE
             WHEN estatus = 5 THEN 1
             ELSE 0
         END
-    ) AS ReservacionesEnEspera,
+    ) AS reservacionesEnEspera,
     SUM(
         CASE
             WHEN estatus = 6 THEN 1
             ELSE 0
         END
-    ) AS ReservacionesDenegadas
+    ) AS reservacionesDenegadas
 FROM
     Reservaciones
 GROUP BY
     DATEPART (YEAR, fecha),
     DATEPART (MONTH, fecha)
 ORDER BY
-    Year,
-    Month;
+    year,
+    month;
 
 END

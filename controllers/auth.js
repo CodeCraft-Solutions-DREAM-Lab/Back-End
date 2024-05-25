@@ -24,7 +24,9 @@ router.post("/usuario", async (req, res) => {
                     type: 'object',
                     properties: {
                         usuario: { type: 'string', example: 'test' },
-                        contrasena: { type: 'string', example: 'test' }
+                        contrasena: { type: 'string', example: 'test' },
+                        origen: { type: 'string', example: 'qr' },
+                        tagId: { type: 'string', example: 'test' }
                     }
                 }
             }
@@ -65,11 +67,11 @@ router.post("/usuario", async (req, res) => {
     }
     */
     try {
-        let { usuario, contrasena, origen } = req.body;
-        usuario = usuario.toLowerCase();
+        let { usuario, contrasena, origen, tagId } = req.body;
         origen = origen ? origen.toLowerCase() : null;
 
         if (!origen || origen !== "qr") {
+            usuario = usuario.toLowerCase();
             const shaPasword = sha512(String(contrasena));
 
             const result = await database.readAndConditions(
@@ -84,24 +86,33 @@ router.post("/usuario", async (req, res) => {
             if (result.length === 0) {
                 res.status(404).json({});
             } else {
-                var token = jwt.sign({ usuario: usuario }, TOKEN_SECRET, {
-                    expiresIn: "7d",
-                });
+                var token = jwt.sign(
+                    { usuario: result.idUsuario.toLowerCase() },
+                    TOKEN_SECRET,
+                    {
+                        expiresIn: "7d",
+                    }
+                );
                 res.status(200).json({ jwt: token });
             }
         } else {
+            tagId = tagId.toLowerCase();
             const result = await database.readStringId(
                 "Credenciales",
-                "idUsuario",
-                usuario
+                "tagId",
+                tagId
             );
 
             if (result.length === 0) {
                 res.status(404).json({});
             } else {
-                var token = jwt.sign({ usuario: usuario }, TOKEN_SECRET, {
-                    expiresIn: "10m",
-                });
+                var token = jwt.sign(
+                    { usuario: result.idUsuario.toLowerCase() },
+                    TOKEN_SECRET,
+                    {
+                        expiresIn: "10m",
+                    }
+                );
                 res.status(200).json({ jwt: token });
             }
         }

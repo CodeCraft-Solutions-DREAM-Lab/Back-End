@@ -10,7 +10,7 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import scheduler from "./scheduledTasks/scheduler.js";
 
-dotenv.config({ path: ".env.development" });
+dotenv.config({ path: ".env.development", encoding: "latin1" });
 
 const app = express();
 
@@ -54,8 +54,12 @@ if (!isRunningTest) {
         console.log(
             "\n\n\n========================================================="
         ); // Para separar los logs de "npm start
-        console.log(`|     Servidor disponible en http://localhost:${port}      |`);
-        console.log(`| Documentación de la API en http://localhost:${port}/docs |`);
+        console.log(
+            `|     Servidor disponible en http://localhost:${port}      |`
+        );
+        console.log(
+            `| Documentación de la API en http://localhost:${port}/docs |`
+        );
         console.log(
             "=========================================================\n\n\n"
         ); //

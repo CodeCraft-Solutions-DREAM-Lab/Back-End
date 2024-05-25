@@ -1,7 +1,4 @@
-DROP PROCEDURE IF EXISTS getReservacionesVideowall;
-GO
-
-CREATE PROCEDURE getReservacionesVideowall 
+CREATE OR ALTER PROCEDURE getReservacionesVideowall 
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -22,18 +19,20 @@ BEGIN
         r.duracion,
         r.fecha,
         l.iconoURL,
-        u.colorPreferido
+        u.colorPreferido,
+		u.idUsuario,
+		c.tagId
     FROM
         Reservaciones r
         INNER JOIN Salas s ON r.idSala = s.idSala
         INNER JOIN Usuarios u ON r.idUsuario = u.idUsuario
         INNER JOIN Logros l ON u.logroPrincipal = l.idLogro
+		INNER JOIN Credenciales c ON u.idUsuario = c.idUsuario
     WHERE
         r.estatus = @estatus
         AND r.fecha = @currentDate
         AND DATEADD(HOUR, r.duracion, r.horaInicio) > @currentTime
-        AND r.horaInicio <= @currentTime
 	ORDER BY
-        r.horaInicio,
-		DATEADD(HOUR, r.duracion, r.horaInicio);
+        r.horaInicio ASC,
+		DATEADD(HOUR, r.duracion, r.horaInicio) ASC;
 END

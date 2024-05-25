@@ -293,6 +293,14 @@
                   "contrasena": {
                     "type": "string",
                     "example": "test"
+                  },
+                  "origen": {
+                    "type": "string",
+                    "example": "qr"
+                  },
+                  "tagId": {
+                    "type": "string",
+                    "example": "test"
                   }
                 }
               }
@@ -1750,6 +1758,12 @@
                       },
                       "colorPreferido": {
                         "type": "string"
+                      },
+                      "idUsuario": {
+                        "type": "string"
+                      },
+                      "tagId": {
+                        "type": "string"
                       }
                     }
                   }
@@ -2171,6 +2185,291 @@
                     },
                     "obtenido": {
                       "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/reservacionesByMes": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Obtiene las reservaciones por mes",
+        "description": "Obtiene las reservaciones por mes",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "year": {
+                        "type": "integer"
+                      },
+                      "month": {
+                        "type": "integer"
+                      },
+                      "reservacionesTotales": {
+                        "type": "integer"
+                      },
+                      "reservacionesConfirmadas": {
+                        "type": "integer"
+                      },
+                      "reservacionesCanceladas": {
+                        "type": "integer"
+                      },
+                      "reservacionesEnEspera": {
+                        "type": "integer"
+                      },
+                      "reservacionesDenegadas": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/reservacionesBySalaByMes": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Obtiene las reservaciones por sala por mes",
+        "description": "Obtiene las reservaciones por sala por mes",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "year": {
+                        "type": "integer"
+                      },
+                      "month": {
+                        "type": "integer"
+                      },
+                      "salas": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string"
+                            },
+                            "value": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/salasDisponibles": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Obtiene las salas disponibles",
+        "description": "Obtiene las salas disponibles",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "sala": {
+                        "type": "string",
+                        "description": "Nombre de la sala",
+                        "example": "Electric Garage"
+                      },
+                      "bloqueada": {
+                        "type": "boolean",
+                        "description": "Indica si la sala está bloqueada o no",
+                        "example": false
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/usoMaterialByMes": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Obtiene el uso de material por mes",
+        "description": "Obtiene el uso de material por mes",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "year": {
+                        "type": "integer"
+                      },
+                      "month": {
+                        "type": "integer"
+                      },
+                      "materiales": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "material": {
+                              "type": "string"
+                            },
+                            "uso": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/penalizacionesByMes": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "Obtiene las penalizaciones por mes",
+        "description": "Obtiene las penalizaciones por mes",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "year": {
+                        "type": "integer"
+                      },
+                      "month": {
+                        "type": "integer"
+                      },
+                      "penalizaciones": {
+                        "type": "integer"
+                      }
                     }
                   }
                 }
