@@ -8,7 +8,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-import scheduleReservations from './scheduledTasks/scheduler.js';
+import scheduler from "./scheduledTasks/scheduler.js";
 
 dotenv.config({ path: ".env.development" });
 
@@ -31,8 +31,10 @@ app.use(router);
 // Para poder leer el body de las solicitudes http
 app.use(bodyParser.json());
 
-// Para hacer el ordenamiento y asignación de reservaciones cada 3 horas
-scheduleReservations();
+// Scheduled tasks
+for (const key in scheduler) {
+    scheduler[key]();
+}
 
 // Para poder visualizar la documentación de la API
 // Se obtiene el archivo swagger.json
