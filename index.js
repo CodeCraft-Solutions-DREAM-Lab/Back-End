@@ -8,7 +8,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-import scheduler from "./scheduledTaks/scheduler.js";
+import scheduler from "./scheduledTasks/scheduler.js";
 
 dotenv.config({ path: ".env.development" });
 
