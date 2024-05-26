@@ -36,28 +36,23 @@ for (const key in scheduler) {
     scheduler[key]();
 }
 
-if (process.env.NODE_ENV !== "test") {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = dirname(__filename);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-    const jsonPath = path.resolve(__dirname, "swagger.json");
-    const jsonString = fs.readFileSync(jsonPath, "utf8");
-    const swaggerDocs = JSON.parse(jsonString);
-    app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
-    app.listen(port, () => {
-        console.log(
-            "\n\n\n========================================================="
-        );
-        console.log(
-            `|     Servidor disponible en http://localhost:${port}      |`
-        );
-        console.log(
-            `| Documentación de la API en http://localhost:${port}/docs |`
-        );
-        console.log(
-            "=========================================================\n\n\n"
-        );
-    });
-}
+const jsonPath = path.resolve(__dirname, "swagger.json");
+const jsonString = fs.readFileSync(jsonPath, "utf8");
+const swaggerDocs = JSON.parse(jsonString);
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
+app.listen(port, () => {
+    console.log(
+        "\n\n\n========================================================="
+    );
+    console.log(`|     Servidor disponible en http://localhost:${port}      |`);
+    console.log(`| Documentación de la API en http://localhost:${port}/docs |`);
+    console.log(
+        "=========================================================\n\n\n"
+    );
+});
 
 export default app;

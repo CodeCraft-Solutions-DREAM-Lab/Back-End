@@ -1,5 +1,3 @@
-import { setup } from "swagger-ui-express";
-
 export default {
     transform: {
         "^.+\\.js$": "babel-jest",
