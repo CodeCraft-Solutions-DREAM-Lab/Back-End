@@ -1,16 +1,12 @@
 import request from "supertest";
 import router from "../../controllers/materiales.js";
 import {
-    mockExperiencia,
-    mockExperiencias,
-    mockGrupos,
     mockError,
     mockMaterialesRequest,
     mockMateriales,
 } from "../mockData.js";
 import {
     mockDatabase,
-    mockReadAll,
     mockExecuteProcedure,
     clearMocks,
 } from "../mockDatabase.js";

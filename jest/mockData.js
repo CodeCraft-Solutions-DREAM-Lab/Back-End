@@ -210,3 +210,58 @@ export const mockMaterialesRequest = {
     horaInicio: "12:00",
     duracion: 2,
 };
+
+export const mockLogrosPerfil = {
+    idLogro: 0,
+    nombre: "string",
+    iconoURL: "string",
+};
+
+export const mockConfiguracionLogroPerfil = {
+    idLogro: 0,
+    nombre: "string",
+    iconoURL: "string",
+    colorPreferido: "string",
+};
+
+export const mockLogrosPerfilResponse = {
+    logros: mockLogrosPerfil,
+    configuracionLogro: mockConfiguracionLogroPerfil,
+};
+
+export const mockConfigurarLogroPerfilRequest = {
+    idLogro: 0,
+    colorPreferido: "string",
+};
+
+export const mockDatosPerfil = {
+    recordsets: [
+        [
+            {
+                prioridad: 0,
+                nombre: "string",
+                apellidoP: "string",
+                apellidoM: "string",
+                apodo: "string",
+                iconoURL: "string",
+            },
+        ],
+    ],
+    recordset: [
+        {
+            idSala: 0,
+            idReservacion: 0,
+            idExperiencia: 0,
+            idMesa: 0,
+            estatus: 0,
+            horaInicio: "string",
+            duracion: 0,
+            fecha: "string",
+            numPersonas: 0,
+            nombre_experiencia: "string",
+            nombre_sala: "string",
+        },
+    ],
+    output: {},
+    rowsAffected: ["string"],
+};

@@ -29,7 +29,7 @@ router.use("/experiencias", experiencias(database));
 router.use("/mesas", mesas(database));
 router.use("/videowall", videowall(database));
 router.use("/materiales", materiales(database));
-router.use("/perfil", perfil);
+router.use("/perfil", perfil(database));
 router.use("/logros", logros(database));
 router.use("/dashboard", dashboard(database));
 // Endpoint para correr manualmente la función para asignar reservaciones
