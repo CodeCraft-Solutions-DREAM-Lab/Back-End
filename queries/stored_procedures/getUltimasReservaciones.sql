@@ -15,7 +15,7 @@ BEGIN
     )
 
 	-- Seleccionar salas únicas
-    SELECT DISTINCT null, s.idSala, s.nombre, s.fotoURL AS 'URL', 'sala' AS tipo
+    SELECT DISTINCT null AS 'idExperiencia', s.idSala, s.nombre, s.fotoURL AS 'URL', 'sala' AS tipo
     FROM UltimasReservaciones ur
     JOIN [dbo].[Salas] s ON ur.idSala = s.idSala
 
