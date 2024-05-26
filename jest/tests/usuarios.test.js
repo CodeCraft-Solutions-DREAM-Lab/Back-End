@@ -2,11 +2,6 @@ import request from "supertest";
 import router from "../../controllers/usuarios.js";
 import {
     mockError,
-    mockReservacionesByMes,
-    mockReservacionesBySalaByMes,
-    mockSalasDisponibles,
-    mockUsoMaterialByMes,
-    mockPenalizacionesByMes,
     mockUsuarios,
     mockUsuario,
     mockRowsAffectedUsuarios,

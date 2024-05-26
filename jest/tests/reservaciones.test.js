@@ -4,7 +4,7 @@ import {
     mockReservaciones,
     mockReservacion,
     mockError,
-    mockCronograma,
+    mockCronogramaReservaciones,
     mockRowsAffectedReservaciones,
 } from "../mockData.js";
 import {
@@ -63,11 +63,11 @@ describe("Reservaciones", () => {
     });
 
     it("GET /cronograma - Obtiene todas las reservaciones confirmadas para el cronograma - 200", async () => {
-        mockExecuteProcedure.mockResolvedValue(mockCronograma);
+        mockExecuteProcedure.mockResolvedValue(mockCronogramaReservaciones);
 
         const res = await request(app).get("/cronograma");
         expect(res.statusCode).toEqual(200);
-        expect(res.body).toEqual(mockCronograma);
+        expect(res.body).toEqual(mockCronogramaReservaciones);
     });
 
     it("GET /cronograma - Obtiene todas las reservaciones confirmadas para el cronograma - 500", async () => {

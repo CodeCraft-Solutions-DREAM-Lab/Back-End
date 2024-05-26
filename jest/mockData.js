@@ -62,21 +62,21 @@ export const mockPenalizacionesByMes = [
 ];
 
 export const mockUpdateLogro = {
-    idLogro: 0,
-    valorActual: 0,
+    idLogro: 1,
+    valorActual: 1,
     obtenido: true,
 };
 
 export const mockReservacion = {
-    idReservacion: 0,
+    idReservacion: 1,
     idUsuario: "string",
-    idSala: 0,
-    idExperiencia: 0,
-    idMesa: 0,
+    idSala: 1,
+    idExperiencia: 1,
+    idMesa: 1,
     horaInicio: "2024-05-26T07:23:12.552Z",
-    duracion: 0,
+    duracion: 1,
     fecha: "2024-05-26T07:23:12.552Z",
-    numPersonas: 0,
+    numPersonas: 1,
 };
 
 export const mockReservaciones = [mockReservacion];
@@ -99,10 +99,10 @@ export const mockRowsAffectedReservaciones = {
     },
 };
 
-export const mockCronograma = [
+export const mockCronogramaReservaciones = [
     {
-        id: 0,
-        group: 0,
+        id: 1,
+        group: 1,
         title: "string",
         start_time: "2024-05-26T07:41:29.345Z",
         end_time: "2024-05-26T07:41:29.345Z",
@@ -132,11 +132,59 @@ export const mockRowsAffectedUsuarios = {
 };
 
 export const mockUsuarioPrioridad = {
-    idUsuario: "a00833173",
+    idUsuario: "test",
     puntos: 10,
     motivo: "string",
 };
 
 export const mockMessageResponse = {
     message: expect.any(String),
+};
+
+export const mockSala = {
+    idSala: 1,
+    nombre: "string",
+    cantidadMesas: 10,
+    descripcion: "string",
+    fotoURL: "string",
+    detallesURL: "string",
+};
+
+export const mockSalas = [mockSala];
+
+export const mockCronogramaSalas = [
+    {
+        id: 1,
+        title: "string",
+        sala: true,
+        idSala: 1,
+    },
+];
+
+export const mockHorasLibresSalas = {
+    idSala: 1,
+    fecha: "2024-05-26",
+    personas: 0,
+};
+
+export const mockHorasLibresSalasResponse = [
+    {
+        hora: 1,
+        cupos: 10,
+        competidores: 0,
+    },
+];
+
+export const mockMesa = {
+    idMesa: 1,
+    idSala: 1,
+    cupos: 10,
+};
+
+export const mockMesas = [mockMesa];
+
+export const mockNombreSala = [{ nombre: "string" }];
+
+export const mockNombreSalaResponse = {
+    nombre: expect.any(String),
 };

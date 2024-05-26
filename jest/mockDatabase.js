@@ -7,6 +7,7 @@ export const mockCreate = jest.fn();
 export const mockRead = jest.fn();
 export const mockUpdate = jest.fn();
 export const mockDelete = jest.fn();
+export const mockExecuteQuery = jest.fn();
 
 export const mockDatabase = {
     readAll: mockReadAll,
@@ -18,6 +19,7 @@ export const mockDatabase = {
     read: mockRead,
     update: mockUpdate,
     delete: mockDelete,
+    executeQuery: mockExecuteQuery,
 };
 
 export function clearMocks() {
@@ -30,4 +32,5 @@ export function clearMocks() {
     mockRead.mockClear();
     mockUpdate.mockClear();
     mockDelete.mockClear();
+    mockExecuteQuery.mockClear();
 }
