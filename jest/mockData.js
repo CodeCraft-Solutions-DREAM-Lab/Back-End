@@ -15,3 +15,5 @@ export const mockExperiencia = {
 export const mockExperiencias = [mockExperiencia];
 
 export const mockGrupos = [{ idUsuario: "test", idUF: 1 }];
+
+export const mockError = { error: "Database error" };

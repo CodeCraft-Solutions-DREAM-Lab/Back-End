@@ -1,10 +1,7 @@
 import express from "express";
 
-
 const router = express.Router();
 router.use(express.json());
-
-
 
 export default function (database) {
     router.get("/", async (_, res) => {
@@ -180,10 +177,13 @@ export default function (database) {
                     "getExperienciaById",
                     { idExperiencia: experienciaId }
                 );
-                console.log(`experiencia: ${JSON.stringify(result)}`);
-                res.status(200).json(result);
+                if (result.length === 0) {
+                    res.status(404).end();
+                } else {
+                    res.status(200).json(result);
+                }
             } else {
-                res.status(404);
+                res.status(404).end();
             }
         } catch (err) {
             res.status(500).json({ error: err?.message });
