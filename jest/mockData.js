@@ -108,3 +108,35 @@ export const mockCronograma = [
         end_time: "2024-05-26T07:41:29.345Z",
     },
 ];
+
+export const mockUsuario = {
+    idUsuario: "string",
+    nombre: "string",
+    apellidoP: "string",
+    apellidoM: "string",
+    tipo: "string",
+    prioridad: 0,
+};
+
+export const mockUsuarios = [mockUsuario];
+
+export const mockRowsAffectedUsuarios = {
+    rowsAffected: {
+        idUsuario: expect.any(String),
+        nombre: expect.any(String),
+        apellidoP: expect.any(String),
+        apellidoM: expect.any(String),
+        tipo: expect.any(String),
+        prioridad: expect.any(Number),
+    },
+};
+
+export const mockUsuarioPrioridad = {
+    idUsuario: "a00833173",
+    puntos: 10,
+    motivo: "string",
+};
+
+export const mockMessageResponse = {
+    message: expect.any(String),
+};

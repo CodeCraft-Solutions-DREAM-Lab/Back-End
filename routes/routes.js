@@ -20,7 +20,7 @@ const database = new Database(config);
 
 const router = express.Router();
 
-router.use("/usuarios", usuarios);
+router.use("/usuarios", usuarios(database));
 router.use("/auth", auth(database));
 router.use("/reservaciones", reservaciones(database));
 router.use("/salas", salas);
