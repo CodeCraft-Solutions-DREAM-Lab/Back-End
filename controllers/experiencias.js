@@ -251,7 +251,7 @@ router.post("/UFs", async (req, res) => {
     */
     try {
         // Obtener el usuario enviado como parámetro desde la solicitud
-        const userId = req.body.user; // Obtenemos el user
+        const userId = req.body.user.toLowerCase(); // Obtenemos el user
         const grupos = await database.readAll("GruposUsuarios");
         const ufsUsuario = grupos.filter((grupo) => grupo.idUsuario == userId);
         const expUFs = await database.readAll("Experiencias");
