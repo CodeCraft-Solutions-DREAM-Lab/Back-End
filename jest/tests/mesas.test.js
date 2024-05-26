@@ -2,14 +2,7 @@ import request from "supertest";
 import router from "../../controllers/mesas.js";
 import {
     mockError,
-    mockSalas,
-    mockCronogramaSalas,
-    mockHorasLibresSalas,
-    mockHorasLibresSalasResponse,
-    mockReservaciones,
     mockMesas,
-    mockNombreSala,
-    mockNombreSalaResponse,
     mockCuposMesa,
     mockCuposMesaResponse,
 } from "../mockData.js";
@@ -18,7 +11,6 @@ import {
     mockReadAll,
     mockExecuteProcedure,
     clearMocks,
-    mockExecuteQuery,
 } from "../mockDatabase.js";
 import server from "../mockServer.js";
 
