@@ -194,3 +194,19 @@ export const mockCuposMesa = [{ maxCupos: 10 }];
 export const mockCuposMesaResponse = {
     maxCupos: expect.any(Number),
 };
+
+export const mockMaterial = {
+    id: 0,
+    name: "string",
+    cantidadDisponible: 0,
+    image: "string",
+};
+
+export const mockMateriales = [mockMaterial];
+
+export const mockMaterialesRequest = {
+    idSala: 1,
+    fecha: "2022-12-31",
+    horaInicio: "12:00",
+    duracion: 2,
+};
