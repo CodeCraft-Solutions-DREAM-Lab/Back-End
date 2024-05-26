@@ -26,7 +26,7 @@ router.use("/reservaciones", reservaciones(database));
 router.use("/salas", salas);
 router.use("/chatbot", chatbotBridge);
 router.use("/experiencias", experiencias(database));
-router.use("/mesas", mesas);
+router.use("/mesas", mesas(database));
 router.use("/videowall", videowall);
 router.use("/materiales", materiales);
 router.use("/perfil", perfil);

@@ -188,3 +188,9 @@ export const mockNombreSala = [{ nombre: "string" }];
 export const mockNombreSalaResponse = {
     nombre: expect.any(String),
 };
+
+export const mockCuposMesa = [{ maxCupos: 10 }];
+
+export const mockCuposMesaResponse = {
+    maxCupos: expect.any(Number),
+};

@@ -1,9 +1,6 @@
 import request from "supertest";
 import router from "../../controllers/salas.js";
 import {
-    mockExperiencia,
-    mockExperiencias,
-    mockGrupos,
     mockError,
     mockSalas,
     mockCronogramaSalas,
