@@ -60,3 +60,51 @@ export const mockPenalizacionesByMes = [
         penalizaciones: 0,
     },
 ];
+
+export const mockUpdateLogro = {
+    idLogro: 0,
+    valorActual: 0,
+    obtenido: true,
+};
+
+export const mockReservacion = {
+    idReservacion: 0,
+    idUsuario: "string",
+    idSala: 0,
+    idExperiencia: 0,
+    idMesa: 0,
+    horaInicio: "2024-05-26T07:23:12.552Z",
+    duracion: 0,
+    fecha: "2024-05-26T07:23:12.552Z",
+    numPersonas: 0,
+};
+
+export const mockReservaciones = [mockReservacion];
+
+export const mockRowsAffected = {
+    rowsAffected: {},
+};
+
+export const mockRowsAffectedReservaciones = {
+    rowsAffected: {
+        idUsuario: expect.any(String),
+        idSala: expect.any(Number),
+        idExperiencia: expect.any(Number),
+        idMesa: expect.any(Number),
+        horaInicio: expect.any(String),
+        duracion: expect.any(Number),
+        fecha: expect.any(String),
+        numPersonas: expect.any(Number),
+        idReservacion: expect.any(Number),
+    },
+};
+
+export const mockCronograma = [
+    {
+        id: 0,
+        group: 0,
+        title: "string",
+        start_time: "2024-05-26T07:41:29.345Z",
+        end_time: "2024-05-26T07:41:29.345Z",
+    },
+];

@@ -22,7 +22,7 @@ const router = express.Router();
 
 router.use("/usuarios", usuarios);
 router.use("/auth", auth(database));
-router.use("/reservaciones", reservaciones);
+router.use("/reservaciones", reservaciones(database));
 router.use("/salas", salas);
 router.use("/chatbot", chatbotBridge);
 router.use("/experiencias", experiencias(database));
@@ -30,7 +30,7 @@ router.use("/mesas", mesas);
 router.use("/videowall", videowall);
 router.use("/materiales", materiales);
 router.use("/perfil", perfil);
-router.use("/logros", logros);
+router.use("/logros", logros(database));
 router.use("/dashboard", dashboard(database));
 // Endpoint para correr manualmente la función para asignar reservaciones
 router.get("/correr-asignacion", async (req, res) => {
