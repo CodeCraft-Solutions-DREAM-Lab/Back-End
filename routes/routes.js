@@ -13,15 +13,15 @@ import logros from "../controllers/logros.js";
 import dashboard from "../controllers/dashboard.js";
 import asignarReservaciones from "../controllers/schedules/asignarReservaciones.js";
 
+// Create database object
 import { config } from "../config.js";
 import Database from "../database.js";
-// Create database object
 const database = new Database(config);
 
 const router = express.Router();
 
 router.use("/usuarios", usuarios);
-router.use("/auth", auth);
+router.use("/auth", auth(database));
 router.use("/reservaciones", reservaciones);
 router.use("/salas", salas);
 router.use("/chatbot", chatbotBridge);
@@ -31,7 +31,7 @@ router.use("/videowall", videowall);
 router.use("/materiales", materiales);
 router.use("/perfil", perfil);
 router.use("/logros", logros);
-router.use("/dashboard", dashboard);
+router.use("/dashboard", dashboard(database));
 // Endpoint para correr manualmente la función para asignar reservaciones
 router.get("/correr-asignacion", async (req, res) => {
     try {
