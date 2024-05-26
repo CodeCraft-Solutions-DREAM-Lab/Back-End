@@ -8,6 +8,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import scheduler from "./scheduledTasks/scheduler.js";
 
 dotenv.config({ path: ".env.development", encoding: "latin1" });
 
@@ -29,6 +30,11 @@ app.use(router);
 
 // Para poder leer el body de las solicitudes http
 app.use(bodyParser.json());
+
+// Scheduled tasks
+for (const key in scheduler) {
+    scheduler[key]();
+}
 
 // Para poder visualizar la documentación de la API
 // Se obtiene el archivo swagger.json
