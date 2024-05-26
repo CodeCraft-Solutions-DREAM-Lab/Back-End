@@ -36,24 +36,18 @@ for (const key in scheduler) {
     scheduler[key]();
 }
 
-// Para poder visualizar la documentación de la API
-// Se obtiene el archivo swagger.json
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const jsonPath = path.resolve(__dirname, "swagger.json");
-const jsonString = fs.readFileSync(jsonPath, "utf8");
-const swaggerDocs = JSON.parse(jsonString);
-// Se visualiza la documentación en la ruta /docs
-app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+if (process.env.NODE_ENV !== "test") {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
 
-// Check if the script is being run by Jest
-const isRunningTest = process.argv.some((arg) => arg.includes("jest"));
-
-if (!isRunningTest) {
+    const jsonPath = path.resolve(__dirname, "swagger.json");
+    const jsonString = fs.readFileSync(jsonPath, "utf8");
+    const swaggerDocs = JSON.parse(jsonString);
+    app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
     app.listen(port, () => {
         console.log(
             "\n\n\n========================================================="
-        ); // Para separar los logs de "npm start
+        );
         console.log(
             `|     Servidor disponible en http://localhost:${port}      |`
         );
@@ -62,8 +56,8 @@ if (!isRunningTest) {
         );
         console.log(
             "=========================================================\n\n\n"
-        ); //
+        );
     });
-} else {
-    module.exports = app;
 }
+
+export default app;

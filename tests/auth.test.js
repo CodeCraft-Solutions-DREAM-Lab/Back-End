@@ -1,21 +1,11 @@
-const request = require("supertest");
-const app = require("../index");
+import request from "supertest";
+import app from "../app.js";
 
 describe("Auth Tests", () => {
-    let server;
-
-    beforeAll(() => {
-        server = app.listen();
-    });
-
-    afterAll(() => {
-        return server.close();
-    });
-
     it("POST auth/usuario/", async () => {
         const res = await request(app).post("/auth/usuario").send({
-            usuario: "test",
-            contrasena: "test",
+            usuario: "A01177767",
+            contrasena: "dreamlab",
         });
         expect(res.statusCode).toEqual(200);
         expect(res.body.jwt).not.toBeNull();
@@ -23,9 +13,17 @@ describe("Auth Tests", () => {
 
     it("POST auth/token/", async () => {
         const res = await request(app).post("/auth/token").send({
-            token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiQTAxMTc3NzY3IiwiaWF0IjoxNzEyNjMzMjU2fQ.-ky8LBLfLFCRmENvP0QetksCFuN9D5R0OGC9NiN2WD0",
+            token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiYTAxMTc3NzY3IiwiaWF0IjoxNzE1NzUzNzQzfQ.ml-vMvWq5X8_FdILT9YIPv0oPc9Wlvj3f_N4VhHCAZA",
         });
         expect(res.statusCode).toEqual(200);
-        expect(res.body).toEqual(true);
+        expect(res.body).toEqual(
+            expect.objectContaining({
+                isAuth: expect.any(Boolean),
+                token_data: expect.objectContaining({
+                    usuario: expect.any(String),
+                    iat: expect.any(Number),
+                }),
+            })
+        );
     });
 });

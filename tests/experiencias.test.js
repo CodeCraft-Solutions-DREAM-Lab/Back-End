@@ -1,17 +1,7 @@
-const request = require("supertest");
-const app = require("../index");
+import request from "supertest";
+import app from "../app.js";
 
 describe("Experiencias Tests", () => {
-    let server;
-
-    beforeAll(() => {
-        server = app.listen();
-    });
-
-    afterAll(() => {
-        return server.close();
-    });
-
     it("GET /experiencias", async () => {
         const res = await request(app).get("/experiencias");
         expect(res.statusCode).toEqual(200);

@@ -1,17 +1,7 @@
-const request = require("supertest");
-const app = require("../index");
+import request from "supertest";
+import app from "../app.js";
 
 describe("Logros Tests", () => {
-    let server;
-
-    beforeAll(() => {
-        server = app.listen();
-    });
-
-    afterAll(() => {
-        return server.close();
-    });
-
     it("PUT /logros/:idUsuario/:idLogro", async () => {
         const idUsuario = 1;
         const idLogro = 1;
