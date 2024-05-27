@@ -13,25 +13,20 @@ import logros from "../controllers/logros.js";
 import dashboard from "../controllers/dashboard.js";
 import asignarReservaciones from "../controllers/schedules/asignarReservaciones.js";
 
-// Create database object
-import { config } from "../config.js";
-import Database from "../database.js";
-const database = new Database(config);
-
 const router = express.Router();
 
-router.use("/usuarios", usuarios(database));
-router.use("/auth", auth(database));
-router.use("/reservaciones", reservaciones(database));
-router.use("/salas", salas(database));
+router.use("/usuarios", usuarios);
+router.use("/auth", auth);
+router.use("/reservaciones", reservaciones);
+router.use("/salas", salas);
 router.use("/chatbot", chatbotBridge);
-router.use("/experiencias", experiencias(database));
-router.use("/mesas", mesas(database));
-router.use("/videowall", videowall(database));
-router.use("/materiales", materiales(database));
-router.use("/perfil", perfil(database));
-router.use("/logros", logros(database));
-router.use("/dashboard", dashboard(database));
+router.use("/experiencias", experiencias);
+router.use("/mesas", mesas);
+router.use("/videowall", videowall);
+router.use("/materiales", materiales);
+router.use("/perfil", perfil);
+router.use("/logros", logros);
+router.use("/dashboard", dashboard);
 // Endpoint para correr manualmente la función para asignar reservaciones
 router.get("/correr-asignacion", async (req, res) => {
     try {
@@ -39,10 +34,9 @@ router.get("/correr-asignacion", async (req, res) => {
         res.status(200).send("Reservations asignadas correctamente.");
     } catch (err) {
         console.error("Error al intentar asignar reservaciones.", err);
-        res.status(500).send(
-            "Hubo un error al intentar asignar reservaciones."
-        );
+        res.status(500).send("Hubo un error al intentar asignar reservaciones.");
     }
 });
+
 
 export { router };

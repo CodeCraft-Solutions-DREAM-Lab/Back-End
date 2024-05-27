@@ -1,11 +1,15 @@
 import express from "express";
+import { config } from "../config.js";
+import Database from "../database.js";
 
 const router = express.Router();
 router.use(express.json());
 
-export default function (database) {
-    router.get("/", async (_, res) => {
-        /*
+// Create database object
+const database = new Database(config);
+
+router.get("/", async (_, res) => {
+    /*
     #swagger.tags = ['Mesas']
     #swagger.description = 'Obtiene todas las mesas'
     #swagger.summary = 'Obtiene todas las mesas'
@@ -41,17 +45,18 @@ export default function (database) {
         }
     }
     */
-        try {
-            // Return a list of usuarios
-            const usuarios = await database.readAll("Mesas");
-            res.status(200).json(usuarios);
-        } catch (err) {
-            res.status(500).json({ error: err?.message });
-        }
-    });
+    try {
+        // Return a list of usuarios
+        const usuarios = await database.readAll("Mesas");
+        console.log(`Mesas: ${JSON.stringify(usuarios)}`);
+        res.status(200).json(usuarios);
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
 
-    router.get("/:idSala", async (req, res) => {
-        /*
+router.get("/:idSala", async (req, res) => {
+    /*
     #swagger.tags = ['Mesas']
     #swagger.description = 'Obtiene las mesas de una sala específica'
     #swagger.summary = 'Obtiene las mesas de una sala específica'
@@ -88,20 +93,17 @@ export default function (database) {
         }
     }
     */
-        try {
-            const salaId = req.params.idSala;
+    try {
+        const salaId = req.params.idSala;
 
-            const result = await database.executeProcedure(
-                "getMaxCuposBySalaId",
-                {
-                    idSala: salaId,
-                }
-            );
-            res.status(200).json(result[0]);
-        } catch (err) {
-            res.status(500).json({ error: err?.message });
-        }
-    });
+        const result = await database.executeProcedure("getMaxCuposBySalaId", {
+            idSala: salaId,
+        });
+        console.log(`experiencia: ${JSON.stringify(result)}`);
+        res.status(200).json(result[0]);
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
 
-    return router;
-}
+export default router;
