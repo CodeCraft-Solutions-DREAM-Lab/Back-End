@@ -1,17 +1,13 @@
 import express from "express";
-import { config } from "../config.js";
-import Database from "../database.js";
 // import * as mailer from "../nodemailer.js";
 import { getHtmlTemplate, sendEmail } from "../emails/nodemailer.js";
 
 const router = express.Router();
 router.use(express.json());
 
-// Create database object
-const database = new Database(config);
-
-router.get("/", async (_, res) => {
-	/*
+export default function (database) {
+    router.get("/", async (_, res) => {
+        /*
     #swagger.tags = ['Usuarios']
     #swagger.description = 'Obtiene todos los usuarios'
     #swagger.summary = 'Obtiene todos los usuarios'
@@ -50,18 +46,17 @@ router.get("/", async (_, res) => {
         }
     }
     */
-	try {
-		// Return a list of usuarios
-		const usuarios = await database.readAll("Usuarios");
-		console.log(`Usuarios: ${JSON.stringify(usuarios)}`);
-		res.status(200).json(usuarios);
-	} catch (err) {
-		res.status(500).json({ error: err?.message });
-	}
-});
+        try {
+            // Return a list of usuarios
+            const usuarios = await database.readAll("Usuarios");
+            res.status(200).json(usuarios);
+        } catch (err) {
+            res.status(500).json({ error: err?.message });
+        }
+    });
 
-router.put("/:idUsuario", async (req, res) => {
-	/*
+    router.put("/:idUsuario", async (req, res) => {
+        /*
     #swagger.tags = ['Usuarios']
     #swagger.description = 'Obtiene un usuario por id'
     #swagger.summary = 'Obtiene un usuario por id'
@@ -105,25 +100,24 @@ router.put("/:idUsuario", async (req, res) => {
         }
     }
     */
-	try {
-		const usuarioId = req.params.idUsuario;
-		console.log(`usuarioId: ${usuarioId}`);
-		const valor = req.body;
+        try {
+            const usuarioId = req.params.idUsuario;
+            const valor = req.body;
 
-		const rowsAffected = await database.update(
-			"Usuarios",
-			"idUsuario",
-			usuarioId,
-			valor
-		);
-		res.status(200).json({ rowsAffected });
-	} catch (err) {
-		res.status(500).json({ error: err?.message });
-	}
-});
+            const rowsAffected = await database.update(
+                "Usuarios",
+                "idUsuario",
+                usuarioId,
+                valor
+            );
+            res.status(200).json({ rowsAffected });
+        } catch (err) {
+            res.status(500).json({ error: err?.message });
+        }
+    });
 
-router.post("/cambiarPrioridad", async (req, res) => {
-	/*
+    router.post("/cambiarPrioridad", async (req, res) => {
+        /*
     #swagger.tags = ['Usuarios', 'Prioridad']
     #swagger.description = 'Cambia los puntos de prioridad de un usuario, lo guarda en el historial de cambios y envía un correo al usuario'
     #swagger.summary = 'Cambia los puntos de prioridad de un usuario'
@@ -182,58 +176,58 @@ router.post("/cambiarPrioridad", async (req, res) => {
         }
     }
     */
-	try {
-		const { idUsuario, puntos, motivo } = req.body;
+        try {
+            const { idUsuario, puntos, motivo } = req.body;
 
-		if (!idUsuario || !puntos || !motivo) {
-			res.status(400).json({
-				error: "idUsuario, puntos and motivo are required",
-			});
-			return;
-		}
+            if (!idUsuario || !puntos || !motivo) {
+                res.status(400).json({
+                    error: "idUsuario, puntos and motivo are required",
+                });
+                return;
+            }
 
-		await database.executeProcedure("addPrioridadToUser", {
-			idUsuario,
-			prioridad: puntos,
-		});
+            await database.executeProcedure("addPrioridadToUser", {
+                idUsuario,
+                prioridad: puntos,
+            });
 
-		const currentDate = new Date();
-		const sqlDate = currentDate.toISOString().split("T")[0];
+            const currentDate = new Date();
+            const sqlDate = currentDate.toISOString().split("T")[0];
 
-		await database.executeProcedure("insertIntoHistorialPrioridad", {
-			idUsuario,
-			fecha: sqlDate,
-			motivo,
-			prioridad: puntos,
-		});
+            await database.executeProcedure("insertIntoHistorialPrioridad", {
+                idUsuario,
+                fecha: sqlDate,
+                motivo,
+                prioridad: puntos,
+            });
 
-		let mensaje = "";
+            let mensaje = "";
 
-		if (puntos >= 0) {
-			mensaje = "Tu prioridad ha aumentado por " + puntos + " puntos.";
-		} else {
-			mensaje = "Tu prioridad ha disminuido por " + puntos + " puntos.";
-		}
+            if (puntos >= 0) {
+                mensaje =
+                    "Tu prioridad ha aumentado por " + puntos + " puntos.";
+            } else {
+                mensaje =
+                    "Tu prioridad ha disminuido por " + puntos + " puntos.";
+            }
 
-		const htmlTemplate = getHtmlTemplate(
-			"updatedPriorityPoints",
-			{
-				mensaje: mensaje,
-				motivo: motivo,
-			}
-		);
+            const htmlTemplate = getHtmlTemplate("updatedPriorityPoints", {
+                mensaje: mensaje,
+                motivo: motivo,
+            });
 
-		sendEmail(
-			`${idUsuario.toUpperCase()}@tec.mx`,
-			"Prioridad actualizada",
-			"",
-			htmlTemplate
-		);
+            sendEmail(
+                `${idUsuario.toUpperCase()}@tec.mx`,
+                "Prioridad actualizada",
+                "",
+                htmlTemplate
+            );
 
-		return res.status(200).json({ message: "Prioridad updated" });
-	} catch (err) {
-		res.status(500).json({ error: err?.message });
-	}
-});
+            return res.status(200).json({ message: "Prioridad updated" });
+        } catch (err) {
+            res.status(500).json({ error: err?.message });
+        }
+    });
 
-export default router;
+    return router;
+}

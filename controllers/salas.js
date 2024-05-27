@@ -1,14 +1,10 @@
 import express from "express";
-import { config } from "../config.js";
-import Database from "../database.js";
 const router = express.Router();
 router.use(express.json());
 
-// Create database object
-const database = new Database(config);
-
-router.get("/", async (_, res) => {
-    /*
+export default function (database) {
+    router.get("/", async (_, res) => {
+        /*
     #swagger.tags = ['Salas']
     #swagger.description = 'Obtiene todas las salas'
     #swagger.summary = 'Obtiene todas las salas'
@@ -47,17 +43,17 @@ router.get("/", async (_, res) => {
         }
     }
     */
-    try {
-        // Regresa todas las salas
-        const salas = await database.readAll("Salas");
-        res.status(200).json(salas);
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
-});
+        try {
+            // Regresa todas las salas
+            const salas = await database.readAll("Salas");
+            res.status(200).json(salas);
+        } catch (err) {
+            res.status(500).json({ error: err?.message });
+        }
+    });
 
-router.get("/cronograma", async (_, res) => {
-    /*
+    router.get("/cronograma", async (_, res) => {
+        /*
     #swagger.tags = ['Salas']
     #swagger.description = 'Obtiene el cronograma de salas y mesas intercaladas'
     #swagger.summary = 'Obtiene el cronograma de salas y mesas intercaladas'
@@ -94,19 +90,19 @@ router.get("/cronograma", async (_, res) => {
         }
     }
     */
-    try {
-        const result = await database.executeProcedure(
-            "GetSalasYMesasIntercaladasCronograma",
-            {}
-        );
-        res.status(200).json(result);
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
-});
+        try {
+            const result = await database.executeProcedure(
+                "GetSalasYMesasIntercaladasCronograma",
+                {}
+            );
+            res.status(200).json(result);
+        } catch (err) {
+            res.status(500).json({ error: err?.message });
+        }
+    });
 
-router.post("/horasLibres", async (req, res) => {
-    /*
+    router.post("/horasLibres", async (req, res) => {
+        /*
     #swagger.tags = ['Salas']
     #swagger.description = 'Obtiene las horas libres de una sala'
     #swagger.summary = 'Obtiene las horas libres de una sala'
@@ -170,84 +166,86 @@ router.post("/horasLibres", async (req, res) => {
         }
     }
     */
-    try {
-        let { idSala, fecha, personas } = req.body;
+        try {
+            let { idSala, fecha, personas } = req.body;
 
-        if (!idSala || !fecha) {
-            res.status(400).json({ error: "idSala and fecha are required" });
-            return;
-        }
-
-        if (!personas) personas = 1;
-
-        const resultReservsConfirmadas = await database.executeQuery(
-            `EXEC [dbo].[getReservacionesWithStatusFromSalaByDate] @idSala = ${idSala}, @fecha = '${fecha}', @idEstatus = ${3};`
-        );
-
-        const resultReservsPendientes = await database.executeQuery(
-            `EXEC [dbo].[getReservacionesWithStatusFromSalaByDate] @idSala = ${idSala}, @fecha = '${fecha}', @idEstatus = ${5};`
-        );
-
-        const resultMesas = await database.executeQuery(
-            `EXEC [dbo].[getMesasFromSalaByCupo] @idSala = ${idSala}, @cupos = ${personas};`
-        );
-
-        const mesasIdsArray = [];
-        for (const recordset of resultMesas.recordsets[0]) {
-            mesasIdsArray.push(recordset.idMesa);
-        }
-
-        const availabilityArray = [];
-        for (let i = 0; i <= 24; i++) {
-            availabilityArray.push([...mesasIdsArray]);
-        }
-
-        const competidoresArray = Array(25).fill(0);
-
-        resultReservsPendientes.recordsets[0].forEach((reserv) => {
-            const hora = (reserv.horaInicio.getHours() + 6) % 24; // UTC-6
-            // const hora = reserv.horaInicio.getHours() + 6; // UTC-6
-            const duracion = reserv.duracion;
-
-            for (let i = 0; i < duracion; i++) {
-                competidoresArray[hora + i] += 1;
+            if (!idSala || !fecha) {
+                res.status(400).json({
+                    error: "idSala and fecha are required",
+                });
+                return;
             }
-        });
 
-        resultReservsConfirmadas.recordsets[0].forEach((reserv) => {
-            const hora = (reserv.horaInicio.getHours() + 6) % 24; // UTC-6
-            const duracion = reserv.duracion;
+            if (!personas) personas = 1;
 
-            for (let i = 0; i < duracion; i++) {
-                const index = availabilityArray[hora + i].indexOf(
-                    reserv.idMesa
-                );
-                if (index > -1) {
-                    availabilityArray[hora + i].splice(index, 1);
+            const resultReservsConfirmadas = await database.executeQuery(
+                `EXEC [dbo].[getReservacionesWithStatusFromSalaByDate] @idSala = ${idSala}, @fecha = '${fecha}', @idEstatus = ${3};`
+            );
+
+            const resultReservsPendientes = await database.executeQuery(
+                `EXEC [dbo].[getReservacionesWithStatusFromSalaByDate] @idSala = ${idSala}, @fecha = '${fecha}', @idEstatus = ${5};`
+            );
+
+            const resultMesas = await database.executeQuery(
+                `EXEC [dbo].[getMesasFromSalaByCupo] @idSala = ${idSala}, @cupos = ${personas};`
+            );
+
+            const mesasIdsArray = [];
+            for (const recordset of resultMesas.recordsets[0]) {
+                mesasIdsArray.push(recordset.idMesa);
+            }
+
+            const availabilityArray = [];
+            for (let i = 0; i <= 24; i++) {
+                availabilityArray.push([...mesasIdsArray]);
+            }
+
+            const competidoresArray = Array(25).fill(0);
+
+            resultReservsPendientes.recordsets[0].forEach((reserv) => {
+                const hora = (reserv.horaInicio.getHours() + 6) % 24; // UTC-6
+                // const hora = reserv.horaInicio.getHours() + 6; // UTC-6
+                const duracion = reserv.duracion;
+
+                for (let i = 0; i < duracion; i++) {
+                    competidoresArray[hora + i] += 1;
+                }
+            });
+
+            resultReservsConfirmadas.recordsets[0].forEach((reserv) => {
+                const hora = (reserv.horaInicio.getHours() + 6) % 24; // UTC-6
+                const duracion = reserv.duracion;
+
+                for (let i = 0; i < duracion; i++) {
+                    const index = availabilityArray[hora + i].indexOf(
+                        reserv.idMesa
+                    );
+                    if (index > -1) {
+                        availabilityArray[hora + i].splice(index, 1);
+                    }
+                }
+            });
+
+            const freeHoursArray = [];
+
+            for (let i = 9; i <= 18; i++) {
+                if (availabilityArray[i].length > 0) {
+                    freeHoursArray.push({
+                        hora: i,
+                        cupos: availabilityArray[i].length,
+                        competidores: competidoresArray[i],
+                    });
                 }
             }
-        });
 
-        const freeHoursArray = [];
-
-        for (let i = 9; i <= 18; i++) {
-            if (availabilityArray[i].length > 0) {
-                freeHoursArray.push({
-                    hora: i,
-                    cupos: availabilityArray[i].length,
-                    competidores: competidoresArray[i],
-                });
-            }
+            return res.status(200).json(freeHoursArray);
+        } catch (err) {
+            res.status(500).json({ error: err?.message });
         }
+    });
 
-        return res.status(200).json(freeHoursArray);
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
-});
-
-router.get("/:id", async (req, res) => {
-    /*
+    router.get("/:id", async (req, res) => {
+        /*
     #swagger.tags = ['Salas']
     #swagger.description = 'Obtiene una sala por su ID'
     #swagger.summary = 'Obtiene una sala por su ID'
@@ -295,25 +293,23 @@ router.get("/:id", async (req, res) => {
         }
     }
     */
-    try {
-        const salaId = req.params.id;
-        console.log(`salaId: ${salaId}`);
-        if (salaId) {
-            const result = await database.executeProcedure("getSalaById", {
-                idSala: salaId,
-            });
-            console.log(`sala: ${JSON.stringify(result)}`);
-            res.status(200).json(result);
-        } else {
-            res.status(404);
+        try {
+            const salaId = req.params.id;
+            if (salaId) {
+                const result = await database.executeProcedure("getSalaById", {
+                    idSala: salaId,
+                });
+                res.status(200).json(result);
+            } else {
+                res.status(404);
+            }
+        } catch (err) {
+            res.status(500).json({ error: err?.message });
         }
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
-});
+    });
 
-router.get("/nameFromExperienceId/:id", async (req, res) => {
-    /*
+    router.get("/nameFromExperienceId/:id", async (req, res) => {
+        /*
     #swagger.tags = ['Salas']
     #swagger.description = 'Regresa el nombre de una sala basado en el ID de la experiencia'
     #swagger.summary = 'Regresa el nombre de una sala basado en el ID de la experiencia'
@@ -354,26 +350,26 @@ router.get("/nameFromExperienceId/:id", async (req, res) => {
         }
     }
     */
-    try {
-        const experienceId = req.params.id;
-        console.log(`experienceId: ${experienceId}`);
-        if (experienceId) {
-            const result = await database.executeProcedure(
-                "getSalaNameFromExperienceId",
-                {
-                    idExperiencia: experienceId,
-                }
-            );
+        try {
+            const experienceId = req.params.id;
+            if (experienceId) {
+                const result = await database.executeProcedure(
+                    "getSalaNameFromExperienceId",
+                    {
+                        idExperiencia: experienceId,
+                    }
+                );
 
-            res.status(200).json({
-                nombre: result[0].nombre,
-            });
-        } else {
-            res.status(404);
+                res.status(200).json({
+                    nombre: result[0].nombre,
+                });
+            } else {
+                res.status(404);
+            }
+        } catch (err) {
+            res.status(500).json({ error: err?.message });
         }
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
-});
+    });
 
-export default router;
+    return router;
+}

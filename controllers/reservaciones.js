@@ -1,15 +1,11 @@
 import express from "express";
-import { config } from "../config.js";
-import Database from "../database.js";
 
 const router = express.Router();
 router.use(express.json());
 
-// Create database object
-const database = new Database(config);
-
-router.get("/", async (_, res) => {
-    /*
+export default function (database) {
+    router.get("/", async (_, res) => {
+        /*
     #swagger.tags = ['Reservaciones']
     #swagger.description = 'Obtiene todas las reservaciones'
     #swagger.summary = 'Obtiene todas las reservaciones'
@@ -51,18 +47,17 @@ router.get("/", async (_, res) => {
         }
     }
     */
-    try {
-        // Return a list of reservaciones
-        const reservaciones = await database.readAll("Reservaciones");
-        console.log(`Usuarios: ${JSON.stringify(reservaciones)}`);
-        res.status(200).json(reservaciones);
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
-});
+        try {
+            // Return a list of reservaciones
+            const reservaciones = await database.readAll("Reservaciones");
+            res.status(200).json(reservaciones);
+        } catch (err) {
+            res.status(500).json({ error: err?.message });
+        }
+    });
 
-router.get("/cronograma", async (_, res) => {
-    /*
+    router.get("/cronograma", async (_, res) => {
+        /*
     #swagger.tags = ['Reservaciones']
     #swagger.description = 'Obtiene todas las reservaciones confirmadas para el cronograma'
     #swagger.summary = 'Obtiene todas las reservaciones confirmadas para el cronograma'
@@ -100,20 +95,20 @@ router.get("/cronograma", async (_, res) => {
         }
     }
     */
-    try {
-        const result = await database.executeProcedure(
-            "getReservacionesConfirmadasCronograma",
-            {}
-        );
+        try {
+            const result = await database.executeProcedure(
+                "getReservacionesConfirmadasCronograma",
+                {}
+            );
 
-        res.status(200).json(result);
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
-});
+            res.status(200).json(result);
+        } catch (err) {
+            res.status(500).json({ error: err?.message });
+        }
+    });
 
-router.get("/usuario/:id", async (req, res) => {
-    /*
+    router.get("/usuario/:id", async (req, res) => {
+        /*
     #swagger.tags = ['Reservaciones']
     #swagger.description = 'Obtiene las reservaciones de un usuario'
     #swagger.summary = 'Obtiene las reservaciones de un usuario'
@@ -164,23 +159,21 @@ router.get("/usuario/:id", async (req, res) => {
         }
     }
     */
-    try {
-        const usuarioId = req.params.id;
-        console.log(`usuarioId: ${usuarioId}`);
-        if (usuarioId) {
-            const result = await database.executeProcedure(
-                "getReservacionByUser",
-                { idUsuario: usuarioId }
-            );
-            console.log(`reserv: ${JSON.stringify(result)}`);
-            res.status(200).json(result);
-        } else {
-            res.status(404);
+        try {
+            const usuarioId = req.params.id;
+            if (usuarioId) {
+                const result = await database.executeProcedure(
+                    "getReservacionByUser",
+                    { idUsuario: usuarioId }
+                );
+                res.status(200).json(result);
+            } else {
+                res.status(404);
+            }
+        } catch (err) {
+            res.status(500).json({ error: err?.message });
         }
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
-});
+    });
 
 router.post("/ultimas", async (req, res) => {
     /*
@@ -256,18 +249,17 @@ router.post("/", async (req, res) => {
         }
     }
     */
-    try {
-        const reserv = req.body;
-        console.log(`reserv: ${JSON.stringify(reserv)}`);
-        const rowsAffected = await database.create("Reservaciones", reserv);
-        res.status(201).json({ rowsAffected });
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
-});
+        try {
+            const reserv = req.body;
+            const rowsAffected = await database.create("Reservaciones", reserv);
+            res.status(201).json({ rowsAffected });
+        } catch (err) {
+            res.status(500).json({ error: err?.message });
+        }
+    });
 
-router.get("/:id", async (req, res) => {
-    /*
+    router.get("/:id", async (req, res) => {
+        /*
     #swagger.tags = ['Reservaciones']
     #swagger.description = 'Obtiene una reservación por su ID'
     #swagger.summary = 'Obtiene una reservación por su ID'
@@ -315,27 +307,25 @@ router.get("/:id", async (req, res) => {
         }
     }
     */
-    try {
-        const reservId = req.params.id;
-        console.log(`reservId: ${reservId}`);
-        if (reservId) {
-            const result = await database.read(
-                "Reservaciones",
-                "idReservacion",
-                reservId
-            );
-            console.log(`reserv: ${JSON.stringify(result)}`);
-            res.status(200).json(result);
-        } else {
-            res.status(404);
+        try {
+            const reservId = req.params.id;
+            if (reservId) {
+                const result = await database.read(
+                    "Reservaciones",
+                    "idReservacion",
+                    reservId
+                );
+                res.status(200).json(result);
+            } else {
+                res.status(404);
+            }
+        } catch (err) {
+            res.status(500).json({ error: err?.message });
         }
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
-});
+    });
 
-router.put("/:id", async (req, res) => {
-    /*
+    router.put("/:id", async (req, res) => {
+        /*
     #swagger.tags = ['Reservaciones']
     #swagger.description = 'Actualiza una reservación por su ID'
     #swagger.summary = 'Actualiza una reservación por su ID'
@@ -392,25 +382,24 @@ router.put("/:id", async (req, res) => {
         }
     }
     */
-    try {
-        const reservId = req.params.id;
-        console.log(`reservId: ${reservId}`);
-        const reserv = req.body;
+        try {
+            const reservId = req.params.id;
+            const reserv = req.body;
 
-        const rowsAffected = await database.update(
-            "Reservaciones",
-            "idReservacion",
-            reservId,
-            reserv
-        );
-        res.status(200).json({ rowsAffected });
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
-});
+            const rowsAffected = await database.update(
+                "Reservaciones",
+                "idReservacion",
+                reservId,
+                reserv
+            );
+            res.status(200).json({ rowsAffected });
+        } catch (err) {
+            res.status(500).json({ error: err?.message });
+        }
+    });
 
-router.delete("/:id", async (req, res) => {
-    /*
+    router.delete("/:id", async (req, res) => {
+        /*
     #swagger.tags = ['Reservaciones']
     #swagger.description = 'Elimina una reservación por su ID'
     #swagger.summary = 'Elimina una reservación por su ID'
@@ -447,18 +436,18 @@ router.delete("/:id", async (req, res) => {
         }
     }
     */
-    try {
-        const reservId = req.params.id;
-        console.log(`reservId: ${reservId}`);
-        const rowsAffected = await database.delete(
-            "Reservaciones",
-            "idReservacion",
-            reservId
-        );
-        res.status(200).json({ rowsAffected });
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
-});
+        try {
+            const reservId = req.params.id;
+            const rowsAffected = await database.delete(
+                "Reservaciones",
+                "idReservacion",
+                reservId
+            );
+            res.status(200).json({ rowsAffected });
+        } catch (err) {
+            res.status(500).json({ error: err?.message });
+        }
+    });
 
-export default router;
+    return router;
+}

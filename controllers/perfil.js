@@ -1,15 +1,11 @@
 import express from "express";
-import { config } from "../config.js";
-import Database from "../database.js";
 
 const router = express.Router();
 router.use(express.json());
 
-// Create database object
-const database = new Database(config);
-
-router.get("/logros/:idUsuario", async (req, res) => {
-    /*
+export default function (database) {
+    router.get("/logros/:idUsuario", async (req, res) => {
+        /*
     #swagger.tags = ['Perfil']
     #swagger.description = 'Obtener los logros de un usuario'
     #swagger.summary = 'Obtener logros de usuario'
@@ -68,28 +64,28 @@ router.get("/logros/:idUsuario", async (req, res) => {
         }
     }
     */
-    try {
-        const logros = await database.executeProcedure("getLogrosByUser", {
-            idUsuario: req.params.idUsuario,
-        });
-        const configuracionLogro = await database.executeProcedure(
-            "getConfiguracionLogro",
-            {
+        try {
+            const logros = await database.executeProcedure("getLogrosByUser", {
                 idUsuario: req.params.idUsuario,
-            }
-        );
+            });
+            const configuracionLogro = await database.executeProcedure(
+                "getConfiguracionLogro",
+                {
+                    idUsuario: req.params.idUsuario,
+                }
+            );
 
-        res.status(200).json({
-            logros: logros,
-            configuracionLogro: configuracionLogro,
-        });
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
-});
+            res.status(200).json({
+                logros: logros,
+                configuracionLogro: configuracionLogro,
+            });
+        } catch (err) {
+            res.status(500).json({ error: err?.message });
+        }
+    });
 
-router.post("/logros/:idUsuario", async (req, res) => {
-    /*
+    router.post("/logros/:idUsuario", async (req, res) => {
+        /*
     #swagger.tags = ['Perfil']
     #swagger.description = 'Configura el logro y color preferido del usuario'
     #swagger.summary = 'Configura el logro y color preferido del usuario'
@@ -130,21 +126,21 @@ router.post("/logros/:idUsuario", async (req, res) => {
         }
     }
     */
-    try {
-        const { idLogro, colorPreferido } = req.body;
-        await database.executeProcedure("setConfiguracionLogroUsuario", {
-            idUsuario: req.params.idUsuario,
-            idLogro: idLogro,
-            colorPreferido: colorPreferido,
-        });
-        res.status(204).end();
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
-});
+        try {
+            const { idLogro, colorPreferido } = req.body;
+            await database.executeProcedure("setConfiguracionLogroUsuario", {
+                idUsuario: req.params.idUsuario,
+                idLogro: idLogro,
+                colorPreferido: colorPreferido,
+            });
+            res.status(204).end();
+        } catch (err) {
+            res.status(500).json({ error: err?.message });
+        }
+    });
 
-router.get("/:idUsuario", async (req, res) => {
-    /*
+    router.get("/:idUsuario", async (req, res) => {
+        /*
     #swagger.tags = ['Perfil']
     #swagger.description = 'Obtiene todas las salas'
     #swagger.summary = 'Obtiene todas las salas'
@@ -221,18 +217,18 @@ router.get("/:idUsuario", async (req, res) => {
         }
     }
     */
-    try {
-        const usuarioId = req.params.idUsuario;
+        try {
+            const usuarioId = req.params.idUsuario;
 
-        const result = await database.executeQuery(
-            `EXEC [dbo].[getPerfilUsuario] @idUsuario = ${usuarioId};`
-        );
+            const result = await database.executeQuery(
+                `EXEC [dbo].[getPerfilUsuario] @idUsuario = ${usuarioId};`
+            );
 
-        res.status(200).json(result);
-        console.log(`Perfil: ${JSON.stringify(result)}`);
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
-});
+            res.status(200).json(result);
+        } catch (err) {
+            res.status(500).json({ error: err?.message });
+        }
+    });
 
-export default router;
+    return router;
+}
