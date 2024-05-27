@@ -21,7 +21,7 @@ const database = new Database(config);
 const router = express.Router();
 
 router.use("/usuarios", usuarios(database));
-router.use("/auth", auth(database));
+router.use("/auth", auth);
 router.use("/reservaciones", reservaciones(database));
 router.use("/salas", salas(database));
 router.use("/chatbot", chatbotBridge);
