@@ -1,18 +1,16 @@
 import express from "express";
 import sha512 from "js-sha512";
 import jwt from "jsonwebtoken";
+import { config } from "../config.js";
 
 const router = express.Router();
 router.use(express.json());
 
-import { config } from "../config.js";
-import Database from "../database.js";
-const database = new Database(config);
-
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
 
-router.post("/usuario", async (req, res) => {
-    /*
+export default function (database) {
+    router.post("/usuario", async (req, res) => {
+        /*
     #swagger.tags = ['Auth']
     #swagger.description = 'Autentica un usuario'
     #swagger.summary = 'Autentica un usuario'
@@ -66,70 +64,63 @@ router.post("/usuario", async (req, res) => {
         }
     }
     */
-    try {
-        let { usuario, contrasena, origen, tagId } = req.body;
-        console.log(req.body);
-        origen = origen ? origen.toLowerCase() : null;
-        console.log(origen);
+        try {
+            let { usuario, contrasena, origen, tagId } = req.body;
+            origen = origen ? origen.toLowerCase() : null;
 
-        if (!origen || origen !== "qr") {
-            usuario = usuario.toLowerCase();
-            console.log(usuario);
-            const shaPasword = sha512(String(contrasena));
-            console.log(shaPasword);
+            if (!origen || origen !== "qr") {
+                usuario = usuario.toLowerCase();
+                const shaPasword = sha512(String(contrasena));
 
-            const result = await database.readAndConditions(
-                "Credenciales",
-                [
-                    { idName: "idUsuario", id: usuario },
-                    { idName: "contrasena", id: shaPasword },
-                ],
-                "idUsuario"
-            );
-            console.log(result);
-
-            if (result.length === 0) {
-                res.status(404).json({});
-            } else {
-                console.log("TOKEN_SECRET:", TOKEN_SECRET);
-                var token = jwt.sign(
-                    { usuario: result.idUsuario.toLowerCase() },
-                    TOKEN_SECRET,
-                    {
-                        expiresIn: "7d",
-                    }
+                const result = await database.readAndConditions(
+                    "Credenciales",
+                    [
+                        { idName: "idUsuario", id: usuario },
+                        { idName: "contrasena", id: shaPasword },
+                    ],
+                    "idUsuario"
                 );
-                console.log(token);
-                res.status(200).json({ jwt: token });
-            }
-        } else {
-            tagId = tagId.toLowerCase();
-            const result = await database.readStringId(
-                "Credenciales",
-                "tagId",
-                tagId
-            );
 
-            if (result.length === 0) {
-                res.status(404).json({});
+                if (result.length === 0) {
+                    res.status(404).json({});
+                } else {
+                    var token = jwt.sign(
+                        { usuario: result.idUsuario.toLowerCase() },
+                        TOKEN_SECRET,
+                        {
+                            expiresIn: "7d",
+                        }
+                    );
+                    res.status(200).json({ jwt: token });
+                }
             } else {
-                var token = jwt.sign(
-                    { usuario: result.idUsuario.toLowerCase() },
-                    TOKEN_SECRET,
-                    {
-                        expiresIn: "10m",
-                    }
+                tagId = tagId.toLowerCase();
+                const result = await database.readStringId(
+                    "Credenciales",
+                    "tagId",
+                    tagId
                 );
-                res.status(200).json({ jwt: token });
+
+                if (result.length === 0) {
+                    res.status(404).json({});
+                } else {
+                    var token = jwt.sign(
+                        { usuario: result.idUsuario.toLowerCase() },
+                        TOKEN_SECRET,
+                        {
+                            expiresIn: "10m",
+                        }
+                    );
+                    res.status(200).json({ jwt: token });
+                }
             }
+        } catch (err) {
+            res.status(401).json({});
         }
-    } catch (err) {
-        res.status(401).json({});
-    }
-});
+    });
 
-router.post("/token", async (req, res) => {
-    /*
+    router.post("/token", async (req, res) => {
+        /*
     #swagger.tags = ['Auth']
     #swagger.description = 'Verifica un token'
     #swagger.summary = 'Verifica un token'
@@ -174,14 +165,15 @@ router.post("/token", async (req, res) => {
         }
     }
     */
-    const { token } = req.body;
+        const { token } = req.body;
 
-    try {
-        var decoded = jwt.verify(token, TOKEN_SECRET);
-        res.status(200).json({ isAuth: true, token_data: decoded });
-    } catch (err) {
-        res.status(401).json({ isAuth: false });
-    }
-});
+        try {
+            var decoded = jwt.verify(token, TOKEN_SECRET);
+            res.status(200).json({ isAuth: true, token_data: decoded });
+        } catch (err) {
+            res.status(401).json({ isAuth: false });
+        }
+    });
 
-export default router;
+    return router;
+}
