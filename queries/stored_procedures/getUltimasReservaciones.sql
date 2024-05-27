@@ -25,6 +25,17 @@ BEGIN
     SELECT DISTINCT e.idExperiencia, e.idSala, e.nombre, e.portadaURL AS 'URL', 'experiencia' AS tipo
     FROM UltimasReservaciones ur
     JOIN [dbo].[Experiencias] e ON ur.idExperiencia = e.idExperiencia
-    WHERE ur.idExperiencia IS NOT NULL  
+    WHERE ur.idExperiencia IS NOT NULL 
+
+	UNION 
+
+	-- Seleccionar Experiencias UFs
+	SELECT E.idExperiencia, E.idSala, E.nombre, E.portadaURL AS 'URL', 'experiencia' AS tipo
+    FROM Experiencias E
+    WHERE E.idUF IN (
+        SELECT DISTINCT GU.idUF
+        FROM GruposUsuarios GU
+        WHERE GU.idUsuario = 'a00833852'
+    );
 
 END;
