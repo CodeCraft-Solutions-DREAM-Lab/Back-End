@@ -1,7 +1,6 @@
 import express from "express";
 import sha512 from "js-sha512";
 import jwt from "jsonwebtoken";
-import { config } from "../config.js";
 
 const router = express.Router();
 router.use(express.json());
