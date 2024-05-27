@@ -1,11 +1,15 @@
 import express from "express";
+import { config } from "../config.js";
+import Database from "../database.js";
 
 const router = express.Router();
 router.use(express.json());
 
-export default function (database) {
-    router.put("/:idUsuario/:idLogro", async (req, res) => {
-        /*
+// Create database object
+const database = new Database(config);
+
+router.put("/:idUsuario/:idLogro", async (req, res) => {
+    /*
     #swagger.tags = ['Logros']
     #swagger.description = 'Actualiza un logro específico para un usuario'
     #swagger.summary = 'Actualiza un logro específico para un usuario'
@@ -50,25 +54,26 @@ export default function (database) {
         }
     }
     */
-        try {
-            const usuarioId = req.params.idUsuario;
-            const logroId = req.params.idLogro;
+    try {
+        const usuarioId = req.params.idUsuario;
+        const logroId = req.params.idLogro;
+        console.log(`usuarioId: ${usuarioId}`);
+        console.log(`logroId: ${logroId}`);
 
-            const valor = req.body;
+        const valor = req.body;
 
-            const rowsAffected = await database.updateTwo(
-                "UsuariosLogros",
-                "idUsuario",
-                "idLogro",
-                usuarioId,
-                logroId,
-                valor
-            );
-            res.status(200).json({ rowsAffected });
-        } catch (err) {
-            res.status(500).json({ error: err?.message });
-        }
-    });
+        const rowsAffected = await database.updateTwo(
+            "UsuariosLogros",
+            "idUsuario",
+            "idLogro",
+            usuarioId,
+            logroId,
+            valor
+        );
+        res.status(200).json({ rowsAffected });
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
 
-    return router;
-}
+export default router;
