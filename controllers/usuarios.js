@@ -122,6 +122,66 @@ router.put("/:idUsuario", async (req, res) => {
 	}
 });
 
+router.get("/nombreUsuario/:tagID", async (req, res) => {
+    /*
+    #swagger.tags = ['Usuarios']
+    #swagger.description = 'Obtiene el nombre de usuario asociado a un tag ID específico.'
+    #swagger.summary = 'Obtener nombre de usuario por Tag ID'
+    #swagger.parameters['tagID'] = {
+
+        in: 'path',
+        description: 'ID del tag del usuario',
+        required: true,
+        type: 'string'
+    }
+
+    #swagger.responses[200] = {
+
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        nombreUsuario: { type: 'string', example: 'John Doe' }
+                    }
+                }
+            }
+        }
+    }
+
+    #swagger.responses[500] = {
+
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }*/
+
+    try {
+        // Return a list of usuarios
+
+        const tagID = req.params.tagID;
+
+        const result = await database.executeProcedure(
+            "getNombreUsuarioPorTagId",
+
+            { p_tagId: tagID }
+        );
+
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
 router.post("/cambiarPrioridad", async (req, res) => {
 	/*
     #swagger.tags = ['Usuarios', 'Prioridad']
