@@ -579,8 +579,8 @@ VALUES
         362,
         1,
         '#78C2F8'
-    ), 
-	(
+    ),
+    (
         '0012007098',
         'Rolando',
         'Martínez',
@@ -764,8 +764,8 @@ VALUES
         'l00000020',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
         '125122131173'
-    ), 
-	(
+    ),
+    (
         '0012007098',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
         '0012007098'
@@ -809,8 +809,7 @@ VALUES
     (1, 'a00832807'),
     (1, 'l00000010'),
     (1, 'l00000020'),
-	(1, '0012007098')
-;
+    (1, '0012007098');
 
 -- Sample data for Logros
 INSERT INTO
@@ -908,7 +907,7 @@ VALUES
 INSERT INTO
     UsuariosLogros (idLogro, idUsuario, valorActual, obtenido)
 VALUES
-	(1, '0012007098', 50, 1),
+    (1, '0012007098', 50, 1),
     (2, '0012007098', 5, 0),
     (3, '0012007098', 5, 1),
     (4, '0012007098', 3, 0),
@@ -1419,7 +1418,7 @@ VALUES
         9,
         'https://images.unsplash.com/photo-1540829917886-91ab031b1764?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         'https://dreamlabstorage.blob.core.windows.net/archivos/graveyard.webp',
-        0
+        1
     ),
     (
         'PCB Factory',
@@ -1451,7 +1450,7 @@ VALUES
         5,
         'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         'https://dreamlabstorage.blob.core.windows.net/archivos/war-headquarters.webp',
-        0
+        1
     ),
     (
         'Biometrics Flexible Hall',
