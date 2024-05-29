@@ -66,7 +66,7 @@ Para configurar el proyecto localmente puedes seguir los siguientes pasos:
     TOKEN_SECRET=<SECRET>
 
     # Correo
-    SMTP_PASSWORD=<PASSWORD>
+    SMTP_PASSWORD=<CONTRASEÑA DE APLICACIÓN>
     SMTP_SERVER_EMAIL=<EMAIL_ADDRESS>
 
     # Base de datos
@@ -91,14 +91,13 @@ Puedes seguir [este tutorial](https://learn.microsoft.com/es-mx/azure/azure-sql/
 
 ## Configurando un correo
 
-1. Crear un correo gmail
-2. Activar la autenticación de 2 pasos en este correo
-3. Generar una contraseña de aplicación
-    Se puede configurar desde Configuración > Seguridad > Contraseñas de Aplicación
-4. Añadir estas 2 variables al entorno de la aplicación
+1. Crea un correo de [Gmail](https://accounts.google.com/v3/signin/identifier?continue=https://mail.google.com/mail/&service=mail&theme=glif&flowName=GlifWebSignIn&flowEntry=ServiceLogin).
+2. Activa la autenticación de 2 pasos siguiendo la siguiente [guía](https://support.google.com/accounts/answer/185839?hl=es-419&co=GENIE.Platform%3DDesktop&sjid=1947869321804712116-NC).
+3. Genera una contraseña de aplicación siguiendo los pasos de la sección "Cómo crear y usar contraseñas de aplicaciones" de esta [guía](https://support.google.com/mail/answer/185833?hl=es-419).
+4. Añade la contraseña de aplicación y el correo creado a las variables de entorno del archivo `.env` creadas previamente:
 ```
-    1. SMTP_PASSWORD=xxxx xxxx xxxx xxxx (Contraseña generada)
-    2. SMTP_SERVER_EMAIL=ejemplo@gmail.com
+SMTP_PASSWORD=xxxx xxxx xxxx xxxx
+SMTP_SERVER_EMAIL=ejemplo@gmail.com
 ```
     
 ## Inicio
