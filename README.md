@@ -72,7 +72,11 @@ Para configurar el proyecto localmente puedes seguir los siguientes pasos:
 > [!NOTE]
 > Es necesario modificar los valores entre `< >` con los tuyos propios para que funcione la aplicación.
 >
-> No cuentas con
+> ¿No cuentas con base de datos? Sigue los pasos de la sección ["Desplegando la base de datos"](#desplegando-la-base-de-datos)
+
+## Desplegando la base de datos
+
+Ahhh
 
 ## Inicio
 
