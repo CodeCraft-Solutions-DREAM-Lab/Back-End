@@ -1,12 +1,11 @@
 ![API DEPLOY](https://github.com/CodeCraft-Solutions-DREAM-Lab/Back-End/actions/workflows/dev_dreamlab-api.yml/badge.svg)
 
-# Backend para la aplicación del D.R.E.A.M. Lab
+# Backend del DREAM Lab
 
 ## Proyectos relacionados
 
-Se puede consultar el frontend que consume esta API en el repositorio de [Frontend](https://github.com/CodeCraft-Solutions-DREAM-Lab/Front-End).
-
-Asimismo, la aplicación que permite la conexión con el chat de voz se puede encontrar en el repositorio de [RecomendacionesDreamLab](https://github.com/CodeCraft-Solutions-DREAM-Lab/RecomendacionesDreamLab).
+-   Se puede consultar el frontend que consume esta API en el repositorio de [Frontend](https://github.com/CodeCraft-Solutions-DREAM-Lab/Front-End).
+-   Asimismo, la aplicación que permite la conexión con el chat de voz se puede encontrar en el repositorio de [RecomendacionesDreamLab](https://github.com/CodeCraft-Solutions-DREAM-Lab/RecomendacionesDreamLab).
 
 ## Despliegue
 
@@ -72,6 +71,7 @@ Para configurar el proyecto localmente puedes seguir los siguientes pasos:
 
 > [!NOTE]
 > Es necesario modificar los valores entre `< >` con los tuyos propios para que funcione la aplicación.
+> No cuentas con
 
 ## Inicio
 
