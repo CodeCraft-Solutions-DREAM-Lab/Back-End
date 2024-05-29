@@ -101,7 +101,7 @@ npm start
 
 ## Consultar la documentación
 
-Para consultar la documentación de swagger sobre los endpoints con los que cuenta esta API copia [esta URL](http://localhost:3000/docs) en tu navegador de preferencia:
+Para consultar la documentación de swagger sobre los endpoints con los que cuenta esta API visita [esta URL](http://localhost:3000/docs) en tu navegador de preferencia:
 
 ```
 http://localhost:3000/docs
