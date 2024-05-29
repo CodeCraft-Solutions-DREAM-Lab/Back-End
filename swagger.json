@@ -152,6 +152,59 @@
         }
       }
     },
+    "/usuarios/nombreUsuario/{tagID}": {
+      "get": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Obtener nombre de usuario por Tag ID",
+        "description": "Obtiene el nombre de usuario asociado a un tag ID específico.",
+        "parameters": [
+          {
+            "name": "tagID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID del tag del usuario"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nombreUsuario": {
+                      "type": "string",
+                      "example": "John Doe"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/usuarios/cambiarPrioridad": {
       "post": {
         "tags": [
@@ -657,6 +710,36 @@
                     "error": {
                       "type": "string"
                     }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reservaciones/ultimas": {
+      "post": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "example": "any"
                   }
                 }
               }
@@ -1209,62 +1292,6 @@
                     "error": {
                       "type": "string"
                     }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/chatbot/": {
-      "post": {
-        "tags": [
-          "Chatbot"
-        ],
-        "summary": "Procesa un mensaje de entrada a través del chatbot",
-        "description": "Procesa un mensaje de entrada a través del chatbot",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "processed_text": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "prompt": {
-                    "type": "string"
                   }
                 }
               }
@@ -2488,6 +2515,33 @@
                     }
                   }
                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/correr-asignacion/": {
+      "get": {
+        "tags": [
+          "Reservaciones"
+        ],
+        "summary": "Trigger de función de asignaciones",
+        "description": "Hacer trigger manual de la función de asignación de reservaciones",
+        "responses": {
+          "200": {
+            "description": "Reservaciones asignadas correctamente.",
+            "content": {
+              "text/html": {
+                "type": "Reservaciones asignadas correctamente."
+              }
+            }
+          },
+          "500": {
+            "description": "Error al intentar asignar reservaciones.",
+            "content": {
+              "text/html": {
+                "type": "Error al intentar asignar reservaciones."
               }
             }
           }
