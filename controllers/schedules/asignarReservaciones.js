@@ -8,19 +8,16 @@ const db = new Database(config);
 
 const asignarReservaciones = async () => {
     try {
-        // Connect to the database
-        await db.connect();
-        console.log('Connected to the database.');
-
         // Step 1: Retrieve all pending reservations
         const pendingReservations = await db.executeProcedure(
-            "getReservacionesByStatus", { estatus: 5 }
+            "getReservacionesByStatus",
+            { estatus: 5 }
         );
 
         let reservations = pendingReservations;
 
         if (reservations.length === 0) {
-            console.log('No pending reservations found.');
+            console.log("No pending reservations found.");
             return;
         }
 
@@ -33,11 +30,16 @@ const asignarReservaciones = async () => {
 
         // Step 3: Parse the date and time for both pending and future reservations
         const parseDateTime = (reservation) => {
-            if (typeof reservation.fecha !== 'string') {
-                reservation.fecha = reservation.fecha.toISOString().split('T')[0];
+            if (typeof reservation.fecha !== "string") {
+                reservation.fecha = reservation.fecha
+                    .toISOString()
+                    .split("T")[0];
             }
-            if (typeof reservation.horaInicio !== 'string') {
-                reservation.horaInicio = reservation.horaInicio.toISOString().split('T')[1].slice(0, 8);
+            if (typeof reservation.horaInicio !== "string") {
+                reservation.horaInicio = reservation.horaInicio
+                    .toISOString()
+                    .split("T")[1]
+                    .slice(0, 8);
             }
         };
 
@@ -61,18 +63,27 @@ const asignarReservaciones = async () => {
 
         // Step 5: Prepare storage for confirmed and denied reservations
         let confirmedReservations = [];
-        let deniedReservations = new Set();  // Use Set to avoid duplicates
+        let deniedReservations = new Set(); // Use Set to avoid duplicates
         let activeReservations = {};
 
         // Function to check table availability and assign a table
         const assignTable = async (reservation) => {
-            const { idReservacion, idSala, fecha, horaInicio, numPersonas } = reservation;
+            const { idReservacion, idSala, fecha, horaInicio, numPersonas } =
+                reservation;
 
-            const availableTables = await db.executeProcedure("getMesasFromSalaByCupo", { idSala, cupos: numPersonas });
+            const availableTables = await db.executeProcedure(
+                "getMesasFromSalaByCupo",
+                { idSala, cupos: numPersonas }
+            );
 
             let occupiedTables = futureReservations
-                .filter(future => future.fecha === fecha && future.idSala === idSala && future.horaInicio === horaInicio)
-                .map(future => future.idMesa);
+                .filter(
+                    (future) =>
+                        future.fecha === fecha &&
+                        future.idSala === idSala &&
+                        future.horaInicio === horaInicio
+                )
+                .map((future) => future.idMesa);
 
             availableTables.sort((a, b) => a.cupos - b.cupos);
 
@@ -96,7 +107,7 @@ const asignarReservaciones = async () => {
             const assignedTable = await assignTable(reservation);
 
             if (!assignedTable) {
-                deniedReservations.add(idReservacion);  // Add to Set
+                deniedReservations.add(idReservacion); // Add to Set
                 continue;
             }
 
@@ -106,27 +117,60 @@ const asignarReservaciones = async () => {
 
         // Step 7: Check for conflicts among assigned reservations
         for (let reservation of reservations) {
-            const { idReservacion, fecha, idMesa, horaInicio, duracion, prioridad } = reservation;
+            const {
+                idReservacion,
+                fecha,
+                idMesa,
+                horaInicio,
+                duracion,
+                prioridad,
+            } = reservation;
 
-            const [currentHours, currentMinutes] = horaInicio.split(':').map(Number);
+            const [currentHours, currentMinutes] = horaInicio
+                .split(":")
+                .map(Number);
             const currentEndHours = currentHours + duracion;
-            const currentEndTime = `${currentEndHours.toString().padStart(2, '0')}:${currentMinutes.toString().padStart(2, '0')}`;
+            const currentEndTime = `${currentEndHours
+                .toString()
+                .padStart(2, "0")}:${currentMinutes
+                .toString()
+                .padStart(2, "0")}`;
 
             let conflictingReservation = false;
 
             for (let active of activeReservations[fecha]) {
-                if (active.idMesa !== idMesa || active.idReservacion === idReservacion) {
+                if (
+                    active.idMesa !== idMesa ||
+                    active.idReservacion === idReservacion
+                ) {
                     continue;
                 }
 
-                const [activeHours, activeMinutes] = active.horaInicio.split(':').map(Number);
+                const [activeHours, activeMinutes] = active.horaInicio
+                    .split(":")
+                    .map(Number);
                 const activeEndHours = activeHours + active.duracion;
-                const activeEndTime = `${activeEndHours.toString().padStart(2, '0')}:${activeMinutes.toString().padStart(2, '0')}`;
+                const activeEndTime = `${activeEndHours
+                    .toString()
+                    .padStart(2, "0")}:${activeMinutes
+                    .toString()
+                    .padStart(2, "0")}`;
 
-                if (horaInicio < activeEndTime && currentEndTime > active.horaInicio) {
-                    if (prioridad > active.prioridad || (prioridad === active.prioridad && idReservacion < active.idReservacion)) {
+                if (
+                    horaInicio < activeEndTime &&
+                    currentEndTime > active.horaInicio
+                ) {
+                    if (
+                        prioridad > active.prioridad ||
+                        (prioridad === active.prioridad &&
+                            idReservacion < active.idReservacion)
+                    ) {
                         deniedReservations.add(active.idReservacion);
-                        activeReservations[fecha] = activeReservations[fecha].filter(r => r.idReservacion !== active.idReservacion);
+                        activeReservations[fecha] = activeReservations[
+                            fecha
+                        ].filter(
+                            (r) => r.idReservacion !== active.idReservacion
+                        );
                     } else {
                         conflictingReservation = true;
                         deniedReservations.add(idReservacion);
@@ -142,7 +186,20 @@ const asignarReservaciones = async () => {
 
         // Step 8: Update statuses in the database
         if (confirmedReservations.length > 0) {
-            const confirmedQuery = `UPDATE Reservaciones SET estatus = 3, idMesa = CASE idReservacion ${confirmedReservations.map(reservation => `WHEN ${reservation} THEN ${reservations.find(r => r.idReservacion === reservation).idMesa}`).join(' ')} END WHERE idReservacion IN (${confirmedReservations.join(', ')})`;
+            const confirmedQuery = `UPDATE Reservaciones SET estatus = 3, idMesa = CASE idReservacion ${confirmedReservations
+                .map(
+                    (reservation) =>
+                        `WHEN ${reservation} THEN ${
+                            reservations.find(
+                                (r) => r.idReservacion === reservation
+                            ).idMesa
+                        }`
+                )
+                .join(
+                    " "
+                )} END WHERE idReservacion IN (${confirmedReservations.join(
+                ", "
+            )})`;
             await db.executeQuery(confirmedQuery);
 
             // Send confirmation email
@@ -153,7 +210,9 @@ const asignarReservaciones = async () => {
         }
 
         if (deniedReservations.size > 0) {
-            const deniedQuery = `UPDATE Reservaciones SET estatus = 6 WHERE idReservacion IN (${Array.from(deniedReservations).join(', ')})`;
+            const deniedQuery = `UPDATE Reservaciones SET estatus = 6 WHERE idReservacion IN (${Array.from(
+                deniedReservations
+            ).join(", ")})`;
             await db.executeQuery(deniedQuery);
 
             // Send rejection email
@@ -163,13 +222,9 @@ const asignarReservaciones = async () => {
             }
         }
 
-        console.log('Reservation organization completed successfully.');
-
+        console.log("Reservation organization completed successfully.");
     } catch (err) {
-        console.error('Error organizing reservations:', err);
-    } finally {
-        await db.disconnect();
-        console.log('Disconnected from the database.');
+        console.error("Error organizing reservations:", err);
     }
 };
 
