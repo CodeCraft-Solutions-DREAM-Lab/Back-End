@@ -72,9 +72,9 @@ Para configurar el proyecto localmente puedes seguir los siguientes pasos:
 > [!NOTE]
 > Es necesario modificar los valores entre `< >` con los tuyos propios para que funcione la aplicación.
 >
-> ¿No cuentas con base de datos? Sigue los pasos de la sección "[Creando una base de datos en Azure](#creando-una-base-de-datos-en-azure)"
+> ¿No cuentas con una base de datos? Sigue los pasos de la sección "[Creando una base de datos en Azure](#creando-una-base-de-datos-en-azure)".
 >
-> ¿No sabes cómo configurar un correo para que la API lo use? Sigue los pasos de la sección "[Configurando un correo](#configurando-un-correo)"
+> ¿No sabes cómo configurar un correo para que la API lo use? Sigue los pasos de la sección "[Configurando un correo](#configurando-un-correo)".
 
 ## Creando una base de datos en Azure
 
