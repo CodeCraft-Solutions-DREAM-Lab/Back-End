@@ -70,8 +70,8 @@ Para configurar el proyecto localmente puedes seguir los siguientes pasos:
     AZURE_SQL_SERVER=<SERVER_URL>
     ```
 
-    > [!NOTE]
-    > Es necesario modificar los valores entre < > con los tuyos propios para que funcione la aplicación.
+> [!NOTE]
+> Es necesario modificar los valores entre < > con los tuyos propios para que funcione la aplicación.
 
 ## Inicio
 
