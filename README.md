@@ -73,12 +73,18 @@ Para configurar el proyecto localmente puedes seguir los siguientes pasos:
 > Es necesario modificar los valores entre `< >` con los tuyos propios para que funcione la aplicación.
 >
 > ¿No cuentas con base de datos? Sigue los pasos de la sección "[Creando una base de datos en Azure](#creando-una-base-de-datos-en-azure)"
+>
+> ¿No sabes cómo configurar un correo para que la API lo use? Sigue los pasos de la sección "[Configurando un correo](#configurando-un-correo)"
 
 ## Creando una base de datos en Azure
 
 Para poder crear una base de datos SQL en azure, será necesario crear una Azure SQL Database junto con un Azure SQL Server.
 
 Puedes seguir [este tutorial](https://learn.microsoft.com/es-mx/azure/azure-sql/database/single-database-create-quickstart?view=azuresql&tabs=azure-portal) de Microsoft Learn que te guiará en todos los pasos necesarios para crear una base de datos en Azure.
+
+## Configurando un correo
+
+1. PASOS
 
 ## Inicio
 
