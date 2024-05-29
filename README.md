@@ -91,8 +91,16 @@ Puedes seguir [este tutorial](https://learn.microsoft.com/es-mx/azure/azure-sql/
 
 ## Configurando un correo
 
-1. PASOS
-
+1. Crear un correo gmail
+2. Activar la autenticación de 2 pasos en este correo
+3. Generar una contraseña de aplicación
+    Se puede configurar desde Configuración > Seguridad > Contraseñas de Aplicación
+4. Añadir estas 2 variables al entorno de la aplicación
+```
+    1. SMTP_PASSWORD=xxxx xxxx xxxx xxxx (Contraseña generada)
+    2. SMTP_SERVER_EMAIL=ejemplo@gmail.com
+```
+    
 ## Inicio
 
 Para iniciar el servidor, ejecuta:
