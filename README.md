@@ -71,7 +71,7 @@ Para configurar el proyecto localmente puedes seguir los siguientes pasos:
     ```
 
 > [!NOTE]
-> Es necesario modificar los valores entre < > con los tuyos propios para que funcione la aplicación.
+> Es necesario modificar los valores entre `< >` con los tuyos propios para que funcione la aplicación.
 
 ## Inicio
 
