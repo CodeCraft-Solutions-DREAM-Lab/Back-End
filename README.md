@@ -56,13 +56,18 @@ Para configurar el proyecto localmente puedes seguir los siguientes pasos:
     4.2. Copia las siguientes variables en el archivo:
 
     ```
+    # API
     AZURE_SQL_PORT=1433
     AZURE_SQL_AUTHENTICATIONTYPE=azure-active-directory-password
+
+    # Autenticacion
     TOKEN_SECRET=<SECRET>
+
+    # Correo
     SMTP_PASSWORD=<PASSWORD>
     SMTP_SERVER_EMAIL=<EMAIL_ADDRESS>
 
-    # Entorno de pruebas
+    # Base de datos
     AZURE_SQL_USER=<USER>
     AZURE_SQL_PASSWORD=<PASSWORD>
     AZURE_SQL_DATABASE=<DATABASE_NAME>
