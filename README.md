@@ -95,11 +95,10 @@ Para configurar el proyecto localmente puedes seguir los siguientes pasos:
 2. Activa la autenticación de 2 pasos siguiendo la siguiente [guía](https://support.google.com/accounts/answer/185839?hl=es-419&co=GENIE.Platform%3DDesktop&sjid=1947869321804712116-NC).
 3. Genera una contraseña de aplicación siguiendo los pasos de la sección "Cómo crear y usar contraseñas de aplicaciones" de esta [guía](https://support.google.com/mail/answer/185833?hl=es-419).
 4. Añade la contraseña de aplicación y el correo creado a las variables de entorno del archivo `.env` creadas previamente:
-
-```
-SMTP_PASSWORD=xxxx xxxx xxxx xxxx
-SMTP_SERVER_EMAIL=ejemplo@gmail.com
-```
+    ```
+    SMTP_PASSWORD=xxxx xxxx xxxx xxxx
+    SMTP_SERVER_EMAIL=ejemplo@gmail.com
+    ```
 
 ## Inicio
 
