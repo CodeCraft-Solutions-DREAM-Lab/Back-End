@@ -28,7 +28,7 @@ Para configurar el proyecto localmente puedes seguir los siguientes pasos:
     Usando la misma terminal con la que se clonó el repositorio, ejecuta el siguiente comando para cambiar el directorio activo en la terminal y que el resto de los comandos se corran dentro del proyecto:
 
     ```
-     cd "DREAM-Lab-Backend"
+     cd "Back-End"
     ```
 
 3. Instala las dependencias de Node. Para poder correr este comando es necesario tener instalado Node con la versión `20.X`, puedes descargarlo desde [https://nodejs.org/en/download/package-manager](https://nodejs.org/en/download/package-manager):
