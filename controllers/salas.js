@@ -7,46 +7,46 @@ router.use(express.json());
 // Create database object
 const database = new Database(config);
 
-/**
- * @openapi
- * /salas:
- *  get:
- *    summary: Obtiene todas las salas
- *    tags:
- *     - Salas
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                type: object
- *                properties:
- *                  idSala:
- *                    type: integer
- *                  nombre:
- *                    type: string
- *                  cantidadMesas:
- *                    type: integer
- *                  descripcion:
- *                    type: string
- *                  fotoURL:
- *                    type: string
- *                  detallesURL:
- *                    type: string
- *      500:
- *        description: Error
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- */
 router.get("/", async (_, res) => {
+    /*
+    #swagger.tags = ['Salas']
+    #swagger.description = 'Obtiene todas las salas'
+    #swagger.summary = 'Obtiene todas las salas'
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            idSala: { type: 'integer' },
+                            nombre: { type: 'string' },
+                            cantidadMesas: { type: 'integer' },
+                            descripcion: { type: 'string' },
+                            fotoURL: { type: 'string' },
+                            detallesURL: { type: 'string' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         // Regresa todas las salas
         const salas = await database.readAll("Salas");
@@ -56,64 +56,120 @@ router.get("/", async (_, res) => {
     }
 });
 
-/**
- * @openapi
- * /salas/horasLibres:
- *  post:
- *    summary: Obtiene las horas libres de una sala
- *    tags:
- *     - Salas
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            properties:
- *              idSala:
- *                type: integer
- *              fecha:
- *                type: string
- *                format: date
- *              personas:
- *                type: integer
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                type: object
- *                properties:
- *                  hora:
- *                    type: integer
- *                  cupos:
- *                    type: integer
- *                  competidores:
- *                    type: integer
- *      400:
- *        description: Bad Request
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- *      500:
- *        description: Error
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- */
+router.get("/cronograma", async (_, res) => {
+    /*
+    #swagger.tags = ['Salas']
+    #swagger.description = 'Obtiene el cronograma de salas y mesas intercaladas'
+    #swagger.summary = 'Obtiene el cronograma de salas y mesas intercaladas'
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            id: { type: 'integer', description: 'Identificador único de la sala o mesa' },
+                            title: { type: 'string', description: 'Nombre de la sala o mesa' },
+                            sala: { type: 'boolean', description: 'Indica si es una sala (true) o una mesa (false)' },
+                            idSala: { type: 'integer', description: 'Identificador de la sala a la que pertenece la mesa' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error del servidor',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
+    try {
+        const result = await database.executeProcedure(
+            "GetSalasYMesasIntercaladasCronograma",
+            {}
+        );
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
 
 router.post("/horasLibres", async (req, res) => {
+    /*
+    #swagger.tags = ['Salas']
+    #swagger.description = 'Obtiene las horas libres de una sala'
+    #swagger.summary = 'Obtiene las horas libres de una sala'
+    #swagger.requestBody = {
+        required: true,
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        idSala: { type: 'integer' },
+                        fecha: { type: 'string', format: 'date' },
+                        personas: { type: 'integer' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            hora: { type: 'integer' },
+                            cupos: { type: 'integer' },
+                            competidores: { type: 'integer' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[400] = {
+        description: 'Bad Request',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         let { idSala, fecha, personas } = req.body;
 
@@ -190,64 +246,64 @@ router.post("/horasLibres", async (req, res) => {
     }
 });
 
-/**
- * @openapi
- * /salas/{id}:
- *  get:
- *    summary: Obtiene una sala por su ID
- *    tags:
- *     - Salas
- *    parameters:
- *      - in: path
- *        name: id
- *        schema:
- *          type: integer
- *        required: true
- *        description: ID de la sala
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                type: object
- *                properties:
- *                  idSala:
- *                    type: integer
- *                  nombre:
- *                    type: string
- *                  cantidadMesas:
- *                    type: integer
- *                  descripcion:
- *                    type: string
- *                  fotoURL:
- *                    type: string
- *                  detallesURL:
- *                    type: string
- *      404:
- *        description: Not Found
- *      500:
- *        description: Error
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- */
 router.get("/:id", async (req, res) => {
+    /*
+    #swagger.tags = ['Salas']
+    #swagger.description = 'Obtiene una sala por su ID'
+    #swagger.summary = 'Obtiene una sala por su ID'
+    #swagger.parameters['id'] = {
+        in: 'path',
+        description: 'ID de la sala',
+        required: true,
+        type: 'integer'
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            idSala: { type: 'integer' },
+                            nombre: { type: 'string' },
+                            cantidadMesas: { type: 'integer' },
+                            descripcion: { type: 'string' },
+                            fotoURL: { type: 'string' },
+                            detallesURL: { type: 'string' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[404] = {
+        description: 'Not Found'
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         const salaId = req.params.id;
         console.log(`salaId: ${salaId}`);
         if (salaId) {
-            const result = await database.executeQuery(
-                `EXEC [dbo].[getSalaById] @idSala = ${salaId};`
-            );
+            const result = await database.executeProcedure("getSalaById", {
+                idSala: salaId,
+            });
             console.log(`sala: ${JSON.stringify(result)}`);
-            res.status(200).json(result.recordset);
+            res.status(200).json(result);
         } else {
             res.status(404);
         }
@@ -256,56 +312,61 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-/**
- * @openapi
- * salas/nameFromExperienceId/{id}:
- *  get:
- *    summary: Regresa el nombre de una sala basado en el ID de la experiencia
- *    tags:
- *     - Salas
- *    parameters:
- *      - in: path
- *        name: id
- *        schema:
- *          type: integer
- *          example: 1
- *        required: true
- *        description: ID de la experiencia
- *    responses:
- *      200:
- *        description: OK
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                  nombre:
- *                     type: string
- *                     example: Electric Garage
- *      404:
- *        description: Not Found
- *      500:
- *        description: Error
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                error:
- *                  type: string
- */
-
 router.get("/nameFromExperienceId/:id", async (req, res) => {
+    /*
+    #swagger.tags = ['Salas']
+    #swagger.description = 'Regresa el nombre de una sala basado en el ID de la experiencia'
+    #swagger.summary = 'Regresa el nombre de una sala basado en el ID de la experiencia'
+    #swagger.parameters['id'] = {
+        in: 'path',
+        description: 'ID de la experiencia',
+        required: true,
+        type: 'integer',
+        example: 1
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        nombre: { type: 'string', example: 'Electric Garage' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[404] = {
+        description: 'Not Found'
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
         const experienceId = req.params.id;
         console.log(`experienceId: ${experienceId}`);
         if (experienceId) {
-            const result = await database.executeQuery(
-                `EXEC [dbo].[getSalaNameFromExperienceId] @idExperiencia = ${experienceId};`
+            const result = await database.executeProcedure(
+                "getSalaNameFromExperienceId",
+                {
+                    idExperiencia: experienceId,
+                }
             );
 
             res.status(200).json({
-                nombre: result.recordset[0].nombre,
+                nombre: result[0].nombre,
             });
         } else {
             res.status(404);

@@ -20,6 +20,8 @@ DROP TABLE IF EXISTS UsuariosLogros;
 
 DROP TABLE IF EXISTS Logros;
 
+DROP TABLE IF EXISTS HistorialPrioridad;
+
 DROP TABLE IF EXISTS GruposUsuarios;
 
 DROP TABLE IF EXISTS Credenciales;
@@ -53,7 +55,7 @@ CREATE TABLE
     Credenciales (
         idUsuario VARCHAR(10),
         contrasena VARCHAR(255),
-        FOREIGN KEY (idUsuario) REFERENCES Usuarios (idUsuario)
+        tagId VARCHAR(50) FOREIGN KEY (idUsuario) REFERENCES Usuarios (idUsuario)
     );
 
 CREATE TABLE
@@ -63,6 +65,15 @@ CREATE TABLE
         FOREIGN KEY (idUF) REFERENCES UnidadesFormacion (idUF),
         FOREIGN KEY (idUsuario) REFERENCES Usuarios (idUsuario),
         PRIMARY KEY (idUF, idUsuario)
+    );
+
+CREATE TABLE
+    HistorialPrioridad (
+        idUsuario VARCHAR(10),
+        fecha DATE,
+        prioridad INT,
+        motivo VARCHAR(255),
+        FOREIGN KEY (idUsuario) REFERENCES Usuarios (idUsuario),
     );
 
 CREATE TABLE
@@ -100,8 +111,9 @@ CREATE TABLE
         nombre VARCHAR(255),
         cantidadMesas INT,
         descripcion VARCHAR(500),
-        fotoURL VARCHAR(255), -- Remove the comma here
-        detallesURL VARCHAR(255)
+        fotoURL VARCHAR(255),
+        detallesURL VARCHAR(255),
+        bloqueada BIT
     );
 
 CREATE TABLE
@@ -229,10 +241,240 @@ INSERT INTO
     )
 VALUES
     (
-        'a01177767',
-        'Christopher Gabriel',
-        'Pedraza',
-        'Pohlenz',
+        'a01368580',
+        'Roberta Giovanna',
+        'González',
+        'Canavati',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a00835268',
+        'Karen',
+        'Gutiérrez',
+        'Solís',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a01027008',
+        'Nahomi Daniela',
+        'Plata',
+        'Ulate',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a00833125',
+        'Roberto',
+        'Ríos',
+        'Olaiz',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a01198189',
+        'Eugenio',
+        'Turcott',
+        'Estrada',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a00830194',
+        'María Fernanda',
+        'Argueta',
+        'Wolke',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a00227838',
+        'Ramón Yuri',
+        'Danzos',
+        'García',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a00832239',
+        'Andrés Marcelo',
+        'De Luna',
+        'Pámanes',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a01252605',
+        'Ana Jimena',
+        'Gallegos',
+        'Rongel',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a01721881',
+        'Luis Eduardo',
+        'Garza',
+        'Naranjo',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a01411863',
+        'Roberto Andonie',
+        'Hernández',
+        'Pérez',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a01721636',
+        'Carlos',
+        'Cuilty',
+        'Villarreal',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a01351989',
+        'Emilio',
+        'De Gyves',
+        'García',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a01026999',
+        'Alberto Iván',
+        'Tamez',
+        'González',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a01721735',
+        'Eduardo',
+        'Tello',
+        'Gómez',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a00834801',
+        'David Julio',
+        'Faudoa',
+        'González',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a00834434',
+        'Mario Raúl',
+        'Fernández',
+        'Calleros',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a01571142',
+        'Francisco Javier',
+        'Lugo',
+        'Gutiérrez',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a00830223',
+        'José Antonio',
+        'Ramírez',
+        'Oliva',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a00834526',
+        'Patricio',
+        'Villarreal',
+        'Welsh',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a01412726',
+        'Jinelle',
+        'Flores',
+        'Etienne',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a00833852',
+        'Roberto',
+        'González',
+        'Reyes',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a00829814',
+        'Reynaldo',
+        'Hernández',
+        'González',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a00833173',
+        'Jaime Eduardo',
+        'López',
+        'Castro',
         'Regular',
         362,
         1,
@@ -244,90 +486,330 @@ VALUES
         'Martínez',
         'Garza',
         'Regular',
-        200,
+        362,
         1,
-        '#C0A2FF'
-    ),
-    (
-        'a00833173',
-        'Jaime',
-        'López',
-        'Castro',
-        'Regular',
-        100,
-        3,
-        '#FF87E5'
-    ),
-    (
-        'a01412726',
-        'Jinelle',
-        'Flores',
-        'Etienne',
-        'Regular',
-        500,
-        3,
-        '#98A6B6'
-    ),
-    (
-        'a00829814',
-        'Reynaldo',
-        'Hernández',
-        'González',
-        'Regular',
-        120,
-        5,
         '#78C2F8'
     ),
     (
-        'a00833852',
-        'Roberto',
-        'González',
-        'Reyes',
+        'a01177767',
+        'Christopher Gabriel',
+        'Pedraza',
+        'Pohlenz',
         'Regular',
-        354,
-        5,
-        '#C0A2FF'
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a00833416',
+        'Michelle',
+        'Bojórquez',
+        'Gómez',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a00829931',
+        'Fernando',
+        'Bustos',
+        'Monsiváis',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a01383393',
+        'Rodolfo Charles',
+        'Wah',
+        'Cruz',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a01384738',
+        'Diego Thomas',
+        'Gocht',
+        'Aguero',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a00833968',
+        'José Eduardo',
+        'Gómez',
+        'Saldaña',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a00832807',
+        'Manuel José',
+        'Ortiz',
+        'Urueña',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'l00000010',
+        'Cristina',
+        'González',
+        'Cordova',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'l00000020',
+        'Lorena',
+        'Martínez',
+        'Hernández',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        '0012007098',
+        'Rolando',
+        'Martínez',
+        'Hernández',
+        'Regular',
+        362,
+        1,
+        '#78C2F8'
     );
 
 -- Sample data for Credenciales
 INSERT INTO
-    Credenciales (idUsuario, contrasena)
+    Credenciales (idUsuario, contrasena, tagId)
 VALUES
     (
-        'a01177767',
-        '1b49d03ad9ecf3790c645be0cca00f9048ead771a1fd1a95ca0d4173f5353cba4e4f6c43f88c2ac9cfcbc6894124d216ca97c90e06e92f8f76f3f66c07deb702'
+        'a01368580',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '1591815712'
     ),
     (
-        'a01280601',
-        '1b49d03ad9ecf3790c645be0cca00f9048ead771a1fd1a95ca0d4173f5353cba4e4f6c43f88c2ac9cfcbc6894124d216ca97c90e06e92f8f76f3f66c07deb702'
+        'a00835268',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '237162255217'
     ),
     (
-        'a00833173',
-        '1b49d03ad9ecf3790c645be0cca00f9048ead771a1fd1a95ca0d4173f5353cba4e4f6c43f88c2ac9cfcbc6894124d216ca97c90e06e92f8f76f3f66c07deb702'
+        'a01027008',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '92152211219'
+    ),
+    (
+        'a00833125',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '1731252217'
+    ),
+    (
+        'a01198189',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '12577237217'
+    ),
+    (
+        'a00830194',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        NULL
+    ),
+    (
+        'a00227838',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '76172106220'
+    ),
+    (
+        'a00832239',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '1892230218'
+    ),
+    (
+        'a01252605',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        NULL
+    ),
+    (
+        'a01721881',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '6075206219'
+    ),
+    (
+        'a01411863',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '28132203219'
+    ),
+    (
+        'a01721636',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '22125244217'
+    ),
+    (
+        'a01351989',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '551067844'
+    ),
+    (
+        'a01026999',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        NULL
+    ),
+    (
+        'a01721735',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '221155236217'
+    ),
+    (
+        'a00834801',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '20621160198'
+    ),
+    (
+        'a00834434',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '13130218'
+    ),
+    (
+        'a01571142',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '22159249217'
+    ),
+    (
+        'a00830223',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '45113254217'
+    ),
+    (
+        'a00834526',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '188183199219'
     ),
     (
         'a01412726',
-        '1b49d03ad9ecf3790c645be0cca00f9048ead771a1fd1a95ca0d4173f5353cba4e4f6c43f88c2ac9cfcbc6894124d216ca97c90e06e92f8f76f3f66c07deb702'
-    ),
-    (
-        'a00829814',
-        '1b49d03ad9ecf3790c645be0cca00f9048ead771a1fd1a95ca0d4173f5353cba4e4f6c43f88c2ac9cfcbc6894124d216ca97c90e06e92f8f76f3f66c07deb702'
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '12494208219'
     ),
     (
         'a00833852',
-        '1b49d03ad9ecf3790c645be0cca00f9048ead771a1fd1a95ca0d4173f5353cba4e4f6c43f88c2ac9cfcbc6894124d216ca97c90e06e92f8f76f3f66c07deb702'
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '140148108220'
+    ),
+    (
+        'a00829814',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '1234'
+    ),
+    (
+        'a00833173',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '189215241217'
+    ),
+    (
+        'a01280601',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '157228234217'
+    ),
+    (
+        'a01177767',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '9318251217'
+    ),
+    (
+        'a00833416',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '4579221217'
+    ),
+    (
+        'a00829931',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '188120225219'
+    ),
+    (
+        'a01383393',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '12550230217'
+    ),
+    (
+        'a01384738',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '44226200219'
+    ),
+    (
+        'a00833968',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '174116128192'
+    ),
+    (
+        'a00832807',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '109500218'
+    ),
+    (
+        'l00000010',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '5215665220'
+    ),
+    (
+        'l00000020',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '125122131173'
+    ),
+    (
+        '0012007098',
+        'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
+        '0012007098'
     );
 
 -- Sample data for GruposUsuarios
 INSERT INTO
     GruposUsuarios (idUF, idUsuario)
 VALUES
-    (1, 'a01177767'),
-    (1, 'a01280601'),
-    (1, 'a00833173'),
+    (1, 'a01368580'),
+    (1, 'a00835268'),
+    (1, 'a01027008'),
+    (1, 'a00833125'),
+    (1, 'a01198189'),
+    (1, 'a00830194'),
+    (1, 'a00227838'),
+    (1, 'a00832239'),
+    (1, 'a01252605'),
+    (1, 'a01721881'),
+    (1, 'a01411863'),
+    (1, 'a01721636'),
+    (1, 'a01351989'),
+    (1, 'a01026999'),
+    (1, 'a01721735'),
+    (1, 'a00834801'),
+    (1, 'a00834434'),
+    (1, 'a01571142'),
+    (1, 'a00830223'),
+    (1, 'a00834526'),
     (1, 'a01412726'),
+    (1, 'a00833852'),
     (1, 'a00829814'),
-    (1, 'a00833852');
+    (1, 'a00833173'),
+    (1, 'a01280601'),
+    (1, 'a01177767'),
+    (1, 'a00833416'),
+    (1, 'a00829931'),
+    (1, 'a01383393'),
+    (1, 'a01384738'),
+    (1, 'a00833968'),
+    (1, 'a00832807'),
+    (1, 'l00000010'),
+    (1, 'l00000020'),
+    (1, '0012007098');
 
 -- Sample data for Logros
 INSERT INTO
@@ -344,7 +826,7 @@ VALUES
         'Big Dreamer',
         'Reserva 50 veces algún espacio del D.R.E.A.M. Lab.',
         1,
-        'https://dreamlabstorage.blob.core.windows.net/logros/BigDreamer.png',
+        'https://dreamlabstorage.blob.core.windows.net/logros/BigDreamer.webp',
         '#AFB7FF',
         50
     ),
@@ -352,7 +834,7 @@ VALUES
         'Independent Learner',
         'Completa 20 experiencias autodirigidas.',
         1,
-        'https://dreamlabstorage.blob.core.windows.net/logros/IndependentLearner.png',
+        'https://dreamlabstorage.blob.core.windows.net/logros/IndependentLearner.webp',
         '#C0A2FF',
         20
     ),
@@ -360,7 +842,7 @@ VALUES
         'Robot Expert',
         'Asiste a 5 eventos dentro del “Electric Garage”.',
         1,
-        'https://dreamlabstorage.blob.core.windows.net/logros/RobotExpert.png',
+        'https://dreamlabstorage.blob.core.windows.net/logros/RobotExpert.webp',
         '#78C2F8',
         5
     ),
@@ -368,7 +850,7 @@ VALUES
         'Testing Champion',
         'Reserva y asiste 5 veces a la sala “Testing Land”.',
         1,
-        'https://dreamlabstorage.blob.core.windows.net/logros/TestingChampion.png',
+        'https://dreamlabstorage.blob.core.windows.net/logros/TestingChampion.webp',
         '#FF87E5',
         5
     ),
@@ -376,7 +858,7 @@ VALUES
         'Ancient Soul',
         'Reserva y asiste 3 veces a la sala “Graveyard”.',
         1,
-        'https://dreamlabstorage.blob.core.windows.net/logros/AncientSoul.png',
+        'https://dreamlabstorage.blob.core.windows.net/logros/AncientSoul.webp',
         '#98A6B6',
         3
     ),
@@ -384,7 +866,7 @@ VALUES
         'Visionary',
         'Reserva y asiste 2 veces a la “Sala VR”.',
         1,
-        'https://dreamlabstorage.blob.core.windows.net/logros/Visionary.png',
+        'https://dreamlabstorage.blob.core.windows.net/logros/Visionary.webp',
         '#FF6073',
         2
     ),
@@ -392,7 +874,7 @@ VALUES
         'Priority Achiever',
         'Alcanza un puntaje de prioridad de al menos 500 puntos en una ocasión.',
         1,
-        'https://dreamlabstorage.blob.core.windows.net/logros/PriorityAchiever.png',
+        'https://dreamlabstorage.blob.core.windows.net/logros/PriorityAchiever.webp',
         '#F8E478',
         500
     ),
@@ -400,7 +882,7 @@ VALUES
         'Five-Star Player',
         'Forma parte del top 5 de usuarios con mayor prioridad.',
         1,
-        'https://dreamlabstorage.blob.core.windows.net/logros/Trustworthy.png',
+        'https://dreamlabstorage.blob.core.windows.net/logros/Trustworthy.webp',
         '#A0DE83',
         1
     ),
@@ -408,7 +890,7 @@ VALUES
         'Communicator',
         'Utiliza 1 vez el sistema de recomendaciones por voz.',
         1,
-        'https://dreamlabstorage.blob.core.windows.net/logros/Communicator.png',
+        'https://dreamlabstorage.blob.core.windows.net/logros/Communicator.webp',
         '#FEA767',
         1
     ),
@@ -416,7 +898,7 @@ VALUES
         'Artistic Alchemist',
         'Cambia tu icono de perfil por primera vez.',
         1,
-        'https://dreamlabstorage.blob.core.windows.net/logros/ArtisticAlchemist.png',
+        'https://dreamlabstorage.blob.core.windows.net/logros/ArtisticAlchemist.webp',
         '#FFCCCC',
         1
     );
@@ -425,36 +907,237 @@ VALUES
 INSERT INTO
     UsuariosLogros (idLogro, idUsuario, valorActual, obtenido)
 VALUES
-    (1, 'a00833852', 50, 1),
-    (2, 'a00833852', 5, 0),
-    (3, 'a00833852', 5, 1),
-    (4, 'a00833852', 3, 0),
-    (5, 'a00833852', 3, 1),
-    (6, 'a00833852', 1, 0),
-    (7, 'a00833852', 367, 0),
-    (8, 'a00833852', 1, 1),
-    (9, 'a00833852', 0, 0),
-    (10, 'a00833852', 0, 0),
-    (1, 'a01280601', 50, 1),
-    (2, 'a01280601', 5, 0),
-    (3, 'a01280601', 5, 1),
-    (4, 'a01280601', 3, 0),
-    (5, 'a01280601', 3, 1),
-    (6, 'a01280601', 1, 0),
-    (7, 'a01280601', 367, 0),
-    (8, 'a01280601', 1, 1),
-    (9, 'a01280601', 0, 0),
-    (10, 'a01280601', 0, 0),
-    (1, 'a00833173', 50, 1),
-    (2, 'a00833173', 5, 0),
-    (3, 'a00833173', 5, 1),
-    (4, 'a00833173', 3, 0),
-    (5, 'a00833173', 3, 1),
-    (6, 'a00833173', 1, 0),
-    (7, 'a00833173', 367, 0),
-    (8, 'a00833173', 1, 1),
-    (9, 'a00833173', 0, 0),
-    (10, 'a00833173', 0, 0),
+    (1, '0012007098', 50, 1),
+    (2, '0012007098', 5, 0),
+    (3, '0012007098', 5, 1),
+    (4, '0012007098', 3, 0),
+    (5, '0012007098', 3, 1),
+    (6, '0012007098', 1, 0),
+    (7, '0012007098', 367, 0),
+    (8, '0012007098', 1, 1),
+    (9, '0012007098', 0, 0),
+    (10, '0012007098', 0, 0),
+    -- Para A01368580
+    (1, 'a01368580', 50, 1),
+    (2, 'a01368580', 5, 0),
+    (3, 'a01368580', 5, 1),
+    (4, 'a01368580', 3, 0),
+    (5, 'a01368580', 3, 1),
+    (6, 'a01368580', 1, 0),
+    (7, 'a01368580', 367, 0),
+    (8, 'a01368580', 1, 1),
+    (9, 'a01368580', 0, 0),
+    (10, 'a01368580', 0, 0),
+    -- Para a00835268
+    (1, 'a00835268', 50, 1),
+    (2, 'a00835268', 5, 0),
+    (3, 'a00835268', 5, 1),
+    (4, 'a00835268', 3, 0),
+    (5, 'a00835268', 3, 1),
+    (6, 'a00835268', 1, 0),
+    (7, 'a00835268', 367, 0),
+    (8, 'a00835268', 1, 1),
+    (9, 'a00835268', 0, 0),
+    (10, 'a00835268', 0, 0),
+    -- Para a01027008
+    (1, 'a01027008', 50, 1),
+    (2, 'a01027008', 5, 0),
+    (3, 'a01027008', 5, 1),
+    (4, 'a01027008', 3, 0),
+    (5, 'a01027008', 3, 1),
+    (6, 'a01027008', 1, 0),
+    (7, 'a01027008', 367, 0),
+    (8, 'a01027008', 1, 1),
+    (9, 'a01027008', 0, 0),
+    (10, 'a01027008', 0, 0),
+    -- Para a00833125 y así sucesivamente...
+    (1, 'a00833125', 50, 1),
+    (2, 'a00833125', 5, 0),
+    (3, 'a00833125', 5, 1),
+    (4, 'a00833125', 3, 0),
+    (5, 'a00833125', 3, 1),
+    (6, 'a00833125', 1, 0),
+    (7, 'a00833125', 367, 0),
+    (8, 'a00833125', 1, 1),
+    (9, 'a00833125', 0, 0),
+    (10, 'a00833125', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a01198189', 50, 1),
+    (2, 'a01198189', 5, 0),
+    (3, 'a01198189', 5, 1),
+    (4, 'a01198189', 3, 0),
+    (5, 'a01198189', 3, 1),
+    (6, 'a01198189', 1, 0),
+    (7, 'a01198189', 367, 0),
+    (8, 'a01198189', 1, 1),
+    (9, 'a01198189', 0, 0),
+    (10, 'a01198189', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a00830194', 50, 1),
+    (2, 'a00830194', 5, 0),
+    (3, 'a00830194', 5, 1),
+    (4, 'a00830194', 3, 0),
+    (5, 'a00830194', 3, 1),
+    (6, 'a00830194', 1, 0),
+    (7, 'a00830194', 367, 0),
+    (8, 'a00830194', 1, 1),
+    (9, 'a00830194', 0, 0),
+    (10, 'a00830194', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a00227838', 50, 1),
+    (2, 'a00227838', 5, 0),
+    (3, 'a00227838', 5, 1),
+    (4, 'a00227838', 3, 0),
+    (5, 'a00227838', 3, 1),
+    (6, 'a00227838', 1, 0),
+    (7, 'a00227838', 367, 0),
+    (8, 'a00227838', 1, 1),
+    (9, 'a00227838', 0, 0),
+    (10, 'a00227838', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a00832239', 50, 1),
+    (2, 'a00832239', 5, 0),
+    (3, 'a00832239', 5, 1),
+    (4, 'a00832239', 3, 0),
+    (5, 'a00832239', 3, 1),
+    (6, 'a00832239', 1, 0),
+    (7, 'a00832239', 367, 0),
+    (8, 'a00832239', 1, 1),
+    (9, 'a00832239', 0, 0),
+    (10, 'a00832239', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a01252605', 50, 1),
+    (2, 'a01252605', 5, 0),
+    (3, 'a01252605', 5, 1),
+    (4, 'a01252605', 3, 0),
+    (5, 'a01252605', 3, 1),
+    (6, 'a01252605', 1, 0),
+    (7, 'a01252605', 367, 0),
+    (8, 'a01252605', 1, 1),
+    (9, 'a01252605', 0, 0),
+    (10, 'a01252605', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a01721881', 50, 1),
+    (2, 'a01721881', 5, 0),
+    (3, 'a01721881', 5, 1),
+    (4, 'a01721881', 3, 0),
+    (5, 'a01721881', 3, 1),
+    (6, 'a01721881', 1, 0),
+    (7, 'a01721881', 367, 0),
+    (8, 'a01721881', 1, 1),
+    (9, 'a01721881', 0, 0),
+    (10, 'a01721881', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a01411863', 50, 1),
+    (2, 'a01411863', 5, 0),
+    (3, 'a01411863', 5, 1),
+    (4, 'a01411863', 3, 0),
+    (5, 'a01411863', 3, 1),
+    (6, 'a01411863', 1, 0),
+    (7, 'a01411863', 367, 0),
+    (8, 'a01411863', 1, 1),
+    (9, 'a01411863', 0, 0),
+    (10, 'a01411863', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a01721636', 50, 1),
+    (2, 'a01721636', 5, 0),
+    (3, 'a01721636', 5, 1),
+    (4, 'a01721636', 3, 0),
+    (5, 'a01721636', 3, 1),
+    (6, 'a01721636', 1, 0),
+    (7, 'a01721636', 367, 0),
+    (8, 'a01721636', 1, 1),
+    (9, 'a01721636', 0, 0),
+    (10, 'a01721636', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a01351989', 50, 1),
+    (2, 'a01351989', 5, 0),
+    (3, 'a01351989', 5, 1),
+    (4, 'a01351989', 3, 0),
+    (5, 'a01351989', 3, 1),
+    (6, 'a01351989', 1, 0),
+    (7, 'a01351989', 367, 0),
+    (8, 'a01351989', 1, 1),
+    (9, 'a01351989', 0, 0),
+    (10, 'a01351989', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a01026999', 50, 1),
+    (2, 'a01026999', 5, 0),
+    (3, 'a01026999', 5, 1),
+    (4, 'a01026999', 3, 0),
+    (5, 'a01026999', 3, 1),
+    (6, 'a01026999', 1, 0),
+    (7, 'a01026999', 367, 0),
+    (8, 'a01026999', 1, 1),
+    (9, 'a01026999', 0, 0),
+    (10, 'a01026999', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a01721735', 50, 1),
+    (2, 'a01721735', 5, 0),
+    (3, 'a01721735', 5, 1),
+    (4, 'a01721735', 3, 0),
+    (5, 'a01721735', 3, 1),
+    (6, 'a01721735', 1, 0),
+    (7, 'a01721735', 367, 0),
+    (8, 'a01721735', 1, 1),
+    (9, 'a01721735', 0, 0),
+    (10, 'a01721735', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a00834801', 50, 1),
+    (2, 'a00834801', 5, 0),
+    (3, 'a00834801', 5, 1),
+    (4, 'a00834801', 3, 0),
+    (5, 'a00834801', 3, 1),
+    (6, 'a00834801', 1, 0),
+    (7, 'a00834801', 367, 0),
+    (8, 'a00834801', 1, 1),
+    (9, 'a00834801', 0, 0),
+    (10, 'a00834801', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a00834434', 50, 1),
+    (2, 'a00834434', 5, 0),
+    (3, 'a00834434', 5, 1),
+    (4, 'a00834434', 3, 0),
+    (5, 'a00834434', 3, 1),
+    (6, 'a00834434', 1, 0),
+    (7, 'a00834434', 367, 0),
+    (8, 'a00834434', 1, 1),
+    (9, 'a00834434', 0, 0),
+    (10, 'a00834434', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a01571142', 50, 1),
+    (2, 'a01571142', 5, 0),
+    (3, 'a01571142', 5, 1),
+    (4, 'a01571142', 3, 0),
+    (5, 'a01571142', 3, 1),
+    (6, 'a01571142', 1, 0),
+    (7, 'a01571142', 367, 0),
+    (8, 'a01571142', 1, 1),
+    (9, 'a01571142', 0, 0),
+    (10, 'a01571142', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a00830223', 50, 1),
+    (2, 'a00830223', 5, 0),
+    (3, 'a00830223', 5, 1),
+    (4, 'a00830223', 3, 0),
+    (5, 'a00830223', 3, 1),
+    (6, 'a00830223', 1, 0),
+    (7, 'a00830223', 367, 0),
+    (8, 'a00830223', 1, 1),
+    (9, 'a00830223', 0, 0),
+    (10, 'a00830223', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a00834526', 50, 1),
+    (2, 'a00834526', 5, 0),
+    (3, 'a00834526', 5, 1),
+    (4, 'a00834526', 3, 0),
+    (5, 'a00834526', 3, 1),
+    (6, 'a00834526', 1, 0),
+    (7, 'a00834526', 367, 0),
+    (8, 'a00834526', 1, 1),
+    (9, 'a00834526', 0, 0),
+    (10, 'a00834526', 0, 0),
+    -- Continuar para las demás matrículas...
     (1, 'a01412726', 50, 1),
     (2, 'a01412726', 5, 0),
     (3, 'a01412726', 5, 1),
@@ -465,6 +1148,18 @@ VALUES
     (8, 'a01412726', 1, 1),
     (9, 'a01412726', 0, 0),
     (10, 'a01412726', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a00833852', 50, 1),
+    (2, 'a00833852', 5, 0),
+    (3, 'a00833852', 5, 1),
+    (4, 'a00833852', 3, 0),
+    (5, 'a00833852', 3, 1),
+    (6, 'a00833852', 1, 0),
+    (7, 'a00833852', 367, 0),
+    (8, 'a00833852', 1, 1),
+    (9, 'a00833852', 0, 0),
+    (10, 'a00833852', 0, 0),
+    -- Continuar para las demás matrículas...
     (1, 'a00829814', 50, 1),
     (2, 'a00829814', 5, 0),
     (3, 'a00829814', 5, 1),
@@ -475,6 +1170,29 @@ VALUES
     (8, 'a00829814', 1, 1),
     (9, 'a00829814', 0, 0),
     (10, 'a00829814', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a00833173', 50, 1),
+    (2, 'a00833173', 5, 0),
+    (3, 'a00833173', 5, 1),
+    (4, 'a00833173', 3, 0),
+    (5, 'a00833173', 3, 1),
+    (6, 'a00833173', 1, 0),
+    (7, 'a00833173', 367, 0),
+    (8, 'a00833173', 1, 1),
+    (9, 'a00833173', 0, 0),
+    (10, 'a00833173', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a01280601', 50, 1),
+    (2, 'a01280601', 5, 0),
+    (3, 'a01280601', 5, 1),
+    (4, 'a01280601', 3, 0),
+    (5, 'a01280601', 3, 1),
+    (6, 'a01280601', 1, 0),
+    (7, 'a01280601', 367, 0),
+    (8, 'a01280601', 1, 1),
+    (9, 'a01280601', 0, 0),
+    (10, 'a01280601', 0, 0),
+    -- Continuar para las demás matrículas...
     (1, 'a01177767', 50, 1),
     (2, 'a01177767', 5, 0),
     (3, 'a01177767', 5, 1),
@@ -484,7 +1202,95 @@ VALUES
     (7, 'a01177767', 367, 0),
     (8, 'a01177767', 1, 1),
     (9, 'a01177767', 0, 0),
-    (10, 'a01177767', 0, 0);
+    (10, 'a01177767', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a00833416', 50, 1),
+    (2, 'a00833416', 5, 0),
+    (3, 'a00833416', 5, 1),
+    (4, 'a00833416', 3, 0),
+    (5, 'a00833416', 3, 1),
+    (6, 'a00833416', 1, 0),
+    (7, 'a00833416', 367, 0),
+    (8, 'a00833416', 1, 1),
+    (9, 'a00833416', 0, 0),
+    (10, 'a00833416', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a00829931', 50, 1),
+    (2, 'a00829931', 5, 0),
+    (3, 'a00829931', 5, 1),
+    (4, 'a00829931', 3, 0),
+    (5, 'a00829931', 3, 1),
+    (6, 'a00829931', 1, 0),
+    (7, 'a00829931', 367, 0),
+    (8, 'a00829931', 1, 1),
+    (9, 'a00829931', 0, 0),
+    (10, 'a00829931', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a01383393', 50, 1),
+    (2, 'a01383393', 5, 0),
+    (3, 'a01383393', 5, 1),
+    (4, 'a01383393', 3, 0),
+    (5, 'a01383393', 3, 1),
+    (6, 'a01383393', 1, 0),
+    (7, 'a01383393', 367, 0),
+    (8, 'a01383393', 1, 1),
+    (9, 'a01383393', 0, 0),
+    (10, 'a01383393', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a01384738', 50, 1),
+    (2, 'a01384738', 5, 0),
+    (3, 'a01384738', 5, 1),
+    (4, 'a01384738', 3, 0),
+    (5, 'a01384738', 3, 1),
+    (6, 'a01384738', 1, 0),
+    (7, 'a01384738', 367, 0),
+    (8, 'a01384738', 1, 1),
+    (9, 'a01384738', 0, 0),
+    (10, 'a01384738', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a00833968', 50, 1),
+    (2, 'a00833968', 5, 0),
+    (3, 'a00833968', 5, 1),
+    (4, 'a00833968', 3, 0),
+    (5, 'a00833968', 3, 1),
+    (6, 'a00833968', 1, 0),
+    (7, 'a00833968', 367, 0),
+    (8, 'a00833968', 1, 1),
+    (9, 'a00833968', 0, 0),
+    (10, 'a00833968', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'a00832807', 50, 1),
+    (2, 'a00832807', 5, 0),
+    (3, 'a00832807', 5, 1),
+    (4, 'a00832807', 3, 0),
+    (5, 'a00832807', 3, 1),
+    (6, 'a00832807', 1, 0),
+    (7, 'a00832807', 367, 0),
+    (8, 'a00832807', 1, 1),
+    (9, 'a00832807', 0, 0),
+    (10, 'a00832807', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'l00000010', 50, 1),
+    (2, 'l00000010', 5, 0),
+    (3, 'l00000010', 5, 1),
+    (4, 'l00000010', 3, 0),
+    (5, 'l00000010', 3, 1),
+    (6, 'l00000010', 1, 0),
+    (7, 'l00000010', 367, 0),
+    (8, 'l00000010', 1, 1),
+    (9, 'l00000010', 0, 0),
+    (10, 'l00000010', 0, 0),
+    -- Continuar para las demás matrículas...
+    (1, 'l00000020', 50, 1),
+    (2, 'l00000020', 5, 0),
+    (3, 'l00000020', 5, 1),
+    (4, 'l00000020', 3, 0),
+    (5, 'l00000020', 3, 1),
+    (6, 'l00000020', 1, 0),
+    (7, 'l00000020', 367, 0),
+    (8, 'l00000020', 1, 1),
+    (9, 'l00000020', 0, 0),
+    (10, 'l00000020', 0, 0);
 
 -- Sample data for Materiales
 INSERT INTO
@@ -492,75 +1298,75 @@ INSERT INTO
 VALUES
     (
         'Laptop Gamer',
-        'https://dreamlabstorage.blob.core.windows.net/materiales/laptop-gamer.png'
+        'https://dreamlabstorage.blob.core.windows.net/materiales/laptop-gamer.webp'
     ),
     (
         'Surface Pro',
-        'https://dreamlabstorage.blob.core.windows.net/materiales/surface.png'
+        'https://dreamlabstorage.blob.core.windows.net/materiales/surface.webp'
     ),
     (
         'Chromebook',
-        'https://dreamlabstorage.blob.core.windows.net/materiales/chromebook.png'
+        'https://dreamlabstorage.blob.core.windows.net/materiales/chromebook.webp'
     ),
     (
         'Oculus Quest 2',
-        'https://dreamlabstorage.blob.core.windows.net/materiales/oculus.png'
+        'https://dreamlabstorage.blob.core.windows.net/materiales/oculus.webp'
     ),
     (
         'HTC Vive Pro 2',
-        'https://dreamlabstorage.blob.core.windows.net/materiales/vive.png'
+        'https://dreamlabstorage.blob.core.windows.net/materiales/vive.webp'
     ),
     (
         'PlayStation VR',
-        'https://dreamlabstorage.blob.core.windows.net/materiales/playstationVR.png'
+        'https://dreamlabstorage.blob.core.windows.net/materiales/playstationVR.webp'
     ),
     (
         'Visor VR para smartphone',
-        'https://dreamlabstorage.blob.core.windows.net/materiales/vr-smartphone.png'
+        'https://dreamlabstorage.blob.core.windows.net/materiales/vr-smartphone.webp'
     ),
     (
         'PC de escritorio',
-        'https://dreamlabstorage.blob.core.windows.net/materiales/pc.png'
+        'https://dreamlabstorage.blob.core.windows.net/materiales/pc.webp'
     ),
     (
         'Tablet Android',
-        'https://dreamlabstorage.blob.core.windows.net/materiales/android-tablet.png'
+        'https://dreamlabstorage.blob.core.windows.net/materiales/android-tablet.webp'
     ),
     (
         'Tablet iPad',
-        'https://dreamlabstorage.blob.core.windows.net/materiales/ipad.png'
+        'https://dreamlabstorage.blob.core.windows.net/materiales/ipad.webp'
     ),
     (
         'Tablet Windows',
-        'https://dreamlabstorage.blob.core.windows.net/materiales/tablet-windows.png'
+        'https://dreamlabstorage.blob.core.windows.net/materiales/tablet-windows.webp'
     ),
     (
         'Cámara Digital (DSLR)',
-        'https://dreamlabstorage.blob.core.windows.net/materiales/camara.png'
+        'https://dreamlabstorage.blob.core.windows.net/materiales/camara.webp'
     ),
     (
         'Audífonos Over-Ear',
-        'https://dreamlabstorage.blob.core.windows.net/materiales/audifonos.png'
+        'https://dreamlabstorage.blob.core.windows.net/materiales/audifonos.webp'
     ),
     (
         'Altavoces Bluetooth',
-        'https://dreamlabstorage.blob.core.windows.net/materiales/altavoz.png'
+        'https://dreamlabstorage.blob.core.windows.net/materiales/altavoz.webp'
     ),
     (
         'Micrófono',
-        'https://dreamlabstorage.blob.core.windows.net/materiales/microfono.png'
+        'https://dreamlabstorage.blob.core.windows.net/materiales/microfono.webp'
     ),
     (
         'Router Wi-Fi',
-        'https://dreamlabstorage.blob.core.windows.net/materiales/router.png'
+        'https://dreamlabstorage.blob.core.windows.net/materiales/router.webp'
     ),
     (
         'Cable Ethernet',
-        'https://dreamlabstorage.blob.core.windows.net/materiales/cable-ethernet.png'
+        'https://dreamlabstorage.blob.core.windows.net/materiales/cable-ethernet.webp'
     ),
     (
         'Tarjeta de Red',
-        'https://dreamlabstorage.blob.core.windows.net/materiales/tarjeta-red.png'
+        'https://dreamlabstorage.blob.core.windows.net/materiales/tarjeta-red.webp'
     );
 
 -- Sample data for Salas
@@ -570,7 +1376,8 @@ INSERT INTO
         descripcion,
         cantidadMesas,
         fotoURL,
-        detallesURL
+        detallesURL,
+        bloqueada
     )
 VALUES
     (
@@ -578,77 +1385,88 @@ VALUES
         'Este espacio dinámico y versátil es un sueño hecho realidad para los entusiastas de la electrónica. Equipado con las últimas herramientas y tecnologías, es el lugar ideal para dar vida a tus proyectos más ambiciosos.',
         8,
         'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?q=80&w=1769&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/electric-garage.png'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/electric-garage.webp',
+        0
     ),
     (
         'Dimension Forge',
         'Un laboratorio de vanguardia donde la creatividad se fusiona con la tecnología. Aquí, los innovadores pueden explorar libremente nuevas ideas y experimentar con las últimas herramientas de diseño y fabricación.',
         6,
-        'https://dreamlabstorage.blob.core.windows.net/archivos/vr-lede.jpg',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/dimension-forge.png'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/vr-lede.webp',
+        'https://dreamlabstorage.blob.core.windows.net/archivos/dimension-forge.webp',
+        0
     ),
     (
         'New Horizons',
         'Inspirado por la curiosidad y el deseo de explorar lo desconocido, New Horizons es un lugar donde los límites de la tecnología se desdibujan. Desde la inteligencia artificial hasta la exploración espacial, aquí se dan los primeros pasos hacia el futuro.',
         7,
         'https://images.unsplash.com/photo-1580584126903-c17d41830450?q=80&w=1939&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/new-horizons.png'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/new-horizons.webp',
+        0
     ),
     (
         'Deep Net',
         'Sumérgete en las profundidades de la seguridad informática y las redes con Deep Net. Equipado con tecnología de última generación y expertos en el campo, es el lugar perfecto para poner a prueba tus habilidades y descubrir nuevos horizontes en el ciberespacio.',
         5,
         'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1769&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/deep-net.jpg'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/deep-net.webp',
+        0
     ),
     (
         'Graveyard',
         'No es un lugar de descanso, sino de reinvención. Graveyard es donde las ideas obsoletas encuentran una nueva vida y las tecnologías pasadas se transforman en innovaciones futuras. Es el punto de partida para los visionarios y los revolucionarios.',
         9,
         'https://images.unsplash.com/photo-1540829917886-91ab031b1764?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/graveyard.png'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/graveyard.webp',
+        1
     ),
     (
         'PCB Factory',
         'Desde prototipos hasta producción en masa, PCB Factory ofrece un entorno especializado para el diseño y la fabricación de placas de circuito impreso. Con equipos de alta precisión y experiencia técnica, cada proyecto encuentra su camino hacia el éxito.',
         10,
         'https://images.unsplash.com/photo-1631376178637-392efc9e356b?q=80&w=1973&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/pcb-factory.jpg'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/pcb-factory.webp',
+        0
     ),
     (
         'Hack-Battlefield',
         'Adéntrate en un campo de pruebas donde la habilidad y la estrategia son tus armas. Hack-Battlefield es el lugar donde los expertos en seguridad informática se enfrentan para poner a prueba sus habilidades y proteger los sistemas de mañana.',
         6,
         'https://images.unsplash.com/photo-1567619363836-e5fd63f69b20?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/hack-battlefield.png'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/hack-battlefield.webp',
+        0
     ),
     (
         'Testing Land',
         'Un terreno fértil para la innovación y el desarrollo tecnológico. Aquí, los proyectos toman forma y se someten a rigurosas pruebas para garantizar su calidad y fiabilidad. Es el punto de partida para las soluciones del futuro.',
         8,
         'https://images.unsplash.com/photo-1587355760421-b9de3226a046?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/testing-land.jpg'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/testing-land.webp',
+        0
     ),
     (
         'War Headquarters',
         'El corazón estratégico de las operaciones tecnológicas avanzadas. War Headquarters es donde se planifican y ejecutan los proyectos más ambiciosos, donde la creatividad se encuentra con la ingeniería para dar forma al futuro de la tecnología.',
         5,
         'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/war-headquarters.png'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/war-headquarters.webp',
+        1
     ),
     (
         'Biometrics Flexible Hall',
         'En un mundo donde la identidad es fundamental, Biometrics Flexible Hall ofrece un entorno adaptable para la investigación y el desarrollo de sistemas biométricos. Desde el reconocimiento facial hasta la autenticación de voz, aquí se están construyendo las soluciones de seguridad del mañana.',
         7,
         'https://images.unsplash.com/photo-1667453466805-75bbf36e8707?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/biometrics.jpg'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/biometrics.webp',
+        0
     ),
     (
         'Beyond-Digits',
         'Más allá de los límites convencionales de la tecnología, Beyond-Digits es donde las ideas audaces encuentran su hogar. Aquí, los innovadores exploran nuevas fronteras, desde la inteligencia artificial hasta la computación cuántica, dando forma al futuro con cada línea de código.',
         9,
         'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?q=80&w=2006&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://dreamlabstorage.blob.core.windows.net/archivos/beyond-digits.jpg'
+        'https://dreamlabstorage.blob.core.windows.net/archivos/beyond-digits.webp',
+        0
     );
 
 -- Sample data for Experiencias
@@ -999,6 +1817,492 @@ VALUES
         3
     );
 
+-- Reservaciones para el lunes
+INSERT INTO
+    Reservaciones (
+        idUsuario,
+        idSala,
+        idExperiencia,
+        idMesa,
+        horaInicio,
+        duracion,
+        fecha,
+        numPersonas,
+        estatus
+    )
+VALUES
+    (
+        'a01177767',
+        1,
+        null,
+        1,
+        '10:00:00',
+        2,
+        '2024-05-27',
+        3,
+        3
+    ),
+    (
+        'a01280601',
+        2,
+        null,
+        5,
+        '13:00:00',
+        3,
+        '2024-05-27',
+        4,
+        3
+    ),
+    (
+        'a00833173',
+        3,
+        null,
+        9,
+        '09:00:00',
+        4,
+        '2024-05-27',
+        2,
+        3
+    ),
+    (
+        'a01412726',
+        4,
+        null,
+        13,
+        '11:00:00',
+        3,
+        '2024-05-27',
+        5,
+        3
+    ),
+    (
+        'a00829814',
+        5,
+        null,
+        17,
+        '14:00:00',
+        2,
+        '2024-05-27',
+        3,
+        3
+    ),
+    (
+        'a00833852',
+        6,
+        null,
+        21,
+        '10:00:00',
+        1,
+        '2024-05-27',
+        4,
+        3
+    );
+
+-- Reservaciones para el martes
+INSERT INTO
+    Reservaciones (
+        idUsuario,
+        idSala,
+        idExperiencia,
+        idMesa,
+        horaInicio,
+        duracion,
+        fecha,
+        numPersonas,
+        estatus
+    )
+VALUES
+    (
+        'a01177767',
+        1,
+        null,
+        2,
+        '10:00:00',
+        2,
+        '2024-05-28',
+        3,
+        3
+    ),
+    (
+        'a01280601',
+        2,
+        null,
+        6,
+        '13:00:00',
+        2,
+        '2024-05-28',
+        4,
+        3
+    ),
+    (
+        'a00833173',
+        3,
+        null,
+        10,
+        '09:00:00',
+        4,
+        '2024-05-28',
+        2,
+        3
+    ),
+    (
+        'a01412726',
+        4,
+        null,
+        14,
+        '11:00:00',
+        2,
+        '2024-05-28',
+        5,
+        3
+    ),
+    (
+        'a00829814',
+        5,
+        null,
+        18,
+        '14:00:00',
+        4,
+        '2024-05-28',
+        3,
+        3
+    ),
+    (
+        'a00833852',
+        6,
+        null,
+        22,
+        '10:00:00',
+        1,
+        '2024-05-28',
+        4,
+        3
+    );
+
+-- Reservaciones para el miércoles
+INSERT INTO
+    Reservaciones (
+        idUsuario,
+        idSala,
+        idExperiencia,
+        idMesa,
+        horaInicio,
+        duracion,
+        fecha,
+        numPersonas,
+        estatus
+    )
+VALUES
+    (
+        'a01177767',
+        1,
+        null,
+        1,
+        '10:00:00',
+        3,
+        '2024-05-29',
+        3,
+        3
+    ),
+    (
+        'a01280601',
+        2,
+        null,
+        5,
+        '13:00:00',
+        2,
+        '2024-05-29',
+        4,
+        3
+    ),
+    (
+        'a00833173',
+        3,
+        null,
+        9,
+        '09:00:00',
+        3,
+        '2024-05-29',
+        2,
+        3
+    ),
+    (
+        'a01412726',
+        4,
+        null,
+        13,
+        '11:00:00',
+        2,
+        '2024-05-29',
+        5,
+        3
+    ),
+    (
+        'a00829814',
+        5,
+        null,
+        17,
+        '14:00:00',
+        2,
+        '2024-05-29',
+        3,
+        3
+    ),
+    (
+        'a00833852',
+        6,
+        null,
+        21,
+        '10:00:00',
+        1,
+        '2024-05-29',
+        4,
+        3
+    );
+
+-- Reservaciones para el jueves
+INSERT INTO
+    Reservaciones (
+        idUsuario,
+        idSala,
+        idExperiencia,
+        idMesa,
+        horaInicio,
+        duracion,
+        fecha,
+        numPersonas,
+        estatus
+    )
+VALUES
+    (
+        'a01177767',
+        1,
+        null,
+        3,
+        '10:00:00',
+        4,
+        '2024-05-30',
+        3,
+        3
+    ),
+    (
+        'a01280601',
+        2,
+        null,
+        7,
+        '13:00:00',
+        2,
+        '2024-05-30',
+        4,
+        3
+    ),
+    (
+        'a00833173',
+        3,
+        null,
+        11,
+        '09:00:00',
+        1,
+        '2024-05-30',
+        2,
+        3
+    ),
+    (
+        'a01412726',
+        4,
+        null,
+        15,
+        '11:00:00',
+        3,
+        '2024-05-30',
+        5,
+        3
+    ),
+    (
+        'a00829814',
+        5,
+        null,
+        19,
+        '14:00:00',
+        3,
+        '2024-05-30',
+        3,
+        3
+    ),
+    (
+        'a00833852',
+        6,
+        null,
+        23,
+        '10:00:00',
+        4,
+        '2024-05-30',
+        4,
+        3
+    );
+
+-- Reservaciones para el viernes
+INSERT INTO
+    Reservaciones (
+        idUsuario,
+        idSala,
+        idExperiencia,
+        idMesa,
+        horaInicio,
+        duracion,
+        fecha,
+        numPersonas,
+        estatus
+    )
+VALUES
+    (
+        'a01177767',
+        1,
+        null,
+        2,
+        '11:00:00',
+        2,
+        '2024-05-31',
+        3,
+        3
+    ),
+    (
+        'a01280601',
+        2,
+        null,
+        6,
+        '13:00:00',
+        2,
+        '2024-05-31',
+        4,
+        3
+    ),
+    (
+        'a00833173',
+        3,
+        null,
+        10,
+        '09:00:00',
+        4,
+        '2024-05-31',
+        2,
+        3
+    ),
+    (
+        'a01412726',
+        4,
+        null,
+        14,
+        '16:00:00',
+        2,
+        '2024-05-31',
+        5,
+        3
+    ),
+    (
+        'a00829814',
+        5,
+        null,
+        18,
+        '14:00:00',
+        4,
+        '2024-05-31',
+        3,
+        3
+    ),
+    (
+        'a00833852',
+        6,
+        null,
+        22,
+        '13:00:00',
+        1,
+        '2024-05-31',
+        4,
+        3
+    );
+
+-- Reservaciones video wall
+INSERT INTO
+    Reservaciones (
+        idUsuario,
+        idSala,
+        idExperiencia,
+        idMesa,
+        horaInicio,
+        duracion,
+        fecha,
+        numPersonas,
+        estatus
+    )
+VALUES
+    (
+        'a01177767',
+        1,
+        null,
+        3,
+        '18:00:00',
+        2,
+        '2024-05-28',
+        3,
+        3
+    ),
+    (
+        'a00833173',
+        2,
+        null,
+        7,
+        '13:00:00',
+        2,
+        '2024-05-28',
+        4,
+        3
+    ),
+    (
+        'A01412726',
+        3,
+        null,
+        11,
+        '09:00:00',
+        4,
+        '2024-05-28',
+        2,
+        3
+    ),
+    (
+        'a00833852',
+        4,
+        null,
+        15,
+        '11:00:00',
+        2,
+        '2024-05-28',
+        5,
+        3
+    ),
+    (
+        'a00829814',
+        5,
+        null,
+        19,
+        '18:00:00',
+        2,
+        '2024-05-28',
+        3,
+        3
+    ),
+    (
+        'a01280601',
+        6,
+        null,
+        23,
+        '17:00:00',
+        1,
+        '2024-05-28',
+        4,
+        3
+    );
+
 -- Sample data for ReservacionesMateriales
 INSERT INTO
     ReservacionesMateriales (idReservacion, idMaterial, cantidad, estatus)
@@ -1159,3 +2463,1000 @@ INSERT INTO
 VALUES
     (1, 1, 3),
     (2, 2, 4);
+
+---------------------------------------------------------------
+--                                                           --
+--  ********** DATOS DE PRUEBA PARA EL DASHBOARD **********  --
+--                                                           --
+---------------------------------------------------------------
+--
+-- RESERVACIONES
+-- 
+-- Reservaciones previas: ~44
+--
+-------------------------------------------
+INSERT INTO
+    Reservaciones (
+        idUsuario,
+        idSala,
+        idExperiencia,
+        idMesa,
+        horaInicio,
+        duracion,
+        fecha,
+        numPersonas,
+        estatus
+    )
+VALUES
+    ------------------------------
+    -- Enero (10) ~54
+    ------------------------------
+    (
+        'a01177767',
+        1,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-01-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        1,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-01-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        1,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-01-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        2,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-01-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        2,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-01-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        2,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-01-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        2,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-01-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        3,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-01-05',
+        3,
+        4
+    ),
+    (
+        'a01177767',
+        3,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-01-05',
+        3,
+        4
+    ),
+    (
+        'a01177767',
+        4,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-01-05',
+        3,
+        4
+    ),
+    ------------------------------
+    -- Febrero (20) ~74
+    ------------------------------
+    (
+        'a01177767',
+        3,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        1,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        4,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        5,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        5,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        5,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        5,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        5,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        5,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        6,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        6,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        6,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        6,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        7,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        7,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        4
+    ),
+    (
+        'a01177767',
+        7,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        4
+    ),
+    (
+        'a01177767',
+        7,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        4
+    ),
+    (
+        'a01177767',
+        7,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        4
+    ),
+    (
+        'a01177767',
+        7,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        4
+    ),
+    (
+        'a01177767',
+        8,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-02-05',
+        3,
+        4
+    ),
+    ------------------------------
+    -- Marzo (9) ~83
+    ------------------------------
+    (
+        'a01177767',
+        1,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-03-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        1,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-03-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        2,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-03-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        2,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-03-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        2,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-03-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        3,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-03-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        4,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-03-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        8,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-03-05',
+        3,
+        4
+    ),
+    (
+        'a01177767',
+        8,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-03-05',
+        3,
+        4
+    ),
+    ------------------------------
+    -- Abril (27) ~110
+    ------------------------------
+    (
+        'a01177767',
+        1,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        1,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        1,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        2,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        3,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        3,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        3,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        4,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        4,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        5,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        5,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        5,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        5,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        6,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        6,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        6,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        7,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        7,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        8,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        9,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        10,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        4
+    ),
+    (
+        'a01177767',
+        10,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        4
+    ),
+    (
+        'a01177767',
+        10,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        4
+    ),
+    (
+        'a01177767',
+        10,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        4
+    ),
+    (
+        'a01177767',
+        10,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        4
+    ),
+    (
+        'a01177767',
+        11,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        4
+    ),
+    (
+        'a01177767',
+        11,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-04-05',
+        3,
+        4
+    ),
+    ------------------------------
+    -- Mayo (4) ~114
+    ------------------------------
+    (
+        'a01177767',
+        1,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-05-01',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        1,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-05-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        2,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-05-05',
+        3,
+        4
+    ),
+    (
+        'a01177767',
+        2,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-05-05',
+        3,
+        4
+    ),
+    ------------------------------
+    -- Junio (10) ~124
+    ------------------------------
+    (
+        'a01177767',
+        6,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-06-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        11,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-06-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        6,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-06-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        7,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-06-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        5,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-06-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        5,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-06-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        2,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-06-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        1,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-06-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        9,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-06-05',
+        3,
+        3
+    ),
+    (
+        'a01177767',
+        11,
+        1,
+        null,
+        '12:00:00',
+        2,
+        '2024-06-05',
+        3,
+        4
+    );
+
+-------------------------------------------
+--
+-- MATERIALES
+--
+-------------------------------------------
+INSERT INTO
+    ReservacionesMateriales (idReservacion, idMaterial, cantidad, estatus)
+VALUES
+    (50, 17, 1, 1),
+    (50, 1, 2, 1),
+    (50, 18, 1, 1),
+    (50, 3, 2, 1),
+    (50, 7, 1, 1),
+    (50, 13, 3, 1),
+    (50, 16, 3, 1),
+    (65, 17, 3, 1),
+    (65, 11, 1, 1),
+    (65, 5, 2, 1),
+    (65, 2, 3, 1),
+    (65, 18, 1, 1),
+    (65, 15, 2, 1),
+    (65, 6, 3, 1),
+    (80, 12, 3, 1),
+    (80, 15, 1, 1),
+    (80, 17, 3, 1),
+    (80, 8, 2, 1),
+    (100, 6, 3, 1),
+    (100, 18, 2, 1),
+    (100, 8, 1, 1),
+    (111, 17, 1, 1),
+    (111, 3, 1, 1),
+    (111, 7, 3, 1),
+    (111, 18, 1, 1),
+    (111, 15, 3, 1),
+    (111, 1, 1, 1),
+    (111, 10, 3, 1),
+    (111, 13, 2, 1),
+    (111, 16, 3, 1),
+    (111, 14, 3, 1),
+    (118, 11, 1, 1),
+    (118, 14, 1, 1),
+    (118, 16, 1, 1),
+    (118, 13, 1, 1),
+    (118, 9, 3, 1),
+    (118, 8, 3, 1);
+
+-------------------------------------------
+--
+-- PENALIZACIONES
+--
+-------------------------------------------
+INSERT INTO
+    HistorialPrioridad (idUsuario, fecha, prioridad, motivo)
+VALUES
+    ('A01177767', '2024-01-05', -1, null),
+    ('A01177767', '2024-01-05', -1, null),
+    ('A01177767', '2024-01-05', -1, null),
+    ('A01177767', '2024-01-05', -1, null),
+    ('A01177767', '2024-02-05', -1, null),
+    ('A01177767', '2024-02-05', -1, null),
+    ('A01177767', '2024-03-05', -1, null),
+    ('A01177767', '2024-03-05', -1, null),
+    ('A01177767', '2024-03-05', -1, null),
+    ('A01177767', '2024-03-05', -1, null),
+    ('A01177767', '2024-03-05', -1, null),
+    ('A01177767', '2024-03-05', -1, null),
+    ('A01177767', '2024-04-05', -1, null),
+    ('A01177767', '2024-04-05', -1, null),
+    ('A01177767', '2024-04-05', -1, null),
+    ('A01177767', '2024-04-05', -1, null),
+    ('A01177767', '2024-05-05', -1, null),
+    ('A01177767', '2024-05-05', -1, null),
+    ('A01177767', '2024-05-05', -1, null);

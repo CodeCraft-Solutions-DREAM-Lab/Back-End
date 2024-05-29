@@ -7,7 +7,6 @@ export default class Database {
 
     constructor(config) {
         this.config = config;
-        console.log(`Database: config: ${JSON.stringify(config)}`);
     }
 
     async connect() {
@@ -28,10 +27,20 @@ export default class Database {
 
     async disconnect() {
         try {
-            this.poolconnection.close();
-            console.log("Database connection closed");
+            if (this.poolconnection) {
+                await this.poolconnection.close();
+                this.connected = false;
+                console.log("Database connection closed");
+            }
         } catch (error) {
             console.error(`Error closing database connection: ${error}`);
+        }
+    }
+
+    async ensureConnected() {
+        if (!this.poolconnection || !this.poolconnection.connected) {
+            this.connected = false;
+            await this.connect();
         }
     }
 
@@ -161,7 +170,6 @@ export default class Database {
         }
 
         for (const key in data) {
-
             let type;
             if (typeof data[key] === "number") {
                 type = sql.Int;
@@ -207,7 +215,7 @@ router.put("/:idUsuario/:idLogro", async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }
-});*/ 
+});*/
 
     async updateTwo(tableName, idName1, idName2, id1, id2, data) {
         await this.connect();
@@ -233,7 +241,7 @@ router.put("/:idUsuario/:idLogro", async (req, res) => {
             if (typeof data[key] === "string") {
                 type = sql.NVarChar(255);
             }
-            if(typeof data[key] === "boolean") {
+            if (typeof data[key] === "boolean") {
                 type = sql.Bit;
             }
 
