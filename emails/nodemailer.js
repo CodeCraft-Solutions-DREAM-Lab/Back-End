@@ -49,14 +49,14 @@ export const sendEmail = async (to, subject, text, html) => {
 export const getHtmlTemplate = (templateName, replacements) => {
 	const templatePath = "./emails/templates/" + templateName + ".html";
 	let template = fs.readFileSync(templatePath, "utf-8");
-	console.log(replacements);
+	// console.log(replacements);
 	for (const key in replacements) {
 		template = template.replace(
 			new RegExp(`{{${key}}}`, "g"),
 			replacements[key]
 		);
 
-		console.log(template);
+		// console.log(template);
 	}
 	return template;
 };
