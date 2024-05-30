@@ -15,7 +15,7 @@ const getSalaName = async (idSala) => {
 const getDate = (date) => {
 	const dateObj = new Date(date);
 
-	const day = dateObj.getDate();
+	const day = dateObj.getUTCDate();
 	const month = dateObj.getMonth() + 1;
 
 	const dayStr = day < 10 ? `0${day}` : `${day}`;
@@ -43,9 +43,9 @@ const getDate = (date) => {
 
 const getHour = (date, hours) => {
 	const dateObj = new Date(date);
-	dateObj.setHours(dateObj.getHours() + hours + 6);
+	dateObj.setHours(dateObj.getHours() + hours);
 
-	return dateObj.toLocaleTimeString().slice(0, -3);
+	return dateObj.toISOString().slice(11, 16);
 };
 
 const getInfoHtml = async (reserv) => {
@@ -67,21 +67,8 @@ const sendReminder2hrsBefore = async () => {
 	try {
 		const today = new Date();
 		console.log("Hoy es: ", today);
-		today.setHours(today.getHours() - 6);
+		today.setHours(today.getHours() - 6); // UTC-6
 		console.log("Hoy es: ", today);
-
-		const now = new Date();
-		const utcNow = new Date(Date.UTC(
-			now.getUTCFullYear(),
-			now.getUTCMonth(),
-			now.getUTCDate(),
-			now.getUTCHours(),
-			now.getUTCMinutes(),
-			now.getUTCSeconds(),
-			now.getUTCMilliseconds()
-		));
-
-		console.log("UTC NOW: ", utcNow); // Outputs the current date and time in UTC
 
 		const dateLowerbound = new Date(today);
 		dateLowerbound.setHours(dateLowerbound.getHours() + 2);
