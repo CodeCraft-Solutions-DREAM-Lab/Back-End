@@ -11,6 +11,7 @@ import perfil from "../controllers/perfil.js";
 import logros from "../controllers/logros.js";
 import dashboard from "../controllers/dashboard.js";
 import correrAsignacion from "../controllers/correrAsignacion.js";
+import sendReminder2hrsBefore from "../controllers/schedules/sendReminder2hrsBefore.js";
 
 const router = express.Router();
 
@@ -26,5 +27,9 @@ router.use("/perfil", perfil);
 router.use("/logros", logros);
 router.use("/dashboard", dashboard);
 router.use("/correr-asignacion", correrAsignacion);
+
+router.get("/test", async () => {
+    await sendReminder2hrsBefore();
+})
 
 export { router };

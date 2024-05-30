@@ -66,7 +66,22 @@ const getInfoHtml = async (reserv) => {
 const sendReminder2hrsBefore = async () => {
 	try {
 		const today = new Date();
+		console.log("Hoy es: ", today);
 		today.setHours(today.getHours() - 6);
+		console.log("Hoy es: ", today);
+
+		const now = new Date();
+		const utcNow = new Date(Date.UTC(
+			now.getUTCFullYear(),
+			now.getUTCMonth(),
+			now.getUTCDate(),
+			now.getUTCHours(),
+			now.getUTCMinutes(),
+			now.getUTCSeconds(),
+			now.getUTCMilliseconds()
+		));
+
+		console.log("UTC NOW: ", utcNow); // Outputs the current date and time in UTC
 
 		const dateLowerbound = new Date(today);
 		dateLowerbound.setHours(dateLowerbound.getHours() + 2);
