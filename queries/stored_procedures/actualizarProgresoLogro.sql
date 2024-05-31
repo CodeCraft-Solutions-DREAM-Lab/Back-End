@@ -14,18 +14,28 @@ BEGIN
     DECLARE @prioridadOtorgada INT;
     DECLARE @nuevaPrioridad INT;
     DECLARE @obtenidoPreviamente BIT;
+    DECLARE @nombreLogro VARCHAR(255);
+    DECLARE @descripcionLogro VARCHAR(255);
+    DECLARE @iconoLogro VARCHAR(255);
+    DECLARE @colorLogro VARCHAR(100);
 
     -- Comenzar transacción para que no haya inconsistencias de los datos
     BEGIN TRANSACTION;
 
     BEGIN TRY
         -- 1. Obtener progreso de logro
-        SELECT @valorActual = lu.valorActual, @obtenido = lu.obtenido
+        SELECT @valorActual = lu.valorActual,
+                @obtenido = lu.obtenido
             FROM UsuariosLogros AS lu
             WHERE lu.idUsuario = @idUsuario AND lu.idLogro = @idLogro;
 
         -- 2. Obtener valor maximo del logro
-        SELECT @valorMax = l.valorMax, @prioridadOtorgada = l.prioridadOtorgada
+        SELECT @valorMax = l.valorMax,
+				@prioridadOtorgada = l.prioridadOtorgada,
+				@nombreLogro = l.nombre,
+                @descripcionLogro = l.descripcion,
+                @iconoLogro = l.iconoURL,
+                @colorLogro = l.color
             FROM Logros AS l
             WHERE l.idLogro = @idLogro;
 
@@ -75,8 +85,17 @@ BEGIN
     END CATCH;
 
     -- 7. Obtener progreso actualizado
-    SELECT lu.valorActual, @valorMax AS valorMax, lu.obtenido, @nuevaPrioridad AS nuevaPrioridad, @prioridadOtorgada AS prioridadOtorgada, @obtenidoPreviamente AS obtenidoPreviamente
+    SELECT lu.valorActual,
+            @valorMax AS valorMax,
+            lu.obtenido,
+            @nuevaPrioridad AS nuevaPrioridad,
+            @prioridadOtorgada AS prioridadOtorgada,
+            @obtenidoPreviamente AS obtenidoPreviamente,
+            @nombreLogro AS nombreLogro,
+            @descripcionLogro AS descripcionLogro,
+            @iconoLogro AS iconoLogro,
+            @colorLogro AS colorLogro
         FROM UsuariosLogros AS lu
-        WHERE lu.idUsuario = @idUsuario AND lu.idLogro = @idLogro;
+        WHERE lu.idUsuario = @idUsuario AND lu.idLogro = @idLogro
 END;
 GO
