@@ -105,7 +105,14 @@ router.post("/progresoLogro/:idUsuario/:idLogro", async (req, res) => {
                     properties: {
                         valorActual: { type: 'integer' },
                         valorMax: { type: 'integer' },
-                        obtenido: { type: 'boolean' }
+                        obtenido: { type: 'boolean' },
+                        nuevaPrioridad: { type: 'integer' },
+                        prioridadOtorgada: { type: 'integer' },
+                        obtenidoPreviamente: { type: 'boolean' },
+                        nombreLogro: { type: 'string' },
+                        descripcionLogro: { type: 'string' },
+                        iconoLogro: { type: 'string' },
+                        colorLogro: { type: 'string' },
                     }
                 }
             }

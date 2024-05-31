@@ -2289,6 +2289,27 @@
                     },
                     "obtenido": {
                       "type": "boolean"
+                    },
+                    "nuevaPrioridad": {
+                      "type": "integer"
+                    },
+                    "prioridadOtorgada": {
+                      "type": "integer"
+                    },
+                    "obtenidoPreviamente": {
+                      "type": "boolean"
+                    },
+                    "nombreLogro": {
+                      "type": "string"
+                    },
+                    "descripcionLogro": {
+                      "type": "string"
+                    },
+                    "iconoLogro": {
+                      "type": "string"
+                    },
+                    "colorLogro": {
+                      "type": "string"
                     }
                   }
                 }
