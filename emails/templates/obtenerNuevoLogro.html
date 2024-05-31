@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Email</title>
+    </head>
+    <body
+        style="
+            background-color: #f8fafa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        "
+    >
+        <div
+            style="
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                margin-top: 15px;
+            "
+        >
+            <img
+                src="https://dreamlabstorage.blob.core.windows.net/email-templates/Logo%20Negro%20con%20Borde%20Blanco.png"
+                style="height: 30px; width: 30px; padding-right: 7px"
+            />
+            <h2
+                style="font-family: 'Karla', sans-serif; letter-spacing: -0.5px"
+            >
+                DREAM Lab
+            </h2>
+        </div>
+
+        <div
+            style="
+                width: 90%;
+                border-radius: 8px;
+                padding: 20px;
+                border: 1px solid #eee;
+                background-color: white;
+                margin-bottom: 20px;
+                text-align: center;
+            "
+        >
+            <p style="margin: 0px; font-family: 'Karla', sans-serif">
+                ¡Felicidades {{nombre_usuario}}, has conseguido un nuevo logro!
+            </p>
+
+            <div style="text-align: center; margin: 20px 0">
+                <p
+                    style="
+                        margin: 0px;
+                        font-family: 'Karla', sans-serif;
+                        font-size: 28px;
+                    "
+                >
+                    {{logro}}
+                </p>
+                <div
+                    style="
+                        margin: 10px auto;
+                        height: 120px;
+                        width: 120px;
+                        background-color: {{color}};
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    "
+                >
+                    <img
+                        src="{{icono}}"
+                        alt="Icono de logro"
+                        style="height: 80px; width: 80px"
+                    />
+                </div>
+                <p
+                    style="
+                        margin: 0px;
+                        font-family: 'Karla', sans-serif;
+                        font-size: 32px;
+                    "
+                >
+                    {{prioridad_prev}} → {{prioridad_new}}
+                </p>
+                <p
+                    style="
+                        margin: 0px;
+                        font-family: 'Karla', sans-serif;
+                        font-size: 14px;
+                    "
+                >
+                    Incremento de puntos de prioridad
+                </p>
+            </div>
+
+            <p style="margin: 0px; font-family: 'Karla', sans-serif">
+                ¡Te invitamos a visitar tu perfil en
+                <a
+                    href="https://www.dreamlab.world/profile"
+                    style="color: #007bff; text-decoration: none"
+                    >https://www.dreamlab.world/profile</a
+                >
+                para más información!
+            </p>
+        </div>
+    </body>
+</html>

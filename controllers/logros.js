@@ -2,6 +2,9 @@ import express from "express";
 import { config } from "../config.js";
 import Database from "../database.js";
 
+// Correos
+import { getHtmlTemplate, sendEmail } from "../emails/nodemailer.js";
+
 const router = express.Router();
 router.use(express.json());
 
@@ -137,6 +140,23 @@ router.post("/progresoLogro/:idUsuario/:idLogro", async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }
+});
+
+//https://dreamlabstorage.blob.core.windows.net/logros/IndependentLearner.webp
+
+router.get("/correo", async (req, res) => {
+    const htmlTemplate = getHtmlTemplate("obtenerNuevoLogro", {
+        nombre_usuario: "Christopher Gabriel Pedraza Pohlenz",
+        logro: "Independent Learner",
+        icono: "https://dreamlabstorage.blob.core.windows.net/logros/IndependentLearner.webp",
+        prioridad_prev: "10",
+        prioridad_new: "15",
+        color: "#ADC8FF",
+    });
+
+    sendEmail(`A01177767@tec.mx`, "¡Logro obtenido!", "", htmlTemplate);
+
+    res.status(200).json({ ok: true });
 });
 
 export default router;
