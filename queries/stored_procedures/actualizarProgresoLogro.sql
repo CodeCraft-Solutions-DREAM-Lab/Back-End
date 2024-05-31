@@ -11,42 +11,72 @@ BEGIN
     DECLARE @obtenido BIT;
     DECLARE @valorActual INT;
     DECLARE @valorMax INT;
+    DECLARE @prioridadOtorgada INT;
+    DECLARE @nuevaPrioridad INT;
+    DECLARE @obtenidoPreviamente BIT;
 
-    -- 1. Obtener progreso de logro
-    SELECT @valorActual = lu.valorActual, @obtenido = lu.obtenido
-        FROM UsuariosLogros AS lu
-        WHERE lu.idUsuario = @idUsuario AND lu.idLogro = @idLogro;
+    -- Comenzar transacción para que no haya inconsistencias de los datos
+    BEGIN TRANSACTION;
 
-    -- 2. Obtener valor maximo del logro
-    SELECT @valorMax = l.valorMax
-        FROM Logros AS l
-        WHERE l.idLogro = @idLogro;
+    BEGIN TRY
+        -- 1. Obtener progreso de logro
+        SELECT @valorActual = lu.valorActual, @obtenido = lu.obtenido
+            FROM UsuariosLogros AS lu
+            WHERE lu.idUsuario = @idUsuario AND lu.idLogro = @idLogro;
 
-    -- 3. Incrementar progreso de logro si no ha sido obtenido
-    IF @valorActual < @valorMax
-    BEGIN
-        UPDATE UsuariosLogros
-            SET valorActual = @valorActual + 1
-            WHERE idUsuario = @idUsuario AND idLogro = @idLogro;
+        -- 2. Obtener valor maximo del logro
+        SELECT @valorMax = l.valorMax, @prioridadOtorgada = l.prioridadOtorgada
+            FROM Logros AS l
+            WHERE l.idLogro = @idLogro;
 
-        -- 4. Verificar si se ha alcanzado el valor máximo después del incremento
-        SELECT @valorActual = valorActual
-            FROM UsuariosLogros
-            WHERE idUsuario = @idUsuario AND idLogro = @idLogro;
+        -- 3. Verificar si el logro ya ha sido obtenido previamente
+        SELECT @obtenidoPreviamente = lu.obtenido
+            FROM UsuariosLogros AS lu
+            WHERE lu.idUsuario = @idUsuario AND lu.idLogro = @idLogro;
 
-        -- 5. Si se ha alcanzado el valor maximo, marcarlo como obtenido
-        IF @valorActual >= @valorMax
+        -- 4. Incrementar progreso de logro si no ha sido obtenido
+        IF @valorActual < @valorMax
         BEGIN
             UPDATE UsuariosLogros
-                SET obtenido = 1
+                SET valorActual = @valorActual + 1
                 WHERE idUsuario = @idUsuario AND idLogro = @idLogro;
-        END
-    END
 
-    -- 6. Obtener progreso actualizado
-    SELECT TOP 1 lu.valorActual, @valorMax AS valorMax, lu.obtenido
+            -- 5. Verificar si se ha alcanzado el valor máximo después del incremento
+            SELECT @valorActual = valorActual
+                FROM UsuariosLogros
+                WHERE idUsuario = @idUsuario AND idLogro = @idLogro;
+
+            -- 6. Si se ha alcanzado el valor maximo, marcarlo como obtenido y otorgar la prioridad
+            IF @valorActual >= @valorMax
+            BEGIN
+                UPDATE UsuariosLogros
+                    SET obtenido = 1
+                    WHERE idUsuario = @idUsuario AND idLogro = @idLogro;
+
+                UPDATE Usuarios
+                    SET prioridad = prioridad + @prioridadOtorgada
+                    WHERE idUsuario = @idUsuario;
+
+                SELECT @nuevaPrioridad = prioridad
+                    FROM Usuarios
+                    WHERE idUsuario = @idUsuario;
+            END
+        END
+
+        -- Commit a la transacción
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        -- Rollback a la transacción en caso de error
+        ROLLBACK TRANSACTION;
+
+        -- Mandar el error
+        THROW;
+    END CATCH;
+
+    -- 7. Obtener progreso actualizado
+    SELECT lu.valorActual, @valorMax AS valorMax, lu.obtenido, @nuevaPrioridad AS nuevaPrioridad, @prioridadOtorgada AS prioridadOtorgada, @obtenidoPreviamente AS obtenidoPreviamente
         FROM UsuariosLogros AS lu
         WHERE lu.idUsuario = @idUsuario AND lu.idLogro = @idLogro;
-
 END;
 GO
