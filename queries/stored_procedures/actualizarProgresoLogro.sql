@@ -44,7 +44,7 @@ BEGIN
     END
 
     -- 6. Obtener progreso actualizado
-    SELECT lu.valorActual, @valorMax AS valorMax, lu.obtenido
+    SELECT TOP 1 lu.valorActual, @valorMax AS valorMax, lu.obtenido
         FROM UsuariosLogros AS lu
         WHERE lu.idUsuario = @idUsuario AND lu.idLogro = @idLogro;
 

@@ -77,12 +77,63 @@ router.put("/:idUsuario/:idLogro", async (req, res) => {
 });
 
 router.post("/progresoLogro/:idUsuario/:idLogro", async (req, res) => {
+    /*
+    #swagger.tags = ['Logros']
+    #swagger.description = 'Actualiza el progreso de un logro para un usuario'
+    #swagger.summary = 'Actualiza el progreso de un logro para un usuario'
+    #swagger.parameters['idUsuario'] = {
+        in: 'path',
+        description: 'ID del usuario',
+        required: true,
+        type: 'string'
+    }
+    #swagger.parameters['idLogro'] = {
+        in: 'path',
+        description: 'ID del logro',
+        required: true,
+        type: 'integer'
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        valorActual: { type: 'integer' },
+                        valorMax: { type: 'integer' },
+                        obtenido: { type: 'boolean' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
     try {
-        const usuarioId = req.params.idUsuario.toLowerCase();
-        const logroId = req.params.idLogro;
+        const idUsuario = req.params.idUsuario.toLowerCase();
+        const idLogro = req.params.idLogro;
 
-        const nuevoProgreso = await database.executeProcedure();
-        res.status(200).json({ nuevoProgreso });
+        const nuevoProgreso = await database.executeProcedure(
+            "actualizarProgresoLogro",
+            {
+                idUsuario: idUsuario,
+                idLogro: idLogro,
+            }
+        );
+        res.status(200).json(nuevoProgreso[0]);
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }
