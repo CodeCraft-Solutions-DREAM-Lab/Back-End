@@ -2313,16 +2313,6 @@
         }
       }
     },
-    "/logros/correo": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/dashboard/reservacionesByMes": {
       "get": {
         "tags": [

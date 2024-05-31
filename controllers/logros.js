@@ -136,27 +136,53 @@ router.post("/progresoLogro/:idUsuario/:idLogro", async (req, res) => {
                 idLogro: idLogro,
             }
         );
+
+        if (
+            nuevoProgreso[0].obtenido === true &&
+            nuevoProgreso[0].obtenidoPreviamente === false
+        ) {
+            const datosCorreo = await database.executeProcedure(
+                "getDataLogroCorreo",
+                { idUsuario: idUsuario, idLogro: idLogro }
+            );
+            console.log("datosCorreo", JSON.stringify(datosCorreo));
+            const htmlTemplate = getHtmlTemplate("obtenerNuevoLogro", {
+                nombre_usuario: datosCorreo[0].nombre,
+                logro: datosCorreo[0].logro,
+                icono: datosCorreo[0].icono,
+                prioridad_prev:
+                    nuevoProgreso[0].nuevaPrioridad -
+                    nuevoProgreso[0].prioridadOtorgada,
+                prioridad_new: nuevoProgreso[0].nuevaPrioridad,
+                color: datosCorreo[0].color,
+            });
+            sendEmail(
+                `${idUsuario}@tec.mx`,
+                "¡Logro obtenido!",
+                "",
+                htmlTemplate
+            );
+        }
+
         res.status(200).json(nuevoProgreso[0]);
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }
 });
 
-//https://dreamlabstorage.blob.core.windows.net/logros/IndependentLearner.webp
+// router.get("/correo", async (req, res) => {
+//     const htmlTemplate = getHtmlTemplate("obtenerNuevoLogro", {
+//         nombre_usuario: "Christopher Gabriel Pedraza Pohlenz",
+//         logro: "Independent Learner",
+//         icono: "https://dreamlabstorage.blob.core.windows.net/logros/IndependentLearner.webp",
+//         prioridad_prev: "10",
+//         prioridad_new: "15",
+//         color: "#ADC8FF",
+//     });
 
-router.get("/correo", async (req, res) => {
-    const htmlTemplate = getHtmlTemplate("obtenerNuevoLogro", {
-        nombre_usuario: "Christopher Gabriel Pedraza Pohlenz",
-        logro: "Independent Learner",
-        icono: "https://dreamlabstorage.blob.core.windows.net/logros/IndependentLearner.webp",
-        prioridad_prev: "10",
-        prioridad_new: "15",
-        color: "#ADC8FF",
-    });
+//     sendEmail(`A01177767@tec.mx`, "¡Logro obtenido!", "", htmlTemplate);
 
-    sendEmail(`A01177767@tec.mx`, "¡Logro obtenido!", "", htmlTemplate);
-
-    res.status(200).json({ ok: true });
-});
+//     res.status(200).json({ ok: true });
+// });
 
 export default router;
