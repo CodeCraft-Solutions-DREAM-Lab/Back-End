@@ -76,4 +76,16 @@ router.put("/:idUsuario/:idLogro", async (req, res) => {
     }
 });
 
+router.post("/progresoLogro/:idUsuario/:idLogro", async (req, res) => {
+    try {
+        const usuarioId = req.params.idUsuario.toLowerCase();
+        const logroId = req.params.idLogro;
+
+        const nuevoProgreso = await database.executeProcedure();
+        res.status(200).json({ nuevoProgreso });
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
 export default router;
