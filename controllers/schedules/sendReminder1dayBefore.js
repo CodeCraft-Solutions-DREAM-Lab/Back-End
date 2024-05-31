@@ -69,10 +69,10 @@ const sendReminder1dayBefore = async () => {
 		today.setHours(today.getHours() - 6);
 
 		const dateLowerbound = new Date(today);
-		dateLowerbound.setHours(dateLowerbound.getHours() + 24);
+		dateLowerbound.setHours(dateLowerbound.getHours() + 24 + 1);
 
 		const dateUpperbound = new Date(today);
-		dateUpperbound.setHours(dateUpperbound.getHours() + 24 + 1); // +1 porque se ejecuta cada hora el cron
+		dateUpperbound.setHours(dateUpperbound.getHours() + 24 + 1 + 1); // +1 porque se ejecuta cada hora el cron
 
 		const reservs = await database.executeProcedure(
 			"getReservacionesConfirmadasInDateRange",

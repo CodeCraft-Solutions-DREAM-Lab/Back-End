@@ -71,10 +71,10 @@ const sendReminder2hrsBefore = async () => {
 		console.log("Hoy es: ", today);
 
 		const dateLowerbound = new Date(today);
-		dateLowerbound.setHours(dateLowerbound.getHours() + 2);
+		dateLowerbound.setHours(dateLowerbound.getHours() + 2 + 1);
 
 		const dateUpperbound = new Date(today);
-		dateUpperbound.setHours(dateUpperbound.getHours() + 2 + 1); // +1 porque se ejecuta cada hora el cron
+		dateUpperbound.setHours(dateUpperbound.getHours() + 2 + 1 + 1); // +1 porque se ejecuta cada hora el cron
 
 		const reservs = await database.executeProcedure(
 			"getReservacionesConfirmadasInDateRange",
