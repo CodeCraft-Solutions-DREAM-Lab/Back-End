@@ -593,8 +593,8 @@ VALUES
     (
         'a00000000',
         'Estudiante',
-        'de',
-        'Prueba',
+        '',
+        '',
         'Regular',
         362,
         1,
