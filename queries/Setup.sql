@@ -136,6 +136,7 @@ CREATE TABLE
         portadaURL VARCHAR(255),
         fechaInicio DATE,
         fechaFin DATE,
+        instruccionesIRL VARCHAR(255),
         horaFin TIME,
         FOREIGN KEY (idUF) REFERENCES UnidadesFormacion (idUF),
         FOREIGN KEY (idSala) REFERENCES Salas (idSala)
