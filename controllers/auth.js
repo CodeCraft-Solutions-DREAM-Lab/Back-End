@@ -86,8 +86,14 @@ router.post("/usuario", async (req, res) => {
             if (result.length === 0) {
                 res.status(404).json({});
             } else {
+                const datosUsuario = await database.readAndConditions(
+                    "Usuarios",
+                    [{ idName: "idUsuario", id: usuario }],
+                    "*"
+                );
+
                 var token = jwt.sign(
-                    { usuario: result.idUsuario.toLowerCase() },
+                    { datosUsuario: JSON.stringify(datosUsuario) },
                     TOKEN_SECRET,
                     {
                         expiresIn: "7d",
@@ -106,8 +112,14 @@ router.post("/usuario", async (req, res) => {
             if (result.length === 0) {
                 res.status(404).json({});
             } else {
+                const datosUsuario = await database.readAndConditions(
+                    "Usuarios",
+                    [{ idName: "idUsuario", id: usuario }],
+                    "*"
+                );
+
                 var token = jwt.sign(
-                    { usuario: result.idUsuario.toLowerCase() },
+                    { datosUsuario: JSON.stringify(datosUsuario) },
                     TOKEN_SECRET,
                     {
                         expiresIn: "10m",

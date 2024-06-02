@@ -606,6 +606,16 @@ VALUES
         362,
         1,
         '#78C2F8'
+    ),
+    (
+        'admin',
+        'Administrador',
+        '',
+        '',
+        'Admin',
+        362,
+        1,
+        '#78C2F8'
     );
 
 -- Sample data for Credenciales
@@ -786,9 +796,13 @@ VALUES
         '0012007098',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
         '2841685520'
-    );
-
--- Sample data for GruposUsuarios
+    ),
+    (
+        'admin',
+        'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec',
+        null
+    )
+    -- Sample data for GruposUsuarios
 INSERT INTO
     GruposUsuarios (idUF, idUsuario)
 VALUES
