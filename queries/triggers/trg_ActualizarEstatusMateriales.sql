@@ -3,17 +3,20 @@ ON ReservacionesMateriales
 AFTER UPDATE
 AS
 BEGIN
-    -- Declare variables to hold reservation id and status counts
+    -- Variables para guardar el id de la reservación de la cual se está
+    -- modificando el estatus de sus materiales. Asimismo, se guarda el conteo
+    -- de materiales completados, en progreso y no completados.
     DECLARE @idReservacion INT;
+    DECLARE @allCompleted INT, @inProgress INT, @noneCompleted INT;
 
-    -- Get the reservation id from the updated rows
+    -- Se obtiene el id de la reservación de la cual se está modificando el
+    -- estatus de sus materiales.
     SELECT @idReservacion = inserted.idReservacion
     FROM inserted
     GROUP BY inserted.idReservacion;
 
-    -- Check the status of all materials for the reservation
-    DECLARE @allCompleted INT, @inProgress INT, @noneCompleted INT;
-
+    -- Se obtiene el conteo de materiales completados, en progreso y no
+    -- completados. 
     SELECT 
         @allCompleted = SUM(CASE WHEN estatus = 1 THEN 1 ELSE 0 END),
         @inProgress = SUM(CASE WHEN estatus = 6 THEN 1 ELSE 0 END),
@@ -21,24 +24,24 @@ BEGIN
     FROM ReservacionesMateriales
     WHERE idReservacion = @idReservacion;
 
-    -- Update the estatusMateriales field in Reservaciones table
+    -- Se actualiza el estatus de los materiales de la reservación.
+    -- Si todos los materiales están completados
     IF @allCompleted > 0 AND @noneCompleted = 0
     BEGIN
-        -- All materials are completed
         UPDATE Reservaciones
         SET estatusMateriales = 1
         WHERE idReservacion = @idReservacion;
     END
+    -- Si algunos materiales están completados, pero no todos
     ELSE IF @allCompleted > 0
     BEGIN
-        -- Some materials are completed, but not all
         UPDATE Reservaciones
         SET estatusMateriales = 2
         WHERE idReservacion = @idReservacion;
     END
+    -- Si ningún material está completado
     ELSE
     BEGIN
-        -- No materials are completed
         UPDATE Reservaciones
         SET estatusMateriales = 6
         WHERE idReservacion = @idReservacion;
