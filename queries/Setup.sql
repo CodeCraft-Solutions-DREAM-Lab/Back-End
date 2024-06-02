@@ -157,6 +157,7 @@ CREATE TABLE
         idExperiencia INT,
         idMesa INT,
         estatus INT,
+        estatusMateriales INT,
         horaInicio TIME,
         duracion INT,
         fecha DATE,
@@ -165,7 +166,8 @@ CREATE TABLE
         FOREIGN KEY (idSala) REFERENCES Salas (idSala),
         FOREIGN KEY (idExperiencia) REFERENCES Experiencias (idExperiencia),
         FOREIGN KEY (idMesa) REFERENCES Mesas (idMesa),
-        FOREIGN KEY (estatus) REFERENCES Estatus (idEstatus)
+        FOREIGN KEY (estatus) REFERENCES Estatus (idEstatus),
+        FOREIGN KEY (estatusMateriales) REFERENCES Estatus (idEstatus)
     );
 
 CREATE TABLE
@@ -205,7 +207,7 @@ CREATE TABLE
 INSERT INTO
     Estatus (nombre, descripcion)
 VALUES
-    ('Completado', 'El material ha sido preparado'),
+    ('Preparado', 'El material ha sido preparado'),
     (
         'En progreso',
         'El material esta siendo preparado'
@@ -219,6 +221,10 @@ VALUES
     (
         'Denegada',
         'La solicitud de reserva ha sido negada'
+    ),
+    (
+        'Sin preparar',
+        'El material no ha sido preparado'
     );
 
 -- Sample data for UnidadesFormacion
