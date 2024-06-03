@@ -99,7 +99,7 @@ router.post("/usuario", async (req, res) => {
                         expiresIn: "7d",
                     }
                 );
-                res.status(200).json({ jwt: token });
+                res.status(200).json({ jwt: token, rol: datosUsuario.tipo });
             }
         } else {
             tagId = tagId.toLowerCase();
@@ -125,7 +125,7 @@ router.post("/usuario", async (req, res) => {
                         expiresIn: "10m",
                     }
                 );
-                res.status(200).json({ jwt: token });
+                res.status(200).json({ jwt: token, rol: datosUsuario.tipo });
             }
         }
     } catch (err) {
