@@ -20,6 +20,16 @@
     }
   ],
   "paths": {
+    "/test": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/usuarios/": {
       "get": {
         "tags": [
@@ -2236,6 +2246,94 @@
         }
       }
     },
+    "/logros/progresoLogro/{idUsuario}/{idLogro}": {
+      "post": {
+        "tags": [
+          "Logros"
+        ],
+        "summary": "Actualiza el progreso de un logro para un usuario",
+        "description": "Actualiza el progreso de un logro para un usuario",
+        "parameters": [
+          {
+            "name": "idUsuario",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID del usuario"
+          },
+          {
+            "name": "idLogro",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID del logro"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "valorActual": {
+                      "type": "integer"
+                    },
+                    "valorMax": {
+                      "type": "integer"
+                    },
+                    "obtenido": {
+                      "type": "boolean"
+                    },
+                    "nuevaPrioridad": {
+                      "type": "integer"
+                    },
+                    "prioridadOtorgada": {
+                      "type": "integer"
+                    },
+                    "obtenidoPreviamente": {
+                      "type": "boolean"
+                    },
+                    "nombreLogro": {
+                      "type": "string"
+                    },
+                    "descripcionLogro": {
+                      "type": "string"
+                    },
+                    "iconoLogro": {
+                      "type": "string"
+                    },
+                    "colorLogro": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/dashboard/reservacionesByMes": {
       "get": {
         "tags": [
@@ -2542,6 +2640,56 @@
             "content": {
               "text/html": {
                 "type": "Error al intentar asignar reservaciones."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/estatus/": {
+      "get": {
+        "tags": [
+          "Estatus"
+        ],
+        "summary": "Obtiene todos los estatus",
+        "description": "Obtiene todos los estatus",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idEstatus": {
+                        "type": "integer"
+                      },
+                      "nombre": {
+                        "type": "string"
+                      },
+                      "descripcion": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
               }
             }
           }
