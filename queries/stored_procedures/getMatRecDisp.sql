@@ -1,14 +1,16 @@
-CREATE OR ALTER PROCEDURE getMaterialesDisponibles(
+CREATE OR ALTER PROCEDURE getMatRecDisp(
     @idSala INT,
     @fecha DATE,
     @horaInicio TIME(5),
-    @duracion INT
+    @duracion INT,
+    @idExperiencia INT
 )
 AS
+BEGIN
     -- Obtener los materiales de la sala
     DECLARE @idMaterialesSala TABLE (
         idMaterial INT,
-      	cantidad INT
+        cantidad INT
     );
 
     INSERT INTO @idMaterialesSala
@@ -19,7 +21,7 @@ AS
     -- Obtener las reservas de materiales para la sala, fecha y bloque de tiempo
     DECLARE @idMaterialesReservados TABLE (
         idMaterial INT,
-      cantidad INT
+        cantidad INT
     );
 
     INSERT INTO @idMaterialesReservados
@@ -30,8 +32,8 @@ AS
     JOIN Salas s ON m.idSala = s.idSala
     WHERE s.idSala = @idSala
         AND r.fecha = @fecha
-        AND r.horaInicio >= @horaInicio
-        AND DATEADD(hour, @duracion, r.horaInicio) < DATEADD(hour, r.duracion, r.horaInicio);
+        AND r.horaInicio < DATEADD(hour, @duracion, @horaInicio)
+        AND DATEADD(hour, r.duracion, r.horaInicio) > @horaInicio;
 
     -- Obtener los materiales disponibles
     DECLARE @idMaterialesDisponibles TABLE (
@@ -39,7 +41,7 @@ AS
         cantidadDisponible INT
     );
 
-	INSERT INTO @idMaterialesDisponibles
+    INSERT INTO @idMaterialesDisponibles
     SELECT
         ms.idMaterial,
         ms.cantidad - ISNULL(SUM(rm.cantidad), 0) AS cantidadDisponible
@@ -47,11 +49,26 @@ AS
     LEFT JOIN @idMaterialesReservados rm ON ms.idMaterial = rm.idMaterial
     GROUP BY ms.idMaterial, ms.cantidad;
 
-    -- Seleccionar los materiales disponibles con su cantidad
+    -- Obtener los materiales recomendados para la experiencia
+    DECLARE @idMaterialesRecomendados TABLE (
+        idMaterial INT,
+        cantidadRecomendada INT
+    );
+
+    INSERT INTO @idMaterialesRecomendados
+    SELECT idMaterial, cantidad AS cantidadRecomendada
+    FROM MaterialesRecomendados
+    WHERE idExperiencia = @idExperiencia;
+
+    -- Seleccionar los materiales disponibles con su cantidad y añadir los recomendados
     SELECT
         m.idMaterial AS id,
         m.nombre AS name,
-        md.cantidadDisponible AS cantidadDisponible,
+        ISNULL(md.cantidadDisponible, 0) AS cantidadDisponible,
+        ISNULL(mr.cantidadRecomendada, 0) AS cantidadRecomendada,
         m.fotoURL AS image
     FROM Materiales m
-    JOIN @idMaterialesDisponibles md ON m.idMaterial = md.idMaterial;
+    LEFT JOIN @idMaterialesDisponibles md ON m.idMaterial = md.idMaterial
+    LEFT JOIN @idMaterialesRecomendados mr ON m.idMaterial = mr.idMaterial
+    WHERE ISNULL(md.cantidadDisponible, 0) > 0 OR ISNULL(mr.cantidadRecomendada, 0) > 0;
+END;
