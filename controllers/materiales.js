@@ -81,7 +81,7 @@ router.post("/", async (req, res) => {
 
 router.post("/recomendados", async (req, res) => {
     /*
-    #swagger.tags = ['Materials']
+    #swagger.tags = ['Materials and Recommended']
     #swagger.description = 'Obtiene los materiales disponibles dado una sala, fecha, hora de inicio, y duración'
     #swagger.summary = 'Obtiene los materiales disponibles dado una sala, fecha, hora de inicio, y duración'
     #swagger.requestBody = {
