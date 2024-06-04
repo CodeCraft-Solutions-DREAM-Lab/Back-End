@@ -1,6 +1,6 @@
 CREATE OR ALTER TRIGGER trg_ActualizarEstatusMateriales
 ON ReservacionesMateriales
-AFTER UPDATE
+AFTER UPDATE, INSERT
 AS
 BEGIN
     -- Variables para guardar el id de la reservación de la cual se está
@@ -37,6 +37,13 @@ BEGIN
     BEGIN
         UPDATE Reservaciones
         SET estatusMateriales = 2
+        WHERE idReservacion = @idReservacion;
+    END
+    -- Si no hay materiales asociados con la reservacion
+    ELSE IF @allCompleted = 0 AND @noneCompleted = 0
+    BEGIN
+        UPDATE Reservaciones
+        SET estatusMateriales = 1
         WHERE idReservacion = @idReservacion;
     END
     -- Si ningún material está completado
