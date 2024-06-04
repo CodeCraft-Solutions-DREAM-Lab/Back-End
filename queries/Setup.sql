@@ -162,7 +162,7 @@ CREATE TABLE
         duracion INT,
         fecha DATE,
         numPersonas INT,
-    asistencia, VARCHAR(50),
+    asistencia VARCHAR(50),
         FOREIGN KEY (idUsuario) REFERENCES Usuarios (idUsuario),
         FOREIGN KEY (idSala) REFERENCES Salas (idSala),
         FOREIGN KEY (idExperiencia) REFERENCES Experiencias (idExperiencia),
