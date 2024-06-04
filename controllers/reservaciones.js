@@ -291,6 +291,7 @@ router.post("/", async (req, res) => {
     */
     try {
         const reserv = req.body;
+        reserv.estatusMateriales = 1;
         console.log(`reserv: ${JSON.stringify(reserv)}`);
         const rowsAffected = await database.create("Reservaciones", reserv);
         res.status(201).json({ rowsAffected });
