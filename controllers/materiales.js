@@ -79,4 +79,19 @@ router.post("/", async (req, res) => {
     }
 });
 
+router.post("/bySala", async (req, res) => {
+    let { idSala } = req.body;
+    try {
+        const result = await database.executeProcedure(
+            "getMaterialesBySala",
+            {
+                idSala: parseInt(idSala)
+            }
+        );
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
 export default router;

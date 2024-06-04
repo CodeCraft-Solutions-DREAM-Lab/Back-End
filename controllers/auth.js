@@ -86,14 +86,20 @@ router.post("/usuario", async (req, res) => {
             if (result.length === 0) {
                 res.status(404).json({});
             } else {
+                const datosUsuario = await database.readAndConditions(
+                    "Usuarios",
+                    [{ idName: "idUsuario", id: usuario }],
+                    "*"
+                );
+
                 var token = jwt.sign(
-                    { usuario: result.idUsuario.toLowerCase() },
+                    { datosUsuario: JSON.stringify(datosUsuario) },
                     TOKEN_SECRET,
                     {
                         expiresIn: "7d",
                     }
                 );
-                res.status(200).json({ jwt: token });
+                res.status(200).json({ jwt: token, rol: datosUsuario.tipo });
             }
         } else {
             tagId = tagId.toLowerCase();
@@ -106,14 +112,20 @@ router.post("/usuario", async (req, res) => {
             if (result.length === 0) {
                 res.status(404).json({});
             } else {
+                const datosUsuario = await database.readAndConditions(
+                    "Usuarios",
+                    [{ idName: "idUsuario", id: usuario }],
+                    "*"
+                );
+
                 var token = jwt.sign(
-                    { usuario: result.idUsuario.toLowerCase() },
+                    { datosUsuario: JSON.stringify(datosUsuario) },
                     TOKEN_SECRET,
                     {
                         expiresIn: "10m",
                     }
                 );
-                res.status(200).json({ jwt: token });
+                res.status(200).json({ jwt: token, rol: datosUsuario.tipo });
             }
         }
     } catch (err) {
