@@ -102,9 +102,17 @@ router.get("/cronograma", async (_, res) => {
     */
     try {
         const result = await database.executeProcedure(
-            "getReservacionesConfirmadasCronograma",
-            {}
+            "getReservacionesConfirmadasCronograma"
         );
+
+        result.map((reserv) => {
+            // Si se recibe un nombre alterno, reemplazar el nombre original por el alterno
+            if (reserv.nombreAlterno) {
+                reserv.title = reserv.nombreAlterno;
+            }
+            // Remover el nombre alterno de la respuesta
+            delete reserv.nombreAlterno;
+        });
 
         res.status(200).json(result);
     } catch (err) {
@@ -152,9 +160,16 @@ router.get("/cronogramaSingle/:idReservacion", async (req, res) => {
         const result = await database.executeProcedure(
             "getReservacionCronograma",
             {
-                idReservacion: req.params.idReservacion
+                idReservacion: req.params.idReservacion,
             }
         );
+
+        // Si se recibe un nombre alterno, reemplazar el nombre original por el alterno
+        if (result[0].nombreAlterno) {
+            result[0].title = result[0].nombreAlterno;
+        }
+        // Remover el nombre alterno de la respuesta
+        delete result[0].nombreAlterno;
 
         res.status(200).json(result[0]);
     } catch (err) {
@@ -225,8 +240,6 @@ router.get("/cronograma/:id", async (req, res) => {
     }
     */
 
-    
-
     try {
         const reservId = req.params.id;
         const infoResult = await database.executeProcedure(
@@ -244,12 +257,17 @@ router.get("/cronograma/:id", async (req, res) => {
             { idReservacion: reservId }
         );
 
-        res.status(200).json({ ...infoResult[0], reservItems, selectedItems });
+        // Si se recibe un nombre alterno, reemplazar el nombre original por el alterno
+        if (infoResult[0].nombreAlterno) {
+            infoResult[0].studentName = infoResult[0].nombreAlterno;
+        }
+        // Remover el nombre alterno de la respuesta
+        delete infoResult[0].nombreAlterno;
 
+        res.status(200).json({ ...infoResult[0], reservItems, selectedItems });
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }
-
 });
 
 router.get("/usuario/:id", async (req, res) => {

@@ -129,6 +129,7 @@ CREATE TABLE
         fecha DATE,
         numPersonas INT,
         asistencia VARCHAR(50),
+        nombreAlterno VARCHAR(255),
         FOREIGN KEY (idUsuario) REFERENCES Usuarios (idUsuario),
         FOREIGN KEY (idSala) REFERENCES Salas (idSala),
         FOREIGN KEY (idExperiencia) REFERENCES Experiencias (idExperiencia),
