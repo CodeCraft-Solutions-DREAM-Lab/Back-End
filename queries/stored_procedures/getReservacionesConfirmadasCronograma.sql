@@ -1,7 +1,4 @@
-DROP PROCEDURE IF EXISTS getReservacionesConfirmadasCronograma;
-GO;
-
-CREATE  PROCEDURE getReservacionesConfirmadasCronograma
+CREATE OR ALTER PROCEDURE getReservacionesConfirmadasCronograma
 AS
 BEGIN
     SELECT 
@@ -20,3 +17,4 @@ BEGIN
     WHERE 
         R.estatus = 3;
 END;
+GO;

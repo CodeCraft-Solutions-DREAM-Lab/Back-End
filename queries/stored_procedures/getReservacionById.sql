@@ -1,7 +1,4 @@
-DROP PROCEDURE IF EXISTS getReservacionById;
-GO
-
-CREATE PROCEDURE getReservacionById 
+CREATE OR ALTER PROCEDURE getReservacionById 
     @idReservacion INT
 AS
 BEGIN
@@ -24,4 +21,5 @@ BEGIN
         INNER JOIN Usuarios u ON r.idUsuario = u.idUsuario
     WHERE
         r.idReservacion = @idReservacion;
-END
+END;
+GO;

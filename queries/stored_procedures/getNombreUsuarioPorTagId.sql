@@ -14,3 +14,4 @@ BEGIN
     -- Devolver el nombre del usuario
     SELECT @nombre AS NombreUsuario;
 END;
+GO;

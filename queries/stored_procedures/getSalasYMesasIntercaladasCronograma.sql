@@ -1,4 +1,4 @@
-CREATE PROCEDURE GetSalasYMesasIntercaladasCronograma
+CREATE OR ALTER PROCEDURE GetSalasYMesasIntercaladasCronograma
 AS
 BEGIN
     DECLARE @salas TABLE (
@@ -41,3 +41,4 @@ BEGIN
     SELECT * FROM @mesas
     ORDER BY idSala, sala DESC, id;
 END;
+GO;

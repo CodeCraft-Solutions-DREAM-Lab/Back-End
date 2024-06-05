@@ -1,7 +1,4 @@
-DROP PROCEDURE IF EXISTS setReservacionMaterialEstatus;
-GO
-
-CREATE PROCEDURE setReservacionMaterialEstatus
+CREATE OR ALTER PROCEDURE setReservacionMaterialEstatus
     @idReservacion INT,
     @idMaterial INT,
     @idEstatus INT
@@ -12,4 +9,5 @@ BEGIN
     UPDATE ReservacionesMateriales
         SET estatus = @idEstatus
     WHERE idReservacion = @idReservacion AND idMaterial = @idMaterial
-END
+END;
+GO;

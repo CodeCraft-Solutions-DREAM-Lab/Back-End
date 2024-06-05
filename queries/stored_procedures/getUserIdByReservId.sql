@@ -1,4 +1,4 @@
-CREATE PROCEDURE getUserIdByReservId
+CREATE OR ALTER PROCEDURE getUserIdByReservId
     @idReservacion INT
 AS
 BEGIN
@@ -8,3 +8,4 @@ BEGIN
     WHERE 
         idReservacion = @idReservacion;
 END;
+GO;

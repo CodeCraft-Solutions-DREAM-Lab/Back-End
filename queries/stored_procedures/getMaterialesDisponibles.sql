@@ -5,6 +5,7 @@ CREATE OR ALTER PROCEDURE getMaterialesDisponibles(
     @duracion INT
 )
 AS
+BEGIN
     -- Obtener los materiales de la sala
     DECLARE @idMaterialesSala TABLE (
         idMaterial INT,
@@ -55,3 +56,5 @@ AS
         m.fotoURL AS image
     FROM Materiales m
     JOIN @idMaterialesDisponibles md ON m.idMaterial = md.idMaterial;
+END;
+GO;

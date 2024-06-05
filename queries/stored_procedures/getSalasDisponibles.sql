@@ -1,8 +1,6 @@
-DROP PROCEDURE IF EXISTS getSalasDisponibles;
-
-GO;
-
-CREATE PROCEDURE getSalasDisponibles AS BEGIN
+CREATE
+OR
+ALTER PROCEDURE getSalasDisponibles AS BEGIN
 SET
     NOCOUNT ON;
 
@@ -14,4 +12,4 @@ FROM
 
 END;
 
-GO
+GO;

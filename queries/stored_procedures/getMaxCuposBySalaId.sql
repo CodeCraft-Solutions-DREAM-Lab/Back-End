@@ -1,4 +1,4 @@
-CREATE PROCEDURE getMaxCuposBySalaId
+CREATE OR ALTER PROCEDURE getMaxCuposBySalaId
     @idSala INT
 AS
 BEGIN
@@ -7,3 +7,4 @@ BEGIN
     FROM [dbo].[Mesas]
     WHERE idSala = @idSala;
 END;
+GO;

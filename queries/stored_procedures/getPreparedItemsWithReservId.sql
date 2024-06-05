@@ -1,4 +1,4 @@
-CREATE PROCEDURE getPreparedItemsWithReservId
+CREATE OR ALTER PROCEDURE getPreparedItemsWithReservId
     @idReservacion INT
 AS
 BEGIN
@@ -8,3 +8,4 @@ BEGIN
 	JOIN [dbo].[Materiales] M ON M.idMaterial = RM.idMaterial
     WHERE RM.idReservacion = @idReservacion AND RM.estatus = 1;
 END;
+GO;

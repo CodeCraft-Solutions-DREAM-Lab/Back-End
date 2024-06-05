@@ -1,7 +1,4 @@
-DROP PROCEDURE IF EXISTS getReservInfoById;
-GO;
-
-CREATE PROCEDURE getReservInfoById
+CREATE OR ALTER PROCEDURE getReservInfoById
     @idReservacion INT
 AS
 BEGIN
@@ -17,3 +14,4 @@ BEGIN
     JOIN [dbo].[Salas] S ON R.idSala = S.idSala
     WHERE R.idReservacion = @idReservacion;
 END;
+GO;

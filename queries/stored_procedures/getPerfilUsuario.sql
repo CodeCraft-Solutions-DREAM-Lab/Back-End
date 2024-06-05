@@ -40,4 +40,4 @@ BEGIN
 	WHERE lu.idUsuario = @idUsuario;
 
 END;
-GO
+GO;

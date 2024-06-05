@@ -1,7 +1,4 @@
-DROP PROCEDURE IF EXISTS getDataLogroCorreo;
-GO
-
-CREATE PROCEDURE getDataLogroCorreo
+CREATE OR ALTER PROCEDURE getDataLogroCorreo
     @idUsuario VARCHAR(10),
     @idLogro INT
 AS
@@ -24,4 +21,4 @@ BEGIN
     SELECT @nombre AS nombre, @logro AS logro, @icono AS icono, @color AS color;
 
 END;
-GO
+GO;
