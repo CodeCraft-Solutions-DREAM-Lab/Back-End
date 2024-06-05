@@ -1,6 +1,7 @@
 import express from "express";
 import { config } from "../config.js";
 import Database from "../database.js";
+import { getHtmlTemplate, sendEmail } from "../emails/nodemailer.js";
 
 const router = express.Router();
 router.use(express.json());
@@ -265,6 +266,136 @@ router.get("/cronograma/:id", async (req, res) => {
         delete infoResult[0].nombreAlterno;
 
         res.status(200).json({ ...infoResult[0], reservItems, selectedItems });
+
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
+router.post("/cancelar", async (req, res) => {
+    
+    /*
+    #swagger.tags = ['Reservaciones']
+    #swagger.description = 'Cancela una reservación y agrega puntos de prioridad al usuario'
+    #swagger.summary = 'Cancela una reservación'
+    #swagger.requestBody = {
+        required: true,
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        idReservacion: { type: 'integer', example: 2 },
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        message: { type: 'string', example: 'Reservación cancelada exitosamente' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[400] = {
+        description: 'Faltan datos',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        message: { type: 'string', example: 'idReservacion is required' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
+
+    try {
+        const { idReservacion } = req.body;
+
+        if (!idReservacion) {
+            res.status(400).json({
+                error: "idReservacion is required",
+            });
+            return;
+        }
+
+        await database.executeProcedure(
+            "setEstatusFromReservacion",
+            {
+                idReservacion,
+                idEstatus: 4
+            }
+        );
+
+        const userResult = await database.executeProcedure(
+            "getUserIdByReservId",
+            {
+                idReservacion
+            }
+        );
+        const userId = userResult[0].idUsuario;
+
+        await database.executeProcedure(
+            "addPrioridadToUser", 
+            {
+                idUsuario: userId,
+                prioridad: 10,
+            }
+        );
+
+        const currentDate = new Date();
+		const sqlDate = currentDate.toISOString().split("T")[0];
+
+        const mensaje = "Tus puntos de prioridad han aumentado.";
+        const motivo = "Un administrador ha cancelado tu reservación.";
+
+		await database.executeProcedure("insertIntoHistorialPrioridad", {
+			idUsuario,
+			fecha: sqlDate,
+			motivo,
+			prioridad: 10,
+		});
+        
+        const htmlTemplate = getHtmlTemplate(
+			"updatedPriorityPoints",
+			{
+				mensaje: mensaje,
+				motivo: motivo,
+			}
+		);
+
+		sendEmail(
+			`${userId.toUpperCase()}@tec.mx`,
+			"Lamentamos el inconveniente",
+			"",
+			htmlTemplate
+		);
+
+        res.status(200).json({ mensaje: "Reservación cancelada exitosamente"});
+
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }
