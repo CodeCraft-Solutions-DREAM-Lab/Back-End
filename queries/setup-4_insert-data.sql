@@ -27,8 +27,13 @@ VALUES
 INSERT INTO
     UnidadesFormacion (nombre)
 VALUES
-    ('Unidad Formación 1'),
-    ('Unidad Formación 2');
+    ('Interconexión de dispositivos'),
+    ('Construcción de software y toma de decisiones'),
+    ('Análisis y diseño de algoritmos avanzados'),
+    ('Desarrollo de software'),
+    ('Integración de seguridad informática en redes y sistemas de software'),
+    ('Modelación de sistemas multiagentes con gráficas computacionales'),
+    ('Implementación de métodos computacionales');
 
 -- Sample data for Usuarios
 INSERT INTO
