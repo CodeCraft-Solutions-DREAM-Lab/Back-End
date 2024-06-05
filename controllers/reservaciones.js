@@ -266,14 +266,12 @@ router.get("/cronograma/:id", async (req, res) => {
         delete infoResult[0].nombreAlterno;
 
         res.status(200).json({ ...infoResult[0], reservItems, selectedItems });
-
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }
 });
 
 router.post("/cancelar", async (req, res) => {
-    
     /*
     #swagger.tags = ['Reservaciones']
     #swagger.description = 'Cancela una reservación y agrega puntos de prioridad al usuario'
@@ -342,60 +340,50 @@ router.post("/cancelar", async (req, res) => {
             return;
         }
 
-        await database.executeProcedure(
-            "setEstatusFromReservacion",
-            {
-                idReservacion,
-                idEstatus: 4
-            }
-        );
+        await database.executeProcedure("setEstatusFromReservacion", {
+            idReservacion,
+            idEstatus: 4,
+        });
 
         const userResult = await database.executeProcedure(
             "getUserIdByReservId",
             {
-                idReservacion
+                idReservacion,
             }
         );
         const userId = userResult[0].idUsuario;
 
-        await database.executeProcedure(
-            "addPrioridadToUser", 
-            {
-                idUsuario: userId,
-                prioridad: 10,
-            }
-        );
+        await database.executeProcedure("addPrioridadToUser", {
+            idUsuario: userId,
+            prioridad: 10,
+        });
 
         const currentDate = new Date();
-		const sqlDate = currentDate.toISOString().split("T")[0];
+        const sqlDate = currentDate.toISOString().split("T")[0];
 
         const mensaje = "Tus puntos de prioridad han aumentado.";
         const motivo = "Un administrador ha cancelado tu reservación.";
 
-		await database.executeProcedure("insertIntoHistorialPrioridad", {
-			idUsuario,
-			fecha: sqlDate,
-			motivo,
-			prioridad: 10,
-		});
-        
-        const htmlTemplate = getHtmlTemplate(
-			"updatedPriorityPoints",
-			{
-				mensaje: mensaje,
-				motivo: motivo,
-			}
-		);
+        await database.executeProcedure("insertIntoHistorialPrioridad", {
+            idUsuario,
+            fecha: sqlDate,
+            motivo,
+            prioridad: 10,
+        });
 
-		sendEmail(
-			`${userId.toUpperCase()}@tec.mx`,
-			"Lamentamos el inconveniente",
-			"",
-			htmlTemplate
-		);
+        const htmlTemplate = getHtmlTemplate("updatedPriorityPoints", {
+            mensaje: mensaje,
+            motivo: motivo,
+        });
 
-        res.status(200).json({ mensaje: "Reservación cancelada exitosamente"});
+        sendEmail(
+            `${userId.toUpperCase()}@tec.mx`,
+            "Lamentamos el inconveniente",
+            "",
+            htmlTemplate
+        );
 
+        res.status(200).json({ mensaje: "Reservación cancelada exitosamente" });
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }
