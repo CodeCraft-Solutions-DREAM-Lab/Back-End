@@ -644,6 +644,26 @@
         }
       }
     },
+    "/reservaciones/cronograma/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/reservaciones/usuario/{id}": {
       "get": {
         "tags": [
@@ -1908,6 +1928,33 @@
         }
       }
     },
+    "/materiales/bySala": {
+      "post": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idSala": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/perfil/logros/{idUsuario}": {
       "get": {
         "tags": [
@@ -2670,6 +2717,53 @@
                         "type": "string"
                       },
                       "descripcion": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ufs/": {
+      "get": {
+        "tags": [
+          "Unidades de Formación"
+        ],
+        "summary": "Obtiene todas las unidades de formación",
+        "description": "Obtiene todas las unidades de formación",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idUF": {
+                        "type": "integer"
+                      },
+                      "nombre": {
                         "type": "string"
                       }
                     }
