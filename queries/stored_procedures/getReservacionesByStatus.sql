@@ -1,7 +1,4 @@
-DROP PROCEDURE IF EXISTS getReservacionesByStatus;
-GO
-
-CREATE PROCEDURE getReservacionesByStatus 
+CREATE OR ALTER PROCEDURE getReservacionesByStatus 
     @estatus INT
 AS
 BEGIN
@@ -27,4 +24,5 @@ BEGIN
         INNER JOIN Logros l ON u.logroPrincipal = l.idLogro
     WHERE
         r.estatus = @estatus;
-END
+END;
+GO;

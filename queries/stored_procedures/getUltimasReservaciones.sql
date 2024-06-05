@@ -1,6 +1,4 @@
-DROP PROCEDURE IF EXISTS getUltimasReservaciones;
-
-CREATE PROCEDURE getUltimasReservaciones
+CREATE OR ALTER PROCEDURE getUltimasReservaciones
     @idUsuario varchar(10)
 AS
 BEGIN
@@ -85,3 +83,4 @@ BEGIN
     ) AS Populares;
 
 END;
+GO;

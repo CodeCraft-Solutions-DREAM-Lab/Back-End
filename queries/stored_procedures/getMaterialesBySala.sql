@@ -13,4 +13,5 @@ BEGIN
         MaterialesSalas ms ON m.idMaterial = ms.idMaterial
     WHERE 
         ms.idSala = @idSala;
-END
+END;
+GO;

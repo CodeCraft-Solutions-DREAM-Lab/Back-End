@@ -1,7 +1,4 @@
-DROP PROCEDURE IF EXISTS getReservacionCronograma;
-GO;
-
-CREATE PROCEDURE getReservacionCronograma
+CREATE OR ALTER PROCEDURE getReservacionCronograma
     @idReservacion INT
 AS
 BEGIN
@@ -21,3 +18,4 @@ BEGIN
     WHERE 
         R.idReservacion = @idReservacion;
 END;
+GO;

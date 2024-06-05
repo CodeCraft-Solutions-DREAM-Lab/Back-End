@@ -35,4 +35,5 @@ BEGIN
 	ORDER BY
         r.horaInicio ASC,
 		DATEADD(HOUR, r.duracion, r.horaInicio) ASC;
-END
+END;
+GO;
