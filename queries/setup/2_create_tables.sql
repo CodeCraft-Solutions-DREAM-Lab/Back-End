@@ -1,4 +1,4 @@
--- Creates the tables for the database
+-- CREATE THE TABLES
 CREATE TABLE
     UnidadesFormacion (
         idUF INT PRIMARY KEY IDENTITY (1, 1),

@@ -1,4 +1,4 @@
--- Drop all tables in the database
+-- DROP ALL TABLES IF THEY EXIST
 DROP TABLE IF EXISTS MaterialesRecomendados;
 
 DROP TABLE IF EXISTS MaterialesSalas;
