@@ -86,12 +86,12 @@ Para configurar el proyecto localmente puedes seguir los siguientes pasos:
 ## Creando una base de datos en Azure
 
 1. Crea una _Azure SQL Database_ junto con un _Azure SQL Server_ siguiendo este [tutorial](https://learn.microsoft.com/es-mx/azure/azure-sql/database/single-database-create-quickstart?view=azuresql&tabs=azure-portal) de Microsoft Learn.
-2. Copia el contenido de los siguientes archivos en el query editor de tu _Azure SQL Database_ y córrelos:
-   2.1 [setup-1_drop-tables.sql](https://github.com/CodeCraft-Solutions-DREAM-Lab/Back-End/blob/main/queries/setup-1_drop-tables.sql). Este archivo borra las tablas en caso de que ya las hayas creado previamente.
-   2.2 [setup-2_create-tables.sql](https://github.com/CodeCraft-Solutions-DREAM-Lab/Back-End/blob/main/queries/setup-2_create-tables.sql). Este archivo crea las tablas necesarias.
-   2.3 [setup-3_create-triggers.sql](https://github.com/CodeCraft-Solutions-DREAM-Lab/Back-End/blob/main/queries/setup-3_create-triggers.sql). Este archivo agregar triggers a las tablas.
-   2.4 [setup-4_insert-data.sql](https://github.com/CodeCraft-Solutions-DREAM-Lab/Back-End/blob/main/queries/setup-4_insert-data.sql). Este archivo inserta datos de prueba a las tablas
-3. Copia el contenido de los archivos de la carpeta de [stored_procedures](https://github.com/CodeCraft-Solutions-DREAM-Lab/Back-End/tree/main/queries/stored_procedures) en el query editor de tu _Azure SQL Database_ y corre cada uno por separado. Estos archivos agregan a la base de datos los stored procedures que son llamados por la API.
+2. En una terminal dentro del proyecto, corre el siguiente comando para generar un archivo combinando todas las queries:
+    ```
+    npm run sql
+    ```
+3. Dirígete a la dirección especificada en la terminal donde se creo el archivo. El mensaje que especifica la dirección dice algo como "Archivos SQL combinados en: {DIRECCION}"
+4. Copia el contenido del archivo en el query editor de tu _Azure SQL Database_ y córrelo. El archivo generará las tablas, triggers, stored procedures y finalmente, insertará datos de prueba.
 
 ## Configurando un correo
 

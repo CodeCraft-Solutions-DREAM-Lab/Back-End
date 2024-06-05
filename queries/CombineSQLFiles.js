@@ -68,7 +68,7 @@ async function combineSqlFiles() {
         // Write the combined content to the output file
         await writeFile(outputPath, combinedContent, "utf-8");
 
-        console.log(`SQL files have been combined into "${outputPath}"`);
+        console.log(`Archivos SQL combinados en: "${outputPath}"`);
     } catch (err) {
         console.error("Error:", err);
     }
