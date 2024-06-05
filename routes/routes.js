@@ -13,6 +13,7 @@ import dashboard from "../controllers/dashboard.js";
 import correrAsignacion from "../controllers/correrAsignacion.js";
 import sendReminder2hrsBefore from "../controllers/schedules/sendReminder2hrsBefore.js";
 import estatus from "../controllers/estatus.js";
+import ufs from "../controllers/ufs.js";
 
 import { getHtmlTemplate, sendEmail } from "../emails/nodemailer.js";
 
@@ -31,6 +32,7 @@ router.use("/logros", logros);
 router.use("/dashboard", dashboard);
 router.use("/correr-asignacion", correrAsignacion);
 router.use("/estatus", estatus);
+router.use("/ufs", ufs);
 
 
 
