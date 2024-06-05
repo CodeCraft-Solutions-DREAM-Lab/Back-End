@@ -112,24 +112,143 @@ router.get("/cronograma", async (_, res) => {
     }
 });
 
+router.get("/cronogramaSingle/:idReservacion", async (req, res) => {
+    /*
+    #swagger.tags = ['Reservaciones']
+    #swagger.description = 'Obtiene una reservación para el cronograma'
+    #swagger.summary = 'Obtiene una reservación para el cronograma'
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        id: { type: 'integer', description: 'Identificador único de la reservación' },
+                        group: { type: 'integer', description: 'Identificador del grupo o mesa' },
+                        title: { type: 'string', description: 'Nombre completo del usuario que hizo la reservación' },
+                        start_time: { type: 'string', format: 'date-time', description: 'Fecha y hora de inicio de la reservación' },
+                        end_time: { type: 'string', format: 'date-time', description: 'Fecha y hora de fin de la reservación' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error del servidor',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
+    try {
+        const result = await database.executeProcedure(
+            "getReservacionCronograma",
+            {
+                idReservacion: req.params.idReservacion
+            }
+        );
+
+        res.status(200).json(result[0]);
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
 router.get("/cronograma/:id", async (req, res) => {
-    const reservId = req.params.id;
-    const infoResult = await database.executeProcedure(
-        "getReservInfoById",
-        { idReservacion: reservId }
-    );
+    /*
+    #swagger.tags = ['Reservaciones']
+    #swagger.description = 'Obtiene la información de una reservación para el modal de información del cronograma'
+    #swagger.summary = 'Obtiene la información de una reservación para el cronograma'
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        studentName: { type: 'string', example: 'Christopher Gabriel Pedraza Pohlenz' },
+                        'studentMat': { type: 'string', example: 'A01177767' },
+                        'salaName': { type: 'string', example: 'Dimension Forge' },
+                        'reservDate': { type: 'string', example: '2024-01-05T00:00:00.000Z' },
+                        'horaInicio': { type: 'string', example: '1970-01-01T12:00:00.000Z' },
+                        'duracion': { type: 'integer', example: 3 },
+                        'reservItems': {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                properties: 
+                                {
+                                    'idReservacion': { type: 'integer', example: 1 },
+                                    'idMaterial': { type: 'integer', example: 1 },
+                                    'name': { type: 'string', example: 'Laptop Gamer' },
+                                    'quantity': { type: 'integer', example: 5 },
+                                    'estatus': { type: 'integer', example: 1 }
+                                }
+                            }
+                        },
+                        'selectedItems': {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                properties: 
+                                {
+                                    'name': { type: 'string', example: 'Laptop Gamer' },
+                                    'quantity': { type: 'integer', example: 5 },
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error del servidor',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
 
-    const reservItems = await database.executeProcedure(
-        "getItemsToPrepareWithReservId",
-        { idReservacion: reservId }
-    );
+    
 
-    const selectedItems = await database.executeProcedure(
-        "getPreparedItemsWithReservId",
-        { idReservacion: reservId }
-    );
+    try {
+        const reservId = req.params.id;
+        const infoResult = await database.executeProcedure(
+            "getReservInfoById",
+            { idReservacion: reservId }
+        );
 
-    res.status(200).json({ ...infoResult[0], reservItems, selectedItems });
+        const reservItems = await database.executeProcedure(
+            "getItemsToPrepareWithReservId",
+            { idReservacion: reservId }
+        );
+
+        const selectedItems = await database.executeProcedure(
+            "getPreparedItemsWithReservId",
+            { idReservacion: reservId }
+        );
+
+        res.status(200).json({ ...infoResult[0], reservItems, selectedItems });
+
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
 
 });
 

@@ -19,7 +19,7 @@ BEGIN
     -- completados. 
     SELECT 
         @allCompleted = SUM(CASE WHEN estatus = 1 THEN 1 ELSE 0 END),
-        @inProgress = SUM(CASE WHEN estatus = 6 THEN 1 ELSE 0 END),
+        @inProgress = SUM(CASE WHEN estatus = 2 THEN 1 ELSE 0 END),
         @noneCompleted = SUM(CASE WHEN estatus = 1 THEN 0 ELSE 1 END)
     FROM ReservacionesMateriales
     WHERE idReservacion = @idReservacion;
@@ -50,7 +50,7 @@ BEGIN
     ELSE
     BEGIN
         UPDATE Reservaciones
-        SET estatusMateriales = 6
+        SET estatusMateriales = 7
         WHERE idReservacion = @idReservacion;
     END
 END;

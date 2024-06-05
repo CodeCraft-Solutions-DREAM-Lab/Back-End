@@ -50,7 +50,7 @@ BEGIN
     ELSE
     BEGIN
         UPDATE Reservaciones
-        SET estatusMateriales = 6
+        SET estatusMateriales = 7
         WHERE idReservacion = @idReservacion;
     END
 END;
