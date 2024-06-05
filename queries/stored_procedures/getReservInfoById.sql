@@ -1,3 +1,6 @@
+DROP PROCEDURE IF EXISTS getReservInfoById;
+GO;
+
 CREATE PROCEDURE getReservInfoById
     @idReservacion INT
 AS
@@ -7,9 +10,10 @@ BEGIN
     S.nombre as salaName,
     R.fecha as reservDate,
     R.horaInicio,
-	R.duracion
+	R.duracion,
+    R.nombreAlterno
     FROM [dbo].[Reservaciones] R
     JOIN [dbo].[Usuarios] U ON R.idUsuario = U.idUsuario
     JOIN [dbo].[Salas] S ON R.idSala = S.idSala
-    WHERE R.idReservacion = 1;
+    WHERE R.idReservacion = @idReservacion;
 END;

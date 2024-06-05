@@ -1,7 +1,8 @@
-DROP PROCEDURE IF EXISTS getReservacionesConfirmadasCronograma;
+DROP PROCEDURE IF EXISTS getReservacionCronograma;
 GO;
 
-CREATE  PROCEDURE getReservacionesConfirmadasCronograma
+CREATE PROCEDURE getReservacionCronograma
+    @idReservacion INT
 AS
 BEGIN
     SELECT 
@@ -18,5 +19,5 @@ BEGIN
     INNER JOIN 
         Usuarios U ON R.idUsuario = U.idUsuario
     WHERE 
-        R.estatus = 3;
+        R.idReservacion = @idReservacion;
 END;

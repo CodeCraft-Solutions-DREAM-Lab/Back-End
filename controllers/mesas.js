@@ -48,7 +48,7 @@ router.get("/", async (_, res) => {
     try {
         // Return a list of usuarios
         const usuarios = await database.readAll("Mesas");
-        console.log(`Mesas: ${JSON.stringify(usuarios)}`);
+        // console.log(`Mesas: ${JSON.stringify(usuarios)}`);
         res.status(200).json(usuarios);
     } catch (err) {
         res.status(500).json({ error: err?.message });

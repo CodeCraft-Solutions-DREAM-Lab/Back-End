@@ -19,7 +19,7 @@ BEGIN
     -- completados. 
     SELECT 
         @allCompleted = SUM(CASE WHEN estatus = 1 THEN 1 ELSE 0 END),
-        @inProgress = SUM(CASE WHEN estatus = 6 THEN 1 ELSE 0 END),
+        @inProgress = SUM(CASE WHEN estatus = 2 THEN 1 ELSE 0 END),
         @noneCompleted = SUM(CASE WHEN estatus = 1 THEN 0 ELSE 1 END)
     FROM ReservacionesMateriales
     WHERE idReservacion = @idReservacion;
@@ -54,3 +54,19 @@ BEGIN
         WHERE idReservacion = @idReservacion;
     END
 END;
+GO
+
+
+CREATE OR ALTER TRIGGER trg_SetEstatusMaterialesOnReservInsert
+ON [dbo].[Reservaciones]
+AFTER INSERT
+AS
+BEGIN
+    -- Updating all newly inserted reservations
+    UPDATE [dbo].[Reservaciones]
+    SET estatusMateriales = 1
+    FROM [dbo].[Reservaciones] r
+    INNER JOIN inserted i 
+    ON r.idReservacion = i.idReservacion
+END;
+GO

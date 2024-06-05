@@ -30,6 +30,16 @@
         }
       }
     },
+    "/test-email": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/usuarios/": {
       "get": {
         "tags": [
@@ -644,6 +654,192 @@
         }
       }
     },
+    "/reservaciones/cronogramaSingle/{idReservacion}": {
+      "get": {
+        "tags": [
+          "Reservaciones"
+        ],
+        "summary": "Obtiene una reservación para el cronograma",
+        "description": "Obtiene una reservación para el cronograma",
+        "parameters": [
+          {
+            "name": "idReservacion",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "Identificador único de la reservación"
+                    },
+                    "group": {
+                      "type": "integer",
+                      "description": "Identificador del grupo o mesa"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "Nombre completo del usuario que hizo la reservación"
+                    },
+                    "start_time": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Fecha y hora de inicio de la reservación"
+                    },
+                    "end_time": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Fecha y hora de fin de la reservación"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reservaciones/cronograma/{id}": {
+      "get": {
+        "tags": [
+          "Reservaciones"
+        ],
+        "summary": "Obtiene la información de una reservación para el cronograma",
+        "description": "Obtiene la información de una reservación para el modal de información del cronograma",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "studentName": {
+                      "type": "string",
+                      "example": "Christopher Gabriel Pedraza Pohlenz"
+                    },
+                    "studentMat": {
+                      "type": "string",
+                      "example": "A01177767"
+                    },
+                    "salaName": {
+                      "type": "string",
+                      "example": "Dimension Forge"
+                    },
+                    "reservDate": {
+                      "type": "string",
+                      "example": "2024-01-05T00:00:00.000Z"
+                    },
+                    "horaInicio": {
+                      "type": "string",
+                      "example": "1970-01-01T12:00:00.000Z"
+                    },
+                    "duracion": {
+                      "type": "integer",
+                      "example": 3
+                    },
+                    "reservItems": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "idReservacion": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "idMaterial": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Laptop Gamer"
+                          },
+                          "quantity": {
+                            "type": "integer",
+                            "example": 5
+                          },
+                          "estatus": {
+                            "type": "integer",
+                            "example": 1
+                          }
+                        }
+                      }
+                    },
+                    "selectedItems": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "Laptop Gamer"
+                          },
+                          "quantity": {
+                            "type": "integer",
+                            "example": 5
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/reservaciones/usuario/{id}": {
       "get": {
         "tags": [
@@ -969,6 +1165,68 @@
                     "error": {
                       "type": "string"
                     }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reservaciones-materiales/changeEstatus": {
+      "post": {
+        "tags": [
+          "ReservacionesMateriales"
+        ],
+        "summary": "Cambia el estatus de un material",
+        "description": "Cambia el estatus del un material en una reservación",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Se cambió el estatus exitosamente"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idReservacion": {
+                    "example": "any"
+                  },
+                  "idMaterial": {
+                    "example": "any"
+                  },
+                  "idEstatus": {
+                    "example": "any"
                   }
                 }
               }
@@ -1908,6 +2166,33 @@
         }
       }
     },
+    "/materiales/bySala": {
+      "post": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idSala": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/perfil/logros/{idUsuario}": {
       "get": {
         "tags": [
@@ -2670,6 +2955,53 @@
                         "type": "string"
                       },
                       "descripcion": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ufs/": {
+      "get": {
+        "tags": [
+          "Unidades de Formación"
+        ],
+        "summary": "Obtiene todas las unidades de formación",
+        "description": "Obtiene todas las unidades de formación",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idUF": {
+                        "type": "integer"
+                      },
+                      "nombre": {
                         "type": "string"
                       }
                     }
