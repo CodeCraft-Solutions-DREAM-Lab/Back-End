@@ -113,18 +113,6 @@ router.get("/cronograma", async (_, res) => {
 });
 
 router.get("/cronograma/:id", async (req, res) => {
-    /*
-        Student name -> 1
-        Student MAt -> 1
-        Sala name -> 1
-        Mesa name -> ?
-        Fecha -> 1
-        Hora Inicio -> 1
-        Hora Fin -> 1
-        ReservItems
-        Already selected items
-    */
-
     const reservId = req.params.id;
     const infoResult = await database.executeProcedure(
         "getReservInfoById",
