@@ -2305,8 +2305,9 @@ VALUES
 INSERT INTO
     MaterialesRecomendados (idExperiencia, idMaterial, cantidad)
 VALUES
-    (1, 1, 3),
-    (2, 2, 4);
+    (1, 5, 2), -- Hackers Event, Oculus Quest en New Horizons (Probar cuando hay suficientes materiales)
+    (3, 6, 2), -- GameJam Event, Chromebook en Electric Garage (Probar cuando no hay suficientes materiales)
+    (5, 2, 1); -- Creando tu primer circuito, Surface Pro en Dimension Forge (Probar cuando ya no hay disponibilidad del material)
 
 ---------------------------------------------------------------
 --                                                           --
