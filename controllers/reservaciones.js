@@ -103,9 +103,17 @@ router.get("/cronograma", async (_, res) => {
     */
     try {
         const result = await database.executeProcedure(
-            "getReservacionesConfirmadasCronograma",
-            {}
+            "getReservacionesConfirmadasCronograma"
         );
+
+        result.map((reserv) => {
+            // Si se recibe un nombre alterno, reemplazar el nombre original por el alterno
+            if (reserv.nombreAlterno) {
+                reserv.title = reserv.nombreAlterno;
+            }
+            // Remover el nombre alterno de la respuesta
+            delete reserv.nombreAlterno;
+        });
 
         res.status(200).json(result);
     } catch (err) {
@@ -153,9 +161,16 @@ router.get("/cronogramaSingle/:idReservacion", async (req, res) => {
         const result = await database.executeProcedure(
             "getReservacionCronograma",
             {
-                idReservacion: req.params.idReservacion
+                idReservacion: req.params.idReservacion,
             }
         );
+
+        // Si se recibe un nombre alterno, reemplazar el nombre original por el alterno
+        if (result[0].nombreAlterno) {
+            result[0].title = result[0].nombreAlterno;
+        }
+        // Remover el nombre alterno de la respuesta
+        delete result[0].nombreAlterno;
 
         res.status(200).json(result[0]);
     } catch (err) {
@@ -243,15 +258,20 @@ router.get("/cronograma/:id", async (req, res) => {
             { idReservacion: reservId }
         );
 
-        res.status(200).json({ ...infoResult[0], reservItems, selectedItems });
+        // Si se recibe un nombre alterno, reemplazar el nombre original por el alterno
+        if (infoResult[0].nombreAlterno) {
+            infoResult[0].studentName = infoResult[0].nombreAlterno;
+        }
+        // Remover el nombre alterno de la respuesta
+        delete infoResult[0].nombreAlterno;
 
+        res.status(200).json({ ...infoResult[0], reservItems, selectedItems });
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }
 });
 
 router.post("/cancelar", async (req, res) => {
-    
     /*
     #swagger.tags = ['Reservaciones']
     #swagger.description = 'Cancela una reservación y agrega puntos de prioridad al usuario'
@@ -320,64 +340,53 @@ router.post("/cancelar", async (req, res) => {
             return;
         }
 
-        await database.executeProcedure(
-            "setEstatusFromReservacion",
-            {
-                idReservacion,
-                idEstatus: 4
-            }
-        );
+        await database.executeProcedure("setEstatusFromReservacion", {
+            idReservacion,
+            idEstatus: 4,
+        });
 
         const userResult = await database.executeProcedure(
             "getUserIdByReservId",
             {
-                idReservacion
+                idReservacion,
             }
         );
         const userId = userResult[0].idUsuario;
 
-        await database.executeProcedure(
-            "addPrioridadToUser", 
-            {
-                idUsuario: userId,
-                prioridad: 10,
-            }
-        );
+        await database.executeProcedure("addPrioridadToUser", {
+            idUsuario: userId,
+            prioridad: 10,
+        });
 
         const currentDate = new Date();
-		const sqlDate = currentDate.toISOString().split("T")[0];
+        const sqlDate = currentDate.toISOString().split("T")[0];
 
         const mensaje = "Tus puntos de prioridad han aumentado.";
         const motivo = "Un administrador ha cancelado tu reservación.";
 
-		await database.executeProcedure("insertIntoHistorialPrioridad", {
-			idUsuario,
-			fecha: sqlDate,
-			motivo,
-			prioridad: 10,
-		});
-        
-        const htmlTemplate = getHtmlTemplate(
-			"updatedPriorityPoints",
-			{
-				mensaje: mensaje,
-				motivo: motivo,
-			}
-		);
+        await database.executeProcedure("insertIntoHistorialPrioridad", {
+            idUsuario,
+            fecha: sqlDate,
+            motivo,
+            prioridad: 10,
+        });
 
-		sendEmail(
-			`${userId.toUpperCase()}@tec.mx`,
-			"Lamentamos el inconveniente",
-			"",
-			htmlTemplate
-		);
+        const htmlTemplate = getHtmlTemplate("updatedPriorityPoints", {
+            mensaje: mensaje,
+            motivo: motivo,
+        });
 
-        res.status(200).json({ mensaje: "Reservación cancelada exitosamente"});
+        sendEmail(
+            `${userId.toUpperCase()}@tec.mx`,
+            "Lamentamos el inconveniente",
+            "",
+            htmlTemplate
+        );
 
+        res.status(200).json({ mensaje: "Reservación cancelada exitosamente" });
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }
-
 });
 
 router.get("/usuario/:id", async (req, res) => {
