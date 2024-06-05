@@ -112,6 +112,56 @@ router.get("/cronograma", async (_, res) => {
     }
 });
 
+router.get("/cronogramaSingle/:idReservacion", async (req, res) => {
+    /*
+    #swagger.tags = ['Reservaciones']
+    #swagger.description = 'Obtiene una reservación para el cronograma'
+    #swagger.summary = 'Obtiene una reservación para el cronograma'
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        id: { type: 'integer', description: 'Identificador único de la reservación' },
+                        group: { type: 'integer', description: 'Identificador del grupo o mesa' },
+                        title: { type: 'string', description: 'Nombre completo del usuario que hizo la reservación' },
+                        start_time: { type: 'string', format: 'date-time', description: 'Fecha y hora de inicio de la reservación' },
+                        end_time: { type: 'string', format: 'date-time', description: 'Fecha y hora de fin de la reservación' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error del servidor',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
+    try {
+        const result = await database.executeProcedure(
+            "getReservacionCronograma",
+            {
+                idReservacion: req.params.idReservacion
+            }
+        );
+
+        res.status(200).json(result[0]);
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
 router.get("/cronograma/:id", async (req, res) => {
     const reservId = req.params.id;
     const infoResult = await database.executeProcedure(
@@ -128,6 +178,8 @@ router.get("/cronograma/:id", async (req, res) => {
         "getPreparedItemsWithReservId",
         { idReservacion: reservId }
     );
+
+    console.log({ ...infoResult[0], reservItems, selectedItems });
 
     res.status(200).json({ ...infoResult[0], reservItems, selectedItems });
 

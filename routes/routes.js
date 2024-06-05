@@ -10,6 +10,8 @@ import materiales from "../controllers/materiales.js";
 import perfil from "../controllers/perfil.js";
 import logros from "../controllers/logros.js";
 import dashboard from "../controllers/dashboard.js";
+import reservacionesMateriales from "../controllers/reservacionesMateriales.js";
+
 import correrAsignacion from "../controllers/correrAsignacion.js";
 import sendReminder2hrsBefore from "../controllers/schedules/sendReminder2hrsBefore.js";
 import estatus from "../controllers/estatus.js";
@@ -21,6 +23,7 @@ const router = express.Router();
 router.use("/usuarios", usuarios);
 router.use("/auth", auth);
 router.use("/reservaciones", reservaciones);
+router.use("/reservaciones-materiales", reservacionesMateriales);
 router.use("/salas", salas);
 router.use("/experiencias", experiencias);
 router.use("/mesas", mesas);
