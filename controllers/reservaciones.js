@@ -365,7 +365,7 @@ router.post("/cancelar", async (req, res) => {
         const motivo = "Un administrador ha cancelado tu reservación.";
 
         await database.executeProcedure("insertIntoHistorialPrioridad", {
-            idUsuario,
+            idUsuario: userId,
             fecha: sqlDate,
             motivo,
             prioridad: 10,
