@@ -18,6 +18,7 @@ BEGIN
         r.horaInicio,
         r.duracion,
         r.fecha,
+        r.nombreAlterno,
         l.iconoURL,
         u.colorPreferido,
 		u.idUsuario,
