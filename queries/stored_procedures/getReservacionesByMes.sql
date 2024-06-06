@@ -1,6 +1,6 @@
-DROP PROCEDURE IF EXISTS getReservacionesByMes;
-
-GO CREATE PROCEDURE getReservacionesByMes AS BEGIN
+CREATE
+OR
+ALTER PROCEDURE getReservacionesByMes AS BEGIN
 SET
     NOCOUNT ON;
 
@@ -41,4 +41,6 @@ ORDER BY
     year,
     month;
 
-END
+END;
+
+GO;

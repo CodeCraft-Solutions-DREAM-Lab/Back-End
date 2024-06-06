@@ -1,4 +1,5 @@
-CREATE OR ALTER PROCEDURE getReservacionesConfirmadasCronograma
+CREATE OR ALTER PROCEDURE getReservacionCronograma
+    @idReservacion INT
 AS
 BEGIN
     SELECT 
@@ -15,6 +16,6 @@ BEGIN
     INNER JOIN 
         Usuarios U ON R.idUsuario = U.idUsuario
     WHERE 
-        R.estatus = 3;
+        R.idReservacion = @idReservacion;
 END;
 GO;

@@ -86,8 +86,12 @@ Para configurar el proyecto localmente puedes seguir los siguientes pasos:
 ## Creando una base de datos en Azure
 
 1. Crea una _Azure SQL Database_ junto con un _Azure SQL Server_ siguiendo este [tutorial](https://learn.microsoft.com/es-mx/azure/azure-sql/database/single-database-create-quickstart?view=azuresql&tabs=azure-portal) de Microsoft Learn.
-2. Copia el contenido del archivo [Setup.sql](https://github.com/CodeCraft-Solutions-DREAM-Lab/Back-End/blob/main/queries/Setup.sql) en el query editor de tu _Azure SQL Database_ y córrelo. Este archivo contiene la información necesaria para generar las tablas e insertarles datos de prueba.
-3. Copia el contenido de los archivos de la carpeta de [stored_procedures](https://github.com/CodeCraft-Solutions-DREAM-Lab/Back-End/tree/main/queries/stored_procedures) en el query editor de tu _Azure SQL Database_ y corre cada uno por separado. Estos archivos agregan a la base de datos los stored procedures que son llamados por la API.
+2. En una terminal dentro del proyecto, corre el siguiente comando para generar un archivo combinando todas las queries:
+    ```
+    npm run sql
+    ```
+3. Dirígete a la dirección especificada en la terminal donde se creo el archivo. El mensaje que especifica la dirección dice algo como "Archivos SQL combinados en: {DIRECCION}"
+4. Copia el contenido del archivo en el query editor de tu _Azure SQL Database_ y córrelo. El archivo generará las tablas, triggers, stored procedures y finalmente, insertará datos de prueba.
 
 ## Configurando un correo
 

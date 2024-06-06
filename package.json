@@ -7,7 +7,8 @@
     "scripts": {
         "start": "nodemon index.js",
         "dev": "nodemon index.js",
-        "docs": "nodemon --watch ./controllers --exec node swagger.js"
+        "docs": "nodemon --watch ./controllers --exec node swagger.js",
+        "sql": "node ./queries/CombineSQLFiles.js"
     },
     "keywords": [],
     "author": "",

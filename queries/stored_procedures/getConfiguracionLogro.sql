@@ -1,7 +1,4 @@
-DROP PROCEDURE IF EXISTS getConfiguracionLogro;  
-GO  
-
-CREATE PROCEDURE getConfiguracionLogro 
+CREATE OR ALTER PROCEDURE getConfiguracionLogro 
     @idUsuario VARCHAR(10)
 AS
 BEGIN
@@ -14,4 +11,5 @@ BEGIN
 	WHERE
 		ul.idUsuario = @idUsuario AND
 		u.logroPrincipal = ul.idLogro
-END
+END;
+GO;

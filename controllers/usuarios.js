@@ -184,7 +184,7 @@ router.get("/nombreUsuario/:tagID", async (req, res) => {
 
 router.post("/cambiarPrioridad", async (req, res) => {
 	/*
-    #swagger.tags = ['Usuarios', 'Prioridad']
+    #swagger.tags = ['Usuarios']
     #swagger.description = 'Cambia los puntos de prioridad de un usuario, lo guarda en el historial de cambios y envía un correo al usuario'
     #swagger.summary = 'Cambia los puntos de prioridad de un usuario'
     #swagger.requestBody = {

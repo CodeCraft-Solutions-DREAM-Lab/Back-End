@@ -1,7 +1,4 @@
-DROP PROCEDURE IF EXISTS actualizarProgresoLogro;
-GO
-
-CREATE PROCEDURE actualizarProgresoLogro
+CREATE OR ALTER PROCEDURE actualizarProgresoLogro
     @idUsuario VARCHAR(10),
     @idLogro INT
 AS
@@ -98,4 +95,4 @@ BEGIN
         FROM UsuariosLogros AS lu
         WHERE lu.idUsuario = @idUsuario AND lu.idLogro = @idLogro
 END;
-GO
+GO;
