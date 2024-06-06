@@ -1,6 +1,7 @@
 import express from "express";
 import { config } from "../config.js";
 import Database from "../database.js";
+import reservacionesRouter  from "./reservaciones.js";
 const router = express.Router();
 router.use(express.json());
 
@@ -317,6 +318,26 @@ router.put("/cambiarEstadoSalas", async (req, res) => {
         await database.executeQuery(
             `EXEC [dbo].[toggleEstadoFromSala] @idSala = ${idSala};`
         );
+
+        // Obtener todas las reservaciones asociadas a esta sala desde la fecha actual
+        const result = await database.executeProcedure(
+            "getProximasReservacionesBySala",
+            { idSala: idSala }
+        );
+        
+        console.log(`reservas: ${JSON.stringify(result)}`);
+
+        //console.log(reservaciones);
+        //const currentDate = new Date();
+
+        //const reservaciones = await database.read("Reservaciones", "idSala", idSala);
+
+        //console.log("reservaciones de esa sala: ", reservaciones);
+        
+        // // Filtrar las reservaciones para obtener solo las futuras
+        // const reservacionesFuturas = reservaciones.filter(reservacion => new Date(reservacion.fecha) >= currentDate);
+
+        // console.log("reservaciones futuras: ", reservacionesFuturas);
 
         res.status(200).json({ mensaje: "Disponibilidad de sala modificada exitosamente" });
     } catch (err) {
