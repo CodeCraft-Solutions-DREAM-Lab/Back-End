@@ -102,10 +102,14 @@ router.get("/reservaciones", async (req, res) => {
             "getReservacionesVideowall"
         );
 
-        if (result.nombreAlterno) {
-            result.nombre_usuario = result.nombreAlterno;
-            delete result.nombreAlterno;
-        }
+        console.log(result);
+
+        result.map((reservacion) => {
+            if (reservacion.nombreAlterno) {
+                reservacion.nombre_usuario = reservacion.nombreAlterno;
+                delete reservacion.nombreAlterno;
+            }
+        });
 
         res.status(200).json(result);
     } catch (err) {
