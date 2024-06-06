@@ -346,7 +346,7 @@ router.post("/crear", async (req, res) => {
 			instruccionesURL,
 		} = req.body;
         console.log(req.body);
-		const result = await database.executeProcedure("crearExperiencia", {
+		await database.executeProcedure("crearExperiencia", {
 			idUF: idUF,
 			idSala: idSala,
 			nombre: nombre,
@@ -359,8 +359,8 @@ router.post("/crear", async (req, res) => {
 			materialesExperiencia: materialesExperiencia,
 			instruccionesURL: instruccionesURL,
 		});
-		console.log(result);
-		res.status(200).json(result);
+		
+		res.status(200).json({ mensaje: "Experiencia creada exitosamente" });
 	} catch (err) {
         console.log(err?.message);
 		res.status(500).json({ error: err?.message });

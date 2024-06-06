@@ -8,7 +8,7 @@ CREATE OR ALTER PROCEDURE crearExperiencia
     @portadaURL VARCHAR(255),
     @fechaInicio DATETIME,
     @fechaFin DATETIME,
-    @materialesExperiencia VARCHAR(500),
+    @materialesExperiencia NVARCHAR(MAX),
     @instruccionesURL VARCHAR(255)
 AS
 BEGIN
@@ -28,7 +28,7 @@ BEGIN
 
         -- Parsear el string de materiales y agregar a MaterialesRecomendados
         -- Asumimos que el formato de materialesExperiencia es un JSON array de objetos [{materialId:1, quantity:1, ...}]
-        DECLARE @json VARCHAR(500) = @materialesExperiencia;
+        DECLARE @json NVARCHAR(MAX) = @materialesExperiencia;
 
         -- Insertar los materiales recomendados
         INSERT INTO MaterialesRecomendados (idExperiencia, idMaterial, cantidad)
