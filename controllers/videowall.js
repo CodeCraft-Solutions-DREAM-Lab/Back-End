@@ -102,8 +102,6 @@ router.get("/reservaciones", async (req, res) => {
             "getReservacionesVideowall"
         );
 
-        console.log(result);
-
         result.map((reservacion) => {
             if (reservacion.nombreAlterno) {
                 reservacion.nombre_usuario = reservacion.nombreAlterno;
