@@ -30,6 +30,16 @@
         }
       }
     },
+    "/test-email": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/usuarios/": {
       "get": {
         "tags": [
@@ -1663,6 +1673,99 @@
                 "properties": {
                   "user": {
                     "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/experiencias/crear": {
+      "post": {
+        "tags": [
+          "Experiencias"
+        ],
+        "summary": "Crea una nueva experiencia",
+        "description": "Crea una nueva experiencia",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idUF": {
+                    "type": "integer",
+                    "nullable": true
+                  },
+                  "idSala": {
+                    "type": "integer"
+                  },
+                  "nombre": {
+                    "type": "string"
+                  },
+                  "descripcion": {
+                    "type": "string"
+                  },
+                  "esAutoDirigida": {
+                    "type": "boolean"
+                  },
+                  "esExclusivaUF": {
+                    "type": "boolean"
+                  },
+                  "portadaURL": {
+                    "type": "string"
+                  },
+                  "fechaInicio": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "fechaFin": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "materialesExperiencia": {
+                    "type": "string",
+                    "format": "string"
+                  },
+                  "instruccionesURL": {
+                    "type": "string",
+                    "format": "string"
                   }
                 }
               }

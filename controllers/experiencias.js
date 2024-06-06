@@ -9,7 +9,7 @@ router.use(express.json());
 const database = new Database(config);
 
 router.get("/", async (_, res) => {
-    /*
+	/*
     #swagger.tags = ['Experiencias']
     #swagger.description = 'Obtiene todas las experiencias'
     #swagger.summary = 'Obtiene todas las experiencias'
@@ -53,18 +53,18 @@ router.get("/", async (_, res) => {
         }
     }
     */
-    try {
-        // Regresa todas las experiencias
-        const experiencias = await database.readAll("Experiencias");
-        //console.log(`Experiencias: ${JSON.stringify(experiencias)}`);
-        res.status(200).json(experiencias);
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
+	try {
+		// Regresa todas las experiencias
+		const experiencias = await database.readAll("Experiencias");
+		//console.log(`Experiencias: ${JSON.stringify(experiencias)}`);
+		res.status(200).json(experiencias);
+	} catch (err) {
+		res.status(500).json({ error: err?.message });
+	}
 });
 
 router.get("/autodirigidas", async (_, res) => {
-    /*
+	/*
     #swagger.tags = ['Experiencias']
     #swagger.description = 'Obtiene todas las experiencias autodirigidas'
     #swagger.summary = 'Obtiene todas las experiencias autodirigidas'
@@ -108,23 +108,23 @@ router.get("/autodirigidas", async (_, res) => {
         }
     }
     */
-    try {
-        // Leer todas las experiencias de la base de datos
-        const experiencias = await database.readAll("Experiencias");
-        console.log(`Experiencias: ${experiencias}`);
-        //console.log(`Experiencias: ${JSON.stringify(experiencias)}`);
-        // Filtrar las experiencias para obtener solo las autodirigidas
-        const experienciasAutodirigidas = experiencias.filter(
-            (experiencia) => experiencia.esAutoDirigida == 1
-        );
-        res.status(200).json(experienciasAutodirigidas);
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
+	try {
+		// Leer todas las experiencias de la base de datos
+		const experiencias = await database.readAll("Experiencias");
+		console.log(`Experiencias: ${experiencias}`);
+		//console.log(`Experiencias: ${JSON.stringify(experiencias)}`);
+		// Filtrar las experiencias para obtener solo las autodirigidas
+		const experienciasAutodirigidas = experiencias.filter(
+			(experiencia) => experiencia.esAutoDirigida == 1
+		);
+		res.status(200).json(experienciasAutodirigidas);
+	} catch (err) {
+		res.status(500).json({ error: err?.message });
+	}
 });
 
 router.get("/:id", async (req, res) => {
-    /*
+	/*
     #swagger.tags = ['Experiencias']
     #swagger.description = 'Obtiene una experiencia por su ID'
     #swagger.summary = 'Obtiene una experiencia por su ID'
@@ -177,26 +177,25 @@ router.get("/:id", async (req, res) => {
         }
     }
     */
-    try {
-        const experienciaId = req.params.id;
-        console.log(`experienciaId: ${experienciaId}`);
-        if (experienciaId) {
-            const result = await database.executeProcedure(
-                "getExperienciaById",
-                { idExperiencia: experienciaId }
-            );
-            console.log(`experiencia: ${JSON.stringify(result)}`);
-            res.status(200).json(result);
-        } else {
-            res.status(404);
-        }
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
+	try {
+		const experienciaId = req.params.id;
+		console.log(`experienciaId: ${experienciaId}`);
+		if (experienciaId) {
+			const result = await database.executeProcedure("getExperienciaById", {
+				idExperiencia: experienciaId,
+			});
+			console.log(`experiencia: ${JSON.stringify(result)}`);
+			res.status(200).json(result);
+		} else {
+			res.status(404);
+		}
+	} catch (err) {
+		res.status(500).json({ error: err?.message });
+	}
 });
 
 router.post("/UFs", async (req, res) => {
-    /*
+	/*
     #swagger.tags = ['Experiencias']
     #swagger.description = 'Obtiene las experiencias de las UFs de un usuario'
     #swagger.summary = 'Obtiene las experiencias de las UFs de un usuario'
@@ -253,25 +252,119 @@ router.post("/UFs", async (req, res) => {
         }
     }
     */
-    try {
-        // Obtener el usuario enviado como parámetro desde la solicitud
-        const userId = req.body.user; // Obtenemos el user
-        console.log("userId: " + userId);
-        const grupos = await database.readAll("GruposUsuarios");
-        const ufsUsuario = grupos.filter((grupo) => grupo.idUsuario == userId);
+	try {
+		// Obtener el usuario enviado como parámetro desde la solicitud
+		const userId = req.body.user; // Obtenemos el user
+		console.log("userId: " + userId);
+		const grupos = await database.readAll("GruposUsuarios");
+		const ufsUsuario = grupos.filter((grupo) => grupo.idUsuario == userId);
 
-        console.log(ufsUsuario[0].idUF);
-        const expUFs = await database.readAll("Experiencias");
-        const expUFsUsuario = expUFs.filter(
-            (expUF) => expUF.idUF == ufsUsuario[0].idUF
-        );
+		console.log(ufsUsuario[0].idUF);
+		const expUFs = await database.readAll("Experiencias");
+		const expUFsUsuario = expUFs.filter(
+			(expUF) => expUF.idUF == ufsUsuario[0].idUF
+		);
 
-        console.log("Experiencias UFs usuario: " + expUFsUsuario);
+		console.log("Experiencias UFs usuario: " + expUFsUsuario);
 
-        res.status(200).json(expUFsUsuario);
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
+		res.status(200).json(expUFsUsuario);
+	} catch (err) {
+		res.status(500).json({ error: err?.message });
+	}
+});
+
+router.post("/crear", async (req, res) => {
+	/*
+    #swagger.tags = ['Experiencias']
+    #swagger.description = 'Crea una nueva experiencia'
+    #swagger.summary = 'Crea una nueva experiencia'
+    #swagger.requestBody = {
+        required: true,
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                            idUF: { type: 'integer', nullable: true },
+                            idSala: { type: 'integer' },
+                            nombre: { type: 'string' },
+                            descripcion: { type: 'string' },
+                            esAutoDirigida: { type: 'boolean' },
+                            esExclusivaUF: { type: 'boolean' },
+                            portadaURL: { type: 'string' },
+                            fechaInicio: { type: 'string', format: 'date-time' },
+                            fechaFin: { type: 'string', format: 'date-time' },
+                            materialesExperiencia: { type: 'string', format: 'string' },
+                            instruccionesURL: { type: 'string', format: 'string' }
+                    }
+                }
+            }
+        }
     }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
+	try {
+		let {
+			idUF,
+			idSala,
+			nombre,
+			descripcion,
+			esAutoDirigida,
+			esExclusivaUF,
+			portadaURL,
+			fechaInicio,
+			fechaFin,
+			materialesExperiencia,
+			instruccionesURL
+		} = req.body;
+		if (experienciaId) {
+			const result = await database.executeProcedure("crearExperiencia", {idUF: idUF,
+                idSala: idSala,
+                nombre: nombre,
+                descripcion: descripcion,
+                esAutoDirigida: esAutoDirigida,
+                esExclusivaUF: esExclusivaUF,
+                portadaURL: portadaURL,
+                fechaInicio: fechaInicio,
+                fechaFin: fechaFin,
+                materialesExperiencia: materialesExperiencia,
+                instruccionesURL: instruccionesURL});
+			console.log("Creando experiencia");
+			res.status(200).json(result);
+		} else {
+			res.status(404);
+		}
+	} catch (err) {
+		res.status(500).json({ error: err?.message });
+	}
 });
 
 export default router;
