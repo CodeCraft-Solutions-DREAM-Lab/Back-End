@@ -343,26 +343,26 @@ router.post("/crear", async (req, res) => {
 			fechaInicio,
 			fechaFin,
 			materialesExperiencia,
-			instruccionesURL
+			instruccionesURL,
 		} = req.body;
-		if (experienciaId) {
-			const result = await database.executeProcedure("crearExperiencia", {idUF: idUF,
-                idSala: idSala,
-                nombre: nombre,
-                descripcion: descripcion,
-                esAutoDirigida: esAutoDirigida,
-                esExclusivaUF: esExclusivaUF,
-                portadaURL: portadaURL,
-                fechaInicio: fechaInicio,
-                fechaFin: fechaFin,
-                materialesExperiencia: materialesExperiencia,
-                instruccionesURL: instruccionesURL});
-			console.log("Creando experiencia");
-			res.status(200).json(result);
-		} else {
-			res.status(404);
-		}
+        console.log(req.body);
+		const result = await database.executeProcedure("crearExperiencia", {
+			idUF: idUF,
+			idSala: idSala,
+			nombre: nombre,
+			descripcion: descripcion,
+			esAutoDirigida: esAutoDirigida,
+			esExclusivaUF: esExclusivaUF,
+			portadaURL: portadaURL,
+			fechaInicio: fechaInicio,
+			fechaFin: fechaFin,
+			materialesExperiencia: materialesExperiencia,
+			instruccionesURL: instruccionesURL,
+		});
+		console.log(result);
+		res.status(200).json(result);
 	} catch (err) {
+        console.log(err?.message);
 		res.status(500).json({ error: err?.message });
 	}
 });
