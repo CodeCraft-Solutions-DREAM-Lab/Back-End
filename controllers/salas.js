@@ -246,6 +246,84 @@ router.post("/horasLibres", async (req, res) => {
     }
 });
 
+
+
+router.put("/cambiarEstadoSalas", async (req, res) => {
+    /*
+    #swagger.tags = ['Salas']
+    #swagger.description = 'Cambia el estado de bloqueada de una sala de true a false y viceversa'
+    #swagger.summary = 'Cambia el estado de bloqueada de una sala'
+    #swagger.requestBody = {
+        required: true,
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        idSala: { type: 'integer' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        rowsAffected: { type: 'integer' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[400] = {
+        description: 'Bad Request',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
+    try {
+        let { idSala } = req.body;
+
+        if (!idSala) {
+            res.status(400).json({ error: "idSala is required" });
+            return;
+        }
+
+        await database.executeQuery(
+            `EXEC [dbo].[toggleEstadoFromSala] @idSala = ${idSala};`
+        );
+
+        res.status(200).json({ mensaje: "Disponibilidad de sala modificada exitosamente" });
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
 router.get("/:id", async (req, res) => {
     /*
     #swagger.tags = ['Salas']
