@@ -20,8 +20,9 @@ BEGIN
         r.fecha,
         l.iconoURL,
         u.colorPreferido,
-		u.idUsuario,
-		c.tagId
+	u.idUsuario,
+	c.tagId,
+	r.asistencia
     FROM
         Reservaciones r
         INNER JOIN Salas s ON r.idSala = s.idSala
