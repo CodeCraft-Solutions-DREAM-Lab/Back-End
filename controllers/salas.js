@@ -1,7 +1,7 @@
 import express from "express";
 import { config } from "../config.js";
 import Database from "../database.js";
-import reservacionesRouter  from "./reservaciones.js";
+import { getHtmlTemplate, sendEmail } from "../emails/nodemailer.js";
 const router = express.Router();
 router.use(express.json());
 
@@ -308,36 +308,83 @@ router.put("/cambiarEstadoSalas", async (req, res) => {
     }
     */
     try {
-        let { idSala } = req.body;
+        let { idSala, bloqueada } = req.body;
 
         if (!idSala) {
             res.status(400).json({ error: "idSala is required" });
             return;
         }
 
-        await database.executeQuery(
-            `EXEC [dbo].[toggleEstadoFromSala] @idSala = ${idSala};`
-        );
+        if(bloqueada){
+            await database.executeQuery(
+                `EXEC [dbo].[toggleEstadoFromSala] @idSala = ${idSala};`
+            );
 
-        // Obtener todas las reservaciones asociadas a esta sala desde la fecha actual
-        const result = await database.executeProcedure(
-            "getProximasReservacionesBySala",
-            { idSala: idSala }
-        );
-        
-        console.log(`reservas: ${JSON.stringify(result)}`);
+            // Obtener todas las reservaciones asociadas a esta sala desde la fecha actual
+            const result = await database.executeProcedure(
+                "getProximasReservacionesBySala",
+                { idSala: idSala }
+            );
 
-        //console.log(reservaciones);
-        //const currentDate = new Date();
+            console.log(`reservas: ${JSON.stringify(result)}`);
 
-        //const reservaciones = await database.read("Reservaciones", "idSala", idSala);
+            result.forEach( async (reservacion) => {
+                try{
+                    const idReservacion = reservacion.idReservacion;
+                    console.log("reservacion id: ", idReservacion);
 
-        //console.log("reservaciones de esa sala: ", reservaciones);
-        
-        // // Filtrar las reservaciones para obtener solo las futuras
-        // const reservacionesFuturas = reservaciones.filter(reservacion => new Date(reservacion.fecha) >= currentDate);
+                    await database.executeProcedure("setEstatusFromReservacion", {
+                        idReservacion,
+                        idEstatus: 4,
+                    });
 
-        // console.log("reservaciones futuras: ", reservacionesFuturas);
+                    const userResult = await database.executeProcedure(
+                        "getUserIdByReservId",
+                        {
+                            idReservacion,
+                        }
+                    );
+
+                    const userId = userResult[0].idUsuario;
+                    console.log("userId: ", userId);
+
+                    await database.executeProcedure("addPrioridadToUser", {
+                        idUsuario: userId,
+                        prioridad: 10,
+                    });
+
+                    const currentDate = new Date();
+                    const sqlDate = currentDate.toISOString().split("T")[0];
+
+                    const mensaje = "Tus puntos de prioridad han aumentado.";
+                    const motivo = "Un administrador ha cancelado tu reservación.";
+
+                    await database.executeProcedure("insertIntoHistorialPrioridad", {
+                        idUsuario: userId,
+                        fecha: sqlDate,
+                        motivo,
+                        prioridad: 10,
+                    });
+
+                    const htmlTemplate = getHtmlTemplate("updatedPriorityPoints", {
+                        mensaje: mensaje,
+                        motivo: motivo,
+                    });
+
+                    sendEmail(
+                        `${userId.toUpperCase()}@tec.mx`,
+                        "Lamentamos el inconveniente",
+                        "",
+                        htmlTemplate
+                    );
+
+
+                } catch (err) {
+                    console.log("error: ", err);
+                }
+
+            })
+        }
 
         res.status(200).json({ mensaje: "Disponibilidad de sala modificada exitosamente" });
     } catch (err) {
