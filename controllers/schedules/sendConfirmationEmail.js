@@ -41,36 +41,50 @@ const getHour = (date, hours) => {
 
 	return dateObj.toLocaleTimeString().slice(0, -3);
 };
-
 const getInfoHtml = async (reserv) => {
-
-	const nameSala = reserv.nombre_sala;
-	const date = getDate(reserv.fecha);
-	const startHour = getHour(reserv.horaInicio, 0);
-	const endHour = getHour(reserv.horaInicio, reserv.duracion);
+    const nameSala = reserv.nombre_sala;
+    const date = getDate(reserv.fecha);
+    const startHour = getHour(reserv.horaInicio, 0);
+    const endHour = getHour(reserv.horaInicio, reserv.duracion);
     const people = reserv.numPersonas;
+    const instruccionesURL = reserv.instruccionesURL || ''; // Default to empty string if instruccionesURL is null
 
-	return {
-		sala: nameSala,
-		fecha: date,
-		horaInicio: startHour,
-		horaFin: endHour,
+    return {
+        sala: nameSala,
+        fecha: date,
+        horaInicio: startHour,
+        horaFin: endHour,
         numPersonas: people,
-	};
+        instruccionesURL: instruccionesURL
+    };
 };
-
 const sendConfirmationEmail = async (idReservacion) => {
-	try {
-		const reservation = await database.executeProcedure(
-			"getReservacionById",
-			{
-				idReservacion: idReservacion
-			}
-		);
+    try {
+        const reservation = await database.executeProcedure(
+            "getReservacionById",
+            {
+                idReservacion: idReservacion
+            }
+        );
+
+        const { sala, fecha, horaInicio, horaFin, numPersonas, instruccionesURL } = await getInfoHtml(reservation[0]);
+
+        let emailTemplate;
+        let templateParams;
+
+        if (instruccionesURL) {
+            // Send email with instructions
+            emailTemplate = "reservReqAcceptedWithInstructions";
+            templateParams = { sala, fecha, horaInicio, horaFin, numPersonas, instruccionesURL };
+        } else {
+            // Send regular confirmation email
+            emailTemplate = "reservReqAccepted";
+            templateParams = { sala, fecha, horaInicio, horaFin, numPersonas };
+        }
 
         const emailHtml = getHtmlTemplate(
-            "reservReqAccepted",
-            await getInfoHtml(reservation[0])
+            emailTemplate,
+            templateParams
         );
 
         await sendEmail(
@@ -80,9 +94,9 @@ const sendConfirmationEmail = async (idReservacion) => {
             emailHtml
         );
 
-	} catch (err) {
-		console.log(err);
-	}
+    } catch (err) {
+        console.log(err);
+    }
 };
 
 export default sendConfirmationEmail;
