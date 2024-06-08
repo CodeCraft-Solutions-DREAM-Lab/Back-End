@@ -57,6 +57,56 @@ router.get("/", async (_, res) => {
     }
 });
 
+router.get("/salasActivas", async (_, res) => {
+    /*
+    #swagger.tags = ['Salas']
+    #swagger.description = 'Obtiene las salas que no se encuentren bloqueadas'
+    #swagger.summary = 'Obtiene las salas que no se encuentren bloqueadas'
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            idSala: { type: 'integer' },
+                            nombre: { type: 'string' },
+                            cantidadMesas: { type: 'integer' },
+                            descripcion: { type: 'string' },
+                            fotoURL: { type: 'string' },
+                            detallesURL: { type: 'string' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error del servidor',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
+    try {
+        const result = await database.executeProcedure(
+            "getSalasActivas"
+        );
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
 router.get("/cronograma", async (_, res) => {
     /*
     #swagger.tags = ['Salas']
@@ -326,12 +376,9 @@ router.put("/cambiarEstadoSalas", async (req, res) => {
                 { idSala: idSala }
             );
 
-            console.log(`reservas: ${JSON.stringify(result)}`);
-
             result.forEach( async (reservacion) => {
                 try{
                     const idReservacion = reservacion.idReservacion;
-                    console.log("reservacion id: ", idReservacion);
 
                     await database.executeProcedure("setEstatusFromReservacion", {
                         idReservacion,
@@ -346,7 +393,6 @@ router.put("/cambiarEstadoSalas", async (req, res) => {
                     );
 
                     const userId = userResult[0].idUsuario;
-                    console.log("userId: ", userId);
 
                     await database.executeProcedure("addPrioridadToUser", {
                         idUsuario: userId,

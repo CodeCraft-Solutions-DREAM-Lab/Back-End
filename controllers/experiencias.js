@@ -63,6 +63,61 @@ router.get("/", async (_, res) => {
     }
 });
 
+router.get("/experienciasActivas", async (_, res) => {
+    /*
+    #swagger.tags = ['Experiencias'']
+    #swagger.description = 'Obtiene las experiencias que no se encuentren bloqueadas'
+    #swagger.summary = 'Obtiene las experiencias que no se encuentren bloqueadas'
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            idExperiencia: { type: 'integer' },
+                            idUF: { type: 'integer', nullable: true },
+                            idSala: { type: 'integer' },
+                            nombre: { type: 'string' },
+                            descripcion: { type: 'string' },
+                            esAutoDirigida: { type: 'boolean' },
+                            esExclusivaUF: { type: 'boolean' },
+                            portadaURL: { type: 'string' },
+                            fechaInicio: { type: 'string', format: 'date-time' },
+                            fechaFin: { type: 'string', format: 'date-time' },
+                            horaFin: { type: 'string', format: 'date-time' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error del servidor',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
+    try {
+        const result = await database.executeProcedure(
+            "getExperienciasActivas"
+        );
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
 router.get("/autodirigidas", async (_, res) => {
     /*
     #swagger.tags = ['Experiencias']
