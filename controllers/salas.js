@@ -1,6 +1,7 @@
 import express from "express";
 import { config } from "../config.js";
 import Database from "../database.js";
+import { getHtmlTemplate, sendEmail } from "../emails/nodemailer.js";
 const router = express.Router();
 router.use(express.json());
 
@@ -51,6 +52,56 @@ router.get("/", async (_, res) => {
         // Regresa todas las salas
         const salas = await database.readAll("Salas");
         res.status(200).json(salas);
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
+router.get("/salasActivas", async (_, res) => {
+    /*
+    #swagger.tags = ['Salas']
+    #swagger.description = 'Obtiene las salas que no se encuentren bloqueadas'
+    #swagger.summary = 'Obtiene las salas que no se encuentren bloqueadas'
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            idSala: { type: 'integer' },
+                            nombre: { type: 'string' },
+                            cantidadMesas: { type: 'integer' },
+                            descripcion: { type: 'string' },
+                            fotoURL: { type: 'string' },
+                            detallesURL: { type: 'string' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error del servidor',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
+    try {
+        const result = await database.executeProcedure(
+            "getSalasActivas"
+        );
+        res.status(200).json(result);
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }
@@ -241,6 +292,147 @@ router.post("/horasLibres", async (req, res) => {
         }
 
         return res.status(200).json(freeHoursArray);
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
+
+
+router.put("/cambiarEstadoSalas", async (req, res) => {
+    /*
+    #swagger.tags = ['Salas']
+    #swagger.description = 'Cambia el estado de bloqueada de una sala de true a false y viceversa'
+    #swagger.summary = 'Cambia el estado de bloqueada de una sala'
+    #swagger.requestBody = {
+        required: true,
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        idSala: { type: 'integer' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        rowsAffected: { type: 'integer' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[400] = {
+        description: 'Bad Request',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
+    try {
+        let { idSala, bloqueada } = req.body;
+
+        if (!idSala) {
+            res.status(400).json({ error: "idSala is required" });
+            return;
+        }
+
+        if(bloqueada){
+            await database.executeQuery(
+                `EXEC [dbo].[toggleEstadoFromSala] @idSala = ${idSala};`
+            );
+
+            // Obtener todas las reservaciones asociadas a esta sala desde la fecha actual
+            const result = await database.executeProcedure(
+                "getProximasReservacionesBySala",
+                { idSala: idSala }
+            );
+
+            result.forEach( async (reservacion) => {
+                try{
+                    const idReservacion = reservacion.idReservacion;
+
+                    await database.executeProcedure("setEstatusFromReservacion", {
+                        idReservacion,
+                        idEstatus: 4,
+                    });
+
+                    const userResult = await database.executeProcedure(
+                        "getUserIdByReservId",
+                        {
+                            idReservacion,
+                        }
+                    );
+
+                    const userId = userResult[0].idUsuario;
+
+                    await database.executeProcedure("addPrioridadToUser", {
+                        idUsuario: userId,
+                        prioridad: 10,
+                    });
+
+                    const currentDate = new Date();
+                    const sqlDate = currentDate.toISOString().split("T")[0];
+
+                    const mensaje = "Tus puntos de prioridad han aumentado.";
+                    const motivo = "Un administrador ha cancelado tu reservación.";
+
+                    await database.executeProcedure("insertIntoHistorialPrioridad", {
+                        idUsuario: userId,
+                        fecha: sqlDate,
+                        motivo,
+                        prioridad: 10,
+                    });
+
+                    const htmlTemplate = getHtmlTemplate("updatedPriorityPoints", {
+                        mensaje: mensaje,
+                        motivo: motivo,
+                    });
+
+                    sendEmail(
+                        `${userId.toUpperCase()}@tec.mx`,
+                        "Lamentamos el inconveniente",
+                        "",
+                        htmlTemplate
+                    );
+
+
+                } catch (err) {
+                    console.log("error: ", err);
+                }
+
+            })
+        }
+
+        res.status(200).json({ mensaje: "Disponibilidad de sala modificada exitosamente" });
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }
