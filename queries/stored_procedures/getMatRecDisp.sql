@@ -72,3 +72,4 @@ BEGIN
     LEFT JOIN @idMaterialesRecomendados mr ON m.idMaterial = mr.idMaterial
     WHERE ISNULL(md.cantidadDisponible, 0) > 0 OR ISNULL(mr.cantidadRecomendada, 0) > 0;
 END;
+GO;

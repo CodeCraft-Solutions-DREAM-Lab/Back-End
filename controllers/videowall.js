@@ -101,6 +101,14 @@ router.get("/reservaciones", async (req, res) => {
         const result = await database.executeProcedure(
             "getReservacionesVideowall"
         );
+
+        result.map((reservacion) => {
+            if (reservacion.nombreAlterno) {
+                reservacion.nombre_usuario = reservacion.nombreAlterno;
+                delete reservacion.nombreAlterno;
+            }
+        });
+
         res.status(200).json(result);
     } catch (err) {
         res.status(500).json({ error: err?.message });
