@@ -1,5 +1,4 @@
-;
-CREATE   PROCEDURE getExperienciasActivas
+CREATE OR ALTER PROCEDURE getExperienciasActivas
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -9,3 +8,4 @@ BEGIN
 	INNER JOIN [dbo].[Salas] s ON e.idSala = s.idSala
     WHERE s.bloqueada = 0;
 END;
+GO;

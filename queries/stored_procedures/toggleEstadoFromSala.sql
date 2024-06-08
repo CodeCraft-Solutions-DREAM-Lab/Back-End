@@ -1,5 +1,4 @@
-;
-CREATE   PROCEDURE toggleEstadoFromSala
+CREATE OR ALTER PROCEDURE toggleEstadoFromSala
     @idSala INT
 AS
 BEGIN
@@ -12,3 +11,4 @@ BEGIN
             END
 	WHERE idSala = @idSala;
 END;
+GO;

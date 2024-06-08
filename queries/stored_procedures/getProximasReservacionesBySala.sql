@@ -1,5 +1,4 @@
-;
-CREATE   PROCEDURE getProximasReservacionesBySala
+CREATE OR ALTER PROCEDURE getProximasReservacionesBySala
 	@idSala varchar(10)
 AS
 BEGIN
@@ -15,3 +14,4 @@ BEGIN
 	AND estatus != 4
 	AND estatus != 6;
 END;
+GO;

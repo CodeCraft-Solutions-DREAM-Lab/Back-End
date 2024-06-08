@@ -38,6 +38,5 @@ BEGIN
 	SELECT lu.idLogro, lu.valorActual, lu.obtenido
     FROM UsuariosLogros AS lu
 	WHERE lu.idUsuario = @idUsuario;
-
 END;
 GO;
