@@ -24,5 +24,4 @@ BEGIN
     WHERE
         r.idReservacion = @idReservacion;
 END;
-
 GO;

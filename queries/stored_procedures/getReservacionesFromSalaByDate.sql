@@ -4,9 +4,10 @@ CREATE OR ALTER PROCEDURE getReservacionesFromSalaByDate
 AS
 BEGIN
     SET NOCOUNT ON;
+
     SELECT * 
-    FROM [dbo].[Reservaciones] 
-    WHERE idSala = @idSala 
-    AND fecha = @fecha;
+        FROM [dbo].[Reservaciones] 
+        WHERE idSala = @idSala 
+        AND fecha = @fecha;
 END;
 GO;

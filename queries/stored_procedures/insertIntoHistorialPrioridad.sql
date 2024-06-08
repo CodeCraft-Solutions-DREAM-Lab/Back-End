@@ -6,7 +6,8 @@ CREATE OR ALTER PROCEDURE insertIntoHistorialPrioridad
 AS
 BEGIN
     SET NOCOUNT ON;
+    
     INSERT INTO HistorialPrioridad (idUsuario, fecha, prioridad, motivo)
-    VALUES (@idUsuario, @fecha, @prioridad, @motivo)
+        VALUES (@idUsuario, @fecha, @prioridad, @motivo)
 END;
 GO;
