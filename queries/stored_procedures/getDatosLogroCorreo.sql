@@ -19,6 +19,5 @@ BEGIN
         WHERE l.idLogro = @idLogro;
 
     SELECT @nombre AS nombre, @logro AS logro, @icono AS icono, @color AS color;
-
 END;
 GO;

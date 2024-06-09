@@ -459,6 +459,76 @@ router.get("/usuario/:id", async (req, res) => {
     }
 });
 
+router.get("/salasActuales", async (req, res) => {
+    /*
+    #swagger.tags = ['Reservaciones']
+    #swagger.description = 'Obtiene las reservaciones de la fecha actual en adelante de una sala'
+    #swagger.summary = 'Obtiene las reservaciones siguientes de una sala'
+    #swagger.parameters['id'] = {
+        in: 'path',
+        description: 'ID del usuario',
+        required: true,
+        type: 'string'
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            idReservacion: { type: 'integer' },
+                            idUsuario: { type: 'string' },
+                            idSala: { type: 'integer' },
+                            idExperiencia: { type: 'integer' },
+                            idMesa: { type: 'integer' },
+                            horaInicio: { type: 'string', format: 'date-time' },
+                            duracion: { type: 'integer' },
+                            fecha: { type: 'string', format: 'date-time' },
+                            numPersonas: { type: 'integer' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[404] = {
+        description: 'Not Found'
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    */
+    try {
+        const idSala = req.body.idSala;
+        console.log(`idSala: ${idSala}`);
+        if (idSala) {
+            const result = await database.executeProcedure(
+                "getProximasReservacionesBySala",
+                { idSala: idSala }
+            );
+            console.log(`reserv: ${JSON.stringify(result)}`);
+            res.status(200).json(result);
+        } else {
+            res.status(404);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+});
+
 router.post("/ultimas", async (req, res) => {
     /*
     Documentación de swagger

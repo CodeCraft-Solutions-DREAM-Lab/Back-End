@@ -3,8 +3,9 @@ CREATE OR ALTER PROCEDURE getSalaById
 AS
 BEGIN
     SET NOCOUNT ON;
+    
     SELECT *
-    FROM [dbo].[Salas]
-    WHERE idSala = @idSala;
+        FROM [dbo].[Salas]
+        WHERE idSala = @idSala;
 END;
 GO;
