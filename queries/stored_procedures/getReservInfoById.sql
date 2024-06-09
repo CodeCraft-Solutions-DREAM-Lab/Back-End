@@ -8,7 +8,8 @@ BEGIN
     R.fecha as reservDate,
     R.horaInicio,
 	R.duracion,
-    R.nombreAlterno
+    R.nombreAlterno,
+    R.idMesa
     FROM [dbo].[Reservaciones] R
     JOIN [dbo].[Usuarios] U ON R.idUsuario = U.idUsuario
     JOIN [dbo].[Salas] S ON R.idSala = S.idSala
