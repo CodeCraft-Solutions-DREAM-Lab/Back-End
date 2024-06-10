@@ -228,8 +228,7 @@
     "/usuarios/cambiarPrioridad": {
       "post": {
         "tags": [
-          "Usuarios",
-          "Prioridad"
+          "Usuarios"
         ],
         "summary": "Cambia los puntos de prioridad de un usuario",
         "description": "Cambia los puntos de prioridad de un usuario, lo guarda en el historial de cambios y envía un correo al usuario",
@@ -583,6 +582,12 @@
                   },
                   "numPersonas": {
                     "type": "integer"
+                  },
+                  "estatus": {
+                    "type": "integer"
+                  },
+                  "materiales": {
+                    "type": "string"
                   }
                 }
               }
@@ -840,6 +845,80 @@
         }
       }
     },
+    "/reservaciones/cancelar": {
+      "post": {
+        "tags": [
+          "Reservaciones"
+        ],
+        "summary": "Cancela una reservación",
+        "description": "Cancela una reservación y agrega puntos de prioridad al usuario",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Reservación cancelada exitosamente"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Faltan datos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "idReservacion is required"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idReservacion": {
+                    "type": "integer",
+                    "example": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/reservaciones/usuario/{id}": {
       "get": {
         "tags": [
@@ -856,6 +935,90 @@
               "type": "string"
             },
             "description": "ID del usuario"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idReservacion": {
+                        "type": "integer"
+                      },
+                      "idUsuario": {
+                        "type": "string"
+                      },
+                      "idSala": {
+                        "type": "integer"
+                      },
+                      "idExperiencia": {
+                        "type": "integer"
+                      },
+                      "idMesa": {
+                        "type": "integer"
+                      },
+                      "horaInicio": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "duracion": {
+                        "type": "integer"
+                      },
+                      "fecha": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "numPersonas": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reservaciones/salasActuales": {
+      "get": {
+        "tags": [
+          "Reservaciones"
+        ],
+        "summary": "Obtiene las reservaciones siguientes de una sala",
+        "description": "Obtiene las reservaciones de la fecha actual en adelante de una sala",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID del usuario",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1294,6 +1457,65 @@
         }
       }
     },
+    "/salas/salasActivas": {
+      "get": {
+        "tags": [
+          "Salas"
+        ],
+        "summary": "Obtiene las salas que no se encuentren bloqueadas",
+        "description": "Obtiene las salas que no se encuentren bloqueadas",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idSala": {
+                        "type": "integer"
+                      },
+                      "nombre": {
+                        "type": "string"
+                      },
+                      "cantidadMesas": {
+                        "type": "integer"
+                      },
+                      "descripcion": {
+                        "type": "string"
+                      },
+                      "fotoURL": {
+                        "type": "string"
+                      },
+                      "detallesURL": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/salas/cronograma": {
       "get": {
         "tags": [
@@ -1429,6 +1651,77 @@
                     "format": "date"
                   },
                   "personas": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/salas/cambiarEstadoSalas": {
+      "put": {
+        "tags": [
+          "Salas"
+        ],
+        "summary": "Cambia el estado de bloqueada de una sala",
+        "description": "Cambia el estado de bloqueada de una sala de true a false y viceversa",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "rowsAffected": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idSala": {
                     "type": "integer"
                   }
                 }
@@ -1630,6 +1923,84 @@
           },
           "500": {
             "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/experiencias/experienciasActivas": {
+      "get": {
+        "tags": [
+          "Experiencias"
+        ],
+        "summary": "Obtiene las experiencias que no se encuentren bloqueadas",
+        "description": "Obtiene las experiencias que no se encuentren bloqueadas",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idExperiencia": {
+                        "type": "integer"
+                      },
+                      "idUF": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "idSala": {
+                        "type": "integer"
+                      },
+                      "nombre": {
+                        "type": "string"
+                      },
+                      "descripcion": {
+                        "type": "string"
+                      },
+                      "esAutoDirigida": {
+                        "type": "boolean"
+                      },
+                      "esExclusivaUF": {
+                        "type": "boolean"
+                      },
+                      "portadaURL": {
+                        "type": "string"
+                      },
+                      "fechaInicio": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "fechaFin": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "horaFin": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error del servidor",
             "content": {
               "application/json": {
                 "schema": {
@@ -1930,9 +2301,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not Found"
           },
           "500": {
             "description": "Error",
@@ -2259,25 +2627,156 @@
         }
       }
     },
-    "/materiales/bySala": {
+    "/materiales/recomendados": {
       "post": {
-        "description": "",
+        "tags": [
+          "Materials"
+        ],
+        "summary": "Obtener materiales recomendados de una experiencia",
+        "description": "Obtiene los materiales disponibles y recomendados dado una sala, experiencia, fecha, hora de inicio, y duración",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "cantidadDisponible": {
+                        "type": "integer"
+                      },
+                      "cantidadRecomendada": {
+                        "type": "integer"
+                      },
+                      "image": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "idSala": {
-                    "example": "any"
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "idExperiencia": {
+                    "type": "integer",
+                    "example": 2
+                  },
+                  "fecha": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2022-12-31"
+                  },
+                  "horaInicio": {
+                    "type": "string",
+                    "example": "12:00"
+                  },
+                  "duracion": {
+                    "type": "integer",
+                    "example": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/materiales/bySala": {
+      "post": {
+        "tags": [
+          "Materials"
+        ],
+        "summary": "Obtener materiales por sala",
+        "description": "Obtiene los materiales disponibles dado una sala",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "cantidadDisponible": {
+                        "type": "integer"
+                      },
+                      "image": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idSala": {
+                    "type": "integer",
+                    "example": 1
                   }
                 }
               }
