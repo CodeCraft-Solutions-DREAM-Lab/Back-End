@@ -237,6 +237,7 @@
       "post": {
         "tags": [
           "Usuarios"
+          "Usuarios"
         ],
         "summary": "Cambia los puntos de prioridad de un usuario",
         "description": "Cambia los puntos de prioridad de un usuario, lo guarda en el historial de cambios y envía un correo al usuario",
@@ -2722,10 +2723,99 @@
     "/materiales/recomendados": {
       "post": {
         "tags": [
-          "Materials and Recommended"
+          "Materials"
         ],
-        "summary": "Obtiene los materiales disponibles dado una sala, fecha, hora de inicio, y duración",
-        "description": "Obtiene los materiales disponibles dado una sala, fecha, hora de inicio, y duración",
+        "summary": "Obtener materiales recomendados de una experiencia",
+        "description": "Obtiene los materiales disponibles y recomendados dado una sala, experiencia, fecha, hora de inicio, y duración",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "cantidadDisponible": {
+                        "type": "integer"
+                      },
+                      "cantidadRecomendada": {
+                        "type": "integer"
+                      },
+                      "image": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idSala": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "idExperiencia": {
+                    "type": "integer",
+                    "example": 2
+                  },
+                  "fecha": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2022-12-31"
+                  },
+                  "horaInicio": {
+                    "type": "string",
+                    "example": "12:00"
+                  },
+                  "duracion": {
+                    "type": "integer",
+                    "example": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/materiales/bySala": {
+      "post": {
+        "tags": [
+          "Materials"
+        ],
+        "summary": "Obtener materiales por sala",
+        "description": "Obtiene los materiales disponibles dado una sala",
         "responses": {
           "200": {
             "description": "OK",
@@ -2780,46 +2870,6 @@
                   "idSala": {
                     "type": "integer",
                     "example": 1
-                  },
-                  "fecha": {
-                    "type": "string",
-                    "format": "date",
-                    "example": "2022-12-31"
-                  },
-                  "horaInicio": {
-                    "type": "string",
-                    "example": "12:00"
-                  },
-                  "duracion": {
-                    "type": "integer",
-                    "example": 2
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/materiales/bySala": {
-      "post": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "idSala": {
-                    "example": "any"
                   }
                 }
               }
