@@ -38,7 +38,7 @@ const getDate = (date) => {
 
 const getHour = (date, hours) => {
     const dateObj = new Date(date);
-    dateObj.setHours(dateObj.getHours() + hours + 6);
+    dateObj.setHours(dateObj.getHours() + hours - 6);
 
     return dateObj.toLocaleTimeString().slice(0, -3);
 };
