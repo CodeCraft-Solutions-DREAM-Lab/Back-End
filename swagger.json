@@ -110,8 +110,8 @@
         "tags": [
           "Usuarios"
         ],
-        "summary": "Obtiene un usuario por id",
-        "description": "Obtiene un usuario por id",
+        "summary": "Modifica elementos de un usuario por su id.",
+        "description": "Modifica a un usuario usando su id",
         "parameters": [
           {
             "name": "idUsuario",
@@ -131,29 +131,8 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "idUsuario": {
-                      "type": "string"
-                    },
-                    "nombre": {
-                      "type": "string"
-                    },
-                    "apellidoP": {
-                      "type": "string"
-                    },
-                    "apellidoM": {
-                      "type": "string"
-                    },
-                    "tipo": {
-                      "type": "string"
-                    },
-                    "prioridad": {
+                    "rowsAffected": {
                       "type": "integer"
-                    },
-                    "logroPrincipal": {
-                      "type": "integer"
-                    },
-                    "colorPreferido": {
-                      "type": "string"
                     }
                   }
                 }
@@ -170,6 +149,21 @@
                     "error": {
                       "type": "string"
                     }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "valor": {
+                    "type": "integer"
                   }
                 }
               }
@@ -236,7 +230,6 @@
     "/usuarios/cambiarPrioridad": {
       "post": {
         "tags": [
-          "Usuarios"
           "Usuarios"
         ],
         "summary": "Cambia los puntos de prioridad de un usuario",

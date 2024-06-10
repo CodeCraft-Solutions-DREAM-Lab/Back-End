@@ -64,49 +64,57 @@ router.get("/", async (_, res) => {
 
 router.put("/:idUsuario", async (req, res) => {
     /*
-    #swagger.tags = ['Usuarios']
-    #swagger.description = 'Obtiene un usuario por id'
-    #swagger.summary = 'Obtiene un usuario por id'
-    #swagger.parameters['idUsuario'] = {
-        in: 'path',
-        description: 'id del usuario',
-        required: true,
-        type: 'string'
-    }
-    #swagger.responses[200] = {
-        description: 'OK',
-        content: {
-            'application/json': {
-                schema: {
-                    type: 'object',
-                    properties: {
-                        idUsuario: { type: 'string' },
-                        nombre: { type: 'string' },
-                        apellidoP: { type: 'string' },
-                        apellidoM: { type: 'string' },
-                        tipo: { type: 'string' },
-                        prioridad: { type: 'integer' },
-                        logroPrincipal: { type: 'integer' },
-                        colorPreferido: { type: 'string' }
-                    }
+#swagger.tags = ['Usuarios']
+#swagger.description = 'Modifica a un usuario usando su id'
+#swagger.summary = 'Modifica elementos de un usuario por su id.'
+#swagger.parameters['idUsuario'] = {
+    in: 'path',
+    description: 'id del usuario',
+    required: true,
+    type: 'string'
+}
+#swagger.requestBody = {
+    required: true,
+    content: {
+        'application/json': {
+            schema: {
+                type: 'object',
+                properties: {
+                    valor: { type: 'integer' }
                 }
             }
         }
     }
-    #swagger.responses[500] = {
-        description: 'Error',
-        content: {
-            'application/json': {
-                schema: {
-                    type: 'object',
-                    properties: {
-                        error: { type: 'string' }
-                    }
+}
+
+#swagger.responses[200] = {
+    description: 'OK',
+    content: {
+        'application/json': {
+            schema: {
+                type: 'object',
+                properties: {
+                    rowsAffected: { type: 'integer' }
                 }
             }
         }
     }
-    */
+}
+#swagger.responses[500] = {
+    description: 'Error',
+    content: {
+        'application/json': {
+            schema: {
+                type: 'object',
+                properties: {
+                    error: { type: 'string' }
+                }
+            }
+        }
+    }
+}
+*/
+
     try {
         const usuarioId = req.params.idUsuario;
         console.log(`usuarioId: ${usuarioId}`);
