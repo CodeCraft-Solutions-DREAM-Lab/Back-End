@@ -175,8 +175,7 @@
               }
             }
           }
-        },
-        "deprecated": true
+        }
       }
     },
     "/usuarios/nombreUsuario/{tagID}": {

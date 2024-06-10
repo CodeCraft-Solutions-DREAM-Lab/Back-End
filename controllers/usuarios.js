@@ -67,7 +67,6 @@ router.put("/:idUsuario", async (req, res) => {
     #swagger.tags = ['Usuarios']
     #swagger.description = 'Obtiene un usuario por id'
     #swagger.summary = 'Obtiene un usuario por id'
-    #swagger.deprecated = true
     #swagger.parameters['idUsuario'] = {
         in: 'path',
         description: 'id del usuario',
