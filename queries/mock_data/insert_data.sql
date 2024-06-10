@@ -373,7 +373,7 @@ VALUES
         'Cristina',
         'González',
         'Cordova',
-        'Regular',
+        'Profesor',
         362,
         1,
         '#78C2F8'
@@ -383,7 +383,7 @@ VALUES
         'Lorena',
         'Martínez',
         'Hernández',
-        'Regular',
+        'Profesor',
         362,
         1,
         '#78C2F8'
@@ -393,7 +393,7 @@ VALUES
         'Rolando',
         'Martínez',
         'Hernández',
-        'Regular',
+        'Profesor',
         362,
         1,
         '#78C2F8'
@@ -404,7 +404,7 @@ VALUES
         '',
         '',
         'Regular',
-        362,
+        100,
         1,
         '#78C2F8'
     ),
@@ -414,7 +414,7 @@ VALUES
         '',
         '',
         'Admin',
-        362,
+        9999999,
         1,
         '#78C2F8'
     );
