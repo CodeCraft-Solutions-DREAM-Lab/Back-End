@@ -297,8 +297,6 @@ router.post("/horasLibres", async (req, res) => {
     }
 });
 
-
-
 router.put("/cambiarEstadoSalas", async (req, res) => {
     /*
     #swagger.tags = ['Salas']
@@ -365,11 +363,12 @@ router.put("/cambiarEstadoSalas", async (req, res) => {
             return;
         }
 
-        if(bloqueada){
-            await database.executeQuery(
-                `EXEC [dbo].[toggleEstadoFromSala] @idSala = ${idSala};`
-            );
+        await database.executeQuery(
+            `EXEC [dbo].[toggleEstadoFromSala] @idSala = ${idSala};`
+        );
 
+        if(bloqueada){
+            
             // Obtener todas las reservaciones asociadas a esta sala desde la fecha actual
             const result = await database.executeProcedure(
                 "getProximasReservacionesBySala",
