@@ -10,7 +10,7 @@ router.use(express.json());
 const database = new Database(config);
 
 router.get("/", async (_, res) => {
-	/*
+    /*
     #swagger.tags = ['Reservaciones']
     #swagger.description = 'Obtiene todas las reservaciones'
     #swagger.summary = 'Obtiene todas las reservaciones'
@@ -28,10 +28,14 @@ router.get("/", async (_, res) => {
                             idSala: { type: 'integer' },
                             idExperiencia: { type: 'integer' },
                             idMesa: { type: 'integer' },
+                            estatus: { type: 'integer' },
+                            estatusMateriales: { type: 'integer' },
                             horaInicio: { type: 'string', format: 'date-time' },
                             duracion: { type: 'integer' },
                             fecha: { type: 'string', format: 'date-time' },
-                            numPersonas: { type: 'integer' }
+                            numPersonas: { type: 'integer' },
+                            asistencia: { type: 'null' },
+                            nombreAlterno: { type: 'null' }
                         }
                     }
                 }
@@ -52,18 +56,18 @@ router.get("/", async (_, res) => {
         }
     }
     */
-	try {
-		// Return a list of reservaciones
-		const reservaciones = await database.readAll("Reservaciones");
-		console.log(`Usuarios: ${JSON.stringify(reservaciones)}`);
-		res.status(200).json(reservaciones);
-	} catch (err) {
-		res.status(500).json({ error: err?.message });
-	}
+    try {
+        // Return a list of reservaciones
+        const reservaciones = await database.readAll("Reservaciones");
+        console.log(`Usuarios: ${JSON.stringify(reservaciones)}`);
+        res.status(200).json(reservaciones);
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
 });
 
 router.get("/cronograma", async (_, res) => {
-	/*
+    /*
     #swagger.tags = ['Reservaciones']
     #swagger.description = 'Obtiene todas las reservaciones confirmadas para el cronograma'
     #swagger.summary = 'Obtiene todas las reservaciones confirmadas para el cronograma'
@@ -78,6 +82,8 @@ router.get("/cronograma", async (_, res) => {
                         properties: {
                             id: { type: 'integer', description: 'Identificador único de la reservación' },
                             group: { type: 'integer', description: 'Identificador del grupo o mesa' },
+                            estatus: { type: 'integer', description: 'Estatus de la reservación' },
+                            estatusMateriales: { type: 'integer', description: 'Estatus de los materiales' },
                             title: { type: 'string', description: 'Nombre completo del usuario que hizo la reservación' },
                             start_time: { type: 'string', format: 'date-time', description: 'Fecha y hora de inicio de la reservación' },
                             end_time: { type: 'string', format: 'date-time', description: 'Fecha y hora de fin de la reservación' }
@@ -101,28 +107,28 @@ router.get("/cronograma", async (_, res) => {
         }
     }
     */
-	try {
-		const result = await database.executeProcedure(
-			"getReservacionesConfirmadasCronograma"
-		);
+    try {
+        const result = await database.executeProcedure(
+            "getReservacionesConfirmadasCronograma"
+        );
 
-		result.map((reserv) => {
-			// Si se recibe un nombre alterno, reemplazar el nombre original por el alterno
-			if (reserv.nombreAlterno) {
-				reserv.title = reserv.nombreAlterno;
-			}
-			// Remover el nombre alterno de la respuesta
-			delete reserv.nombreAlterno;
-		});
+        result.map((reserv) => {
+            // Si se recibe un nombre alterno, reemplazar el nombre original por el alterno
+            if (reserv.nombreAlterno) {
+                reserv.title = reserv.nombreAlterno;
+            }
+            // Remover el nombre alterno de la respuesta
+            delete reserv.nombreAlterno;
+        });
 
-		res.status(200).json(result);
-	} catch (err) {
-		res.status(500).json({ error: err?.message });
-	}
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
 });
 
 router.get("/cronogramaSingle/:idReservacion", async (req, res) => {
-	/*
+    /*
     #swagger.tags = ['Reservaciones']
     #swagger.description = 'Obtiene una reservación para el cronograma'
     #swagger.summary = 'Obtiene una reservación para el cronograma'
@@ -135,6 +141,8 @@ router.get("/cronogramaSingle/:idReservacion", async (req, res) => {
                     properties: {
                         id: { type: 'integer', description: 'Identificador único de la reservación' },
                         group: { type: 'integer', description: 'Identificador del grupo o mesa' },
+                        estatus: { type: 'integer', description: 'Estatus de la reservación' },
+                        estatusMateriales: { type: 'integer', description: 'Estatus de los materiales' },
                         title: { type: 'string', description: 'Nombre completo del usuario que hizo la reservación' },
                         start_time: { type: 'string', format: 'date-time', description: 'Fecha y hora de inicio de la reservación' },
                         end_time: { type: 'string', format: 'date-time', description: 'Fecha y hora de fin de la reservación' }
@@ -157,26 +165,29 @@ router.get("/cronogramaSingle/:idReservacion", async (req, res) => {
         }
     }
     */
-	try {
-		const result = await database.executeProcedure("getReservacionCronograma", {
-			idReservacion: req.params.idReservacion,
-		});
+    try {
+        const result = await database.executeProcedure(
+            "getReservacionCronograma",
+            {
+                idReservacion: req.params.idReservacion,
+            }
+        );
 
-		// Si se recibe un nombre alterno, reemplazar el nombre original por el alterno
-		if (result[0].nombreAlterno) {
-			result[0].title = result[0].nombreAlterno;
-		}
-		// Remover el nombre alterno de la respuesta
-		delete result[0].nombreAlterno;
+        // Si se recibe un nombre alterno, reemplazar el nombre original por el alterno
+        if (result[0].nombreAlterno) {
+            result[0].title = result[0].nombreAlterno;
+        }
+        // Remover el nombre alterno de la respuesta
+        delete result[0].nombreAlterno;
 
-		res.status(200).json(result[0]);
-	} catch (err) {
-		res.status(500).json({ error: err?.message });
-	}
+        res.status(200).json(result[0]);
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
 });
 
 router.get("/cronograma/:id", async (req, res) => {
-	/*
+    /*
     #swagger.tags = ['Reservaciones']
     #swagger.description = 'Obtiene la información de una reservación para el modal de información del cronograma'
     #swagger.summary = 'Obtiene la información de una reservación para el cronograma'
@@ -193,6 +204,7 @@ router.get("/cronograma/:id", async (req, res) => {
                         'reservDate': { type: 'string', example: '2024-01-05T00:00:00.000Z' },
                         'horaInicio': { type: 'string', example: '1970-01-01T12:00:00.000Z' },
                         'duracion': { type: 'integer', example: 3 },
+                        idMesa: { type: 'integer', example: 1 },
                         'reservItems': {
                             type: 'array',
                             items: {
@@ -238,37 +250,40 @@ router.get("/cronograma/:id", async (req, res) => {
     }
     */
 
-	try {
-		const reservId = req.params.id;
-		const infoResult = await database.executeProcedure("getReservInfoById", {
-			idReservacion: reservId,
-		});
+    try {
+        const reservId = req.params.id;
+        const infoResult = await database.executeProcedure(
+            "getReservInfoById",
+            {
+                idReservacion: reservId,
+            }
+        );
 
-		const reservItems = await database.executeProcedure(
-			"getItemsToPrepareWithReservId",
-			{ idReservacion: reservId }
-		);
+        const reservItems = await database.executeProcedure(
+            "getItemsToPrepareWithReservId",
+            { idReservacion: reservId }
+        );
 
-		const selectedItems = await database.executeProcedure(
-			"getPreparedItemsWithReservId",
-			{ idReservacion: reservId }
-		);
+        const selectedItems = await database.executeProcedure(
+            "getPreparedItemsWithReservId",
+            { idReservacion: reservId }
+        );
 
-		// Si se recibe un nombre alterno, reemplazar el nombre original por el alterno
-		if (infoResult[0].nombreAlterno) {
-			infoResult[0].studentName = infoResult[0].nombreAlterno;
-		}
-		// Remover el nombre alterno de la respuesta
-		delete infoResult[0].nombreAlterno;
+        // Si se recibe un nombre alterno, reemplazar el nombre original por el alterno
+        if (infoResult[0].nombreAlterno) {
+            infoResult[0].studentName = infoResult[0].nombreAlterno;
+        }
+        // Remover el nombre alterno de la respuesta
+        delete infoResult[0].nombreAlterno;
 
-		res.status(200).json({ ...infoResult[0], reservItems, selectedItems });
-	} catch (err) {
-		res.status(500).json({ error: err?.message });
-	}
+        res.status(200).json({ ...infoResult[0], reservItems, selectedItems });
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
 });
 
 router.post("/cancelar", async (req, res) => {
-	/*
+    /*
     #swagger.tags = ['Reservaciones']
     #swagger.description = 'Cancela una reservación y agrega puntos de prioridad al usuario'
     #swagger.summary = 'Cancela una reservación'
@@ -326,64 +341,67 @@ router.post("/cancelar", async (req, res) => {
     }
     */
 
-	try {
-		const { idReservacion } = req.body;
+    try {
+        const { idReservacion } = req.body;
 
-		if (!idReservacion) {
-			res.status(400).json({
-				error: "idReservacion is required",
-			});
-			return;
-		}
+        if (!idReservacion) {
+            res.status(400).json({
+                error: "idReservacion is required",
+            });
+            return;
+        }
 
-		await database.executeProcedure("setEstatusFromReservacion", {
-			idReservacion,
-			idEstatus: 4,
-		});
+        await database.executeProcedure("setEstatusFromReservacion", {
+            idReservacion,
+            idEstatus: 4,
+        });
 
-		const userResult = await database.executeProcedure("getUserIdByReservId", {
-			idReservacion,
-		});
-		const userId = userResult[0].idUsuario;
+        const userResult = await database.executeProcedure(
+            "getUserIdByReservId",
+            {
+                idReservacion,
+            }
+        );
+        const userId = userResult[0].idUsuario;
 
-		await database.executeProcedure("addPrioridadToUser", {
-			idUsuario: userId,
-			prioridad: 10,
-		});
+        await database.executeProcedure("addPrioridadToUser", {
+            idUsuario: userId,
+            prioridad: 10,
+        });
 
-		const currentDate = new Date();
-		const sqlDate = currentDate.toISOString().split("T")[0];
+        const currentDate = new Date();
+        const sqlDate = currentDate.toISOString().split("T")[0];
 
-		const mensaje = "Tus puntos de prioridad han aumentado.";
-		const motivo = "Un administrador ha cancelado tu reservación.";
+        const mensaje = "Tus puntos de prioridad han aumentado.";
+        const motivo = "Un administrador ha cancelado tu reservación.";
 
-		await database.executeProcedure("insertIntoHistorialPrioridad", {
-			idUsuario: userId,
-			fecha: sqlDate,
-			motivo,
-			prioridad: 10,
-		});
+        await database.executeProcedure("insertIntoHistorialPrioridad", {
+            idUsuario: userId,
+            fecha: sqlDate,
+            motivo,
+            prioridad: 10,
+        });
 
-		const htmlTemplate = getHtmlTemplate("updatedPriorityPoints", {
-			mensaje: mensaje,
-			motivo: motivo,
-		});
+        const htmlTemplate = getHtmlTemplate("updatedPriorityPoints", {
+            mensaje: mensaje,
+            motivo: motivo,
+        });
 
-		sendEmail(
-			`${userId.toUpperCase()}@tec.mx`,
-			"Lamentamos el inconveniente",
-			"",
-			htmlTemplate
-		);
+        sendEmail(
+            `${userId.toUpperCase()}@tec.mx`,
+            "Lamentamos el inconveniente",
+            "",
+            htmlTemplate
+        );
 
-		res.status(200).json({ mensaje: "Reservación cancelada exitosamente" });
-	} catch (err) {
-		res.status(500).json({ error: err?.message });
-	}
+        res.status(200).json({ mensaje: "Reservación cancelada exitosamente" });
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
 });
 
 router.get("/usuario/:id", async (req, res) => {
-	/*
+    /*
     #swagger.tags = ['Reservaciones']
     #swagger.description = 'Obtiene las reservaciones de un usuario'
     #swagger.summary = 'Obtiene las reservaciones de un usuario'
@@ -402,15 +420,19 @@ router.get("/usuario/:id", async (req, res) => {
                     items: {
                         type: 'object',
                         properties: {
-                            idReservacion: { type: 'integer' },
-                            idUsuario: { type: 'string' },
-                            idSala: { type: 'integer' },
-                            idExperiencia: { type: 'integer' },
-                            idMesa: { type: 'integer' },
-                            horaInicio: { type: 'string', format: 'date-time' },
-                            duracion: { type: 'integer' },
-                            fecha: { type: 'string', format: 'date-time' },
-                            numPersonas: { type: 'integer' }
+                            idReservacion: { type: 'integer', example: 1 },
+                            idUsuario: { type: 'string', example: 'a01177767' },
+                            idSala: { type: 'integer', example: 2 },
+                            idExperiencia: { type: 'integer', example: 2 },
+                            idMesa: { type: 'integer', example: 2 },
+                            estatus: { type: 'integer', example: 3 },
+                            estatusMateriales: { type: 'integer', example: 1 },
+                            horaInicio: { type: 'string', format: 'date-time', example: '1970-01-01T12:00:00.000Z' },
+                            duracion: { type: 'integer', example: 3 },
+                            fecha: { type: 'string', format: 'date-time', example: '2024-01-05T00:00:00.000Z' },
+                            numPersonas: { type: 'integer', example: 3 },
+                            asistencia: { type: 'null' },
+                            nombreAlterno: { type: 'null' }
                         }
                     }
                 }
@@ -434,33 +456,44 @@ router.get("/usuario/:id", async (req, res) => {
         }
     }
     */
-	try {
-		const usuarioId = req.params.id;
-		console.log(`usuarioId: ${usuarioId}`);
-		if (usuarioId) {
-			const result = await database.executeProcedure("getReservacionByUser", {
-				idUsuario: usuarioId,
-			});
-			console.log(`reserv: ${JSON.stringify(result)}`);
-			res.status(200).json(result);
-		} else {
-			res.status(404);
-		}
-	} catch (err) {
-		res.status(500).json({ error: err?.message });
-	}
+    try {
+        const usuarioId = req.params.id;
+        console.log(`usuarioId: ${usuarioId}`);
+        if (usuarioId) {
+            const result = await database.executeProcedure(
+                "getReservacionByUser",
+                {
+                    idUsuario: usuarioId,
+                }
+            );
+            console.log(`reserv: ${JSON.stringify(result)}`);
+            res.status(200).json(result);
+        } else {
+            res.status(404);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
 });
 
-router.get("/salasActuales", async (req, res) => {
-	/*
+router.post("/salasActuales", async (req, res) => {
+    /*
     #swagger.tags = ['Reservaciones']
     #swagger.description = 'Obtiene las reservaciones de la fecha actual en adelante de una sala'
     #swagger.summary = 'Obtiene las reservaciones siguientes de una sala'
-    #swagger.parameters['id'] = {
-        in: 'path',
-        description: 'ID del usuario',
+    #swagger.deprecated = true
+    #swagger.requestBody = {
         required: true,
-        type: 'string'
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        idSala: { type: 'integer' }
+                    }
+                }
+            }
+        }
     }
     #swagger.responses[200] = {
         description: 'OK',
@@ -474,12 +507,16 @@ router.get("/salasActuales", async (req, res) => {
                             idReservacion: { type: 'integer' },
                             idUsuario: { type: 'string' },
                             idSala: { type: 'integer' },
-                            idExperiencia: { type: 'integer' },
+                            idExperiencia: { type: 'integer', nullable: true },
                             idMesa: { type: 'integer' },
+                            estatus: { type: 'integer' },
+                            estatusMateriales: { type: 'integer' },
                             horaInicio: { type: 'string', format: 'date-time' },
                             duracion: { type: 'integer' },
                             fecha: { type: 'string', format: 'date-time' },
-                            numPersonas: { type: 'integer' }
+                            numPersonas: { type: 'integer' },
+                            asistencia: { type: 'integer', nullable: true },
+                            nombreAlterno: { type: 'string', nullable: true }
                         }
                     }
                 }
@@ -503,48 +540,48 @@ router.get("/salasActuales", async (req, res) => {
         }
     }
     */
-	try {
-		const idSala = req.body.idSala;
-		console.log(`idSala: ${idSala}`);
-		if (idSala) {
-			const result = await database.executeProcedure(
-				"getProximasReservacionesBySala",
-				{ idSala: idSala }
-			);
-			console.log(`reserv: ${JSON.stringify(result)}`);
-			res.status(200).json(result);
-		} else {
-			res.status(404);
-		}
-	} catch (err) {
-		res.status(500).json({ error: err?.message });
-	}
+    try {
+        const idSala = req.body.idSala;
+        console.log(`idSala: ${idSala}`);
+        if (idSala) {
+            const result = await database.executeProcedure(
+                "getProximasReservacionesBySala",
+                { idSala: idSala }
+            );
+            console.log(`reserv: ${JSON.stringify(result)}`);
+            res.status(200).json(result);
+        } else {
+            res.status(404);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
 });
 
 router.post("/ultimas", async (req, res) => {
-	/*
+    /*
     Documentación de swagger
     */
-	try {
-		const usuarioId = req.body.user;
-		console.log(`userId: ${usuarioId}`);
-		if (usuarioId) {
-			const result = await database.executeProcedure(
-				"getUltimasReservaciones",
-				{ idUsuario: usuarioId }
-			);
-			console.log(`Ultimas reservas: ${JSON.stringify(result)}`);
-			res.status(200).json(result);
-		} else {
-			res.status(404);
-		}
-	} catch (err) {
-		res.status(500).json({ error: err?.message });
-	}
+    try {
+        const usuarioId = req.body.user;
+        console.log(`userId: ${usuarioId}`);
+        if (usuarioId) {
+            const result = await database.executeProcedure(
+                "getUltimasReservaciones",
+                { idUsuario: usuarioId }
+            );
+            console.log(`Ultimas reservas: ${JSON.stringify(result)}`);
+            res.status(200).json(result);
+        } else {
+            res.status(404);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
 });
 
 router.post("/", async (req, res) => {
-	/*
+    /*
     #swagger.tags = ['Reservaciones']
     #swagger.description = 'Crea una nueva reservación'
     #swagger.summary = 'Crea una nueva reservación'
@@ -597,43 +634,43 @@ router.post("/", async (req, res) => {
         }
     }
     */
-	try {
-		let {
-			idUsuario,
-			idSala,
-			idExperiencia,
-			horaInicio,
-			duracion,
-			fecha,
-			idMesa,
-			estatus,
-			numPersonas,
-			materiales,
-		} = req.body;
-		console.log(`reserv: ${JSON.stringify(req.body)}`);
-		const rowsAffected = await database.executeProcedure(
-			"CrearReservacionConMateriales",
-			{
-				idUsuario,
-				idSala,
-				idExperiencia,
-				horaInicio,
-				duracion,
-				fecha,
-				idMesa,
-				estatus,
-				numPersonas,
-				materiales,
-			}
-		);
-		res.status(201).json({ rowsAffected });
-	} catch (err) {
-		res.status(500).json({ error: err?.message });
-	}
+    try {
+        let {
+            idUsuario,
+            idSala,
+            idExperiencia,
+            horaInicio,
+            duracion,
+            fecha,
+            idMesa,
+            estatus,
+            numPersonas,
+            materiales,
+        } = req.body;
+        console.log(`reserv: ${JSON.stringify(req.body)}`);
+        const rowsAffected = await database.executeProcedure(
+            "CrearReservacionConMateriales",
+            {
+                idUsuario,
+                idSala,
+                idExperiencia,
+                horaInicio,
+                duracion,
+                fecha,
+                idMesa,
+                estatus,
+                numPersonas,
+                materiales,
+            }
+        );
+        res.status(201).json({ rowsAffected });
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
 });
 
 router.get("/:id", async (req, res) => {
-	/*
+    /*
     #swagger.tags = ['Reservaciones']
     #swagger.description = 'Obtiene una reservación por su ID'
     #swagger.summary = 'Obtiene una reservación por su ID'
@@ -681,27 +718,27 @@ router.get("/:id", async (req, res) => {
         }
     }
     */
-	try {
-		const reservId = req.params.id;
-		console.log(`reservId: ${reservId}`);
-		if (reservId) {
-			const result = await database.read(
-				"Reservaciones",
-				"idReservacion",
-				reservId
-			);
-			console.log(`reserv: ${JSON.stringify(result)}`);
-			res.status(200).json(result);
-		} else {
-			res.status(404);
-		}
-	} catch (err) {
-		res.status(500).json({ error: err?.message });
-	}
+    try {
+        const reservId = req.params.id;
+        console.log(`reservId: ${reservId}`);
+        if (reservId) {
+            const result = await database.read(
+                "Reservaciones",
+                "idReservacion",
+                reservId
+            );
+            console.log(`reserv: ${JSON.stringify(result)}`);
+            res.status(200).json(result);
+        } else {
+            res.status(404);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
 });
 
 router.put("/:id", async (req, res) => {
-	/*
+    /*
     #swagger.tags = ['Reservaciones']
     #swagger.description = 'Actualiza una reservación por su ID'
     #swagger.summary = 'Actualiza una reservación por su ID'
@@ -758,25 +795,25 @@ router.put("/:id", async (req, res) => {
         }
     }
     */
-	try {
-		const reservId = req.params.id;
-		console.log(`reservId: ${reservId}`);
-		const reserv = req.body;
+    try {
+        const reservId = req.params.id;
+        console.log(`reservId: ${reservId}`);
+        const reserv = req.body;
 
-		const rowsAffected = await database.update(
-			"Reservaciones",
-			"idReservacion",
-			reservId,
-			reserv
-		);
-		res.status(200).json({ rowsAffected });
-	} catch (err) {
-		res.status(500).json({ error: err?.message });
-	}
+        const rowsAffected = await database.update(
+            "Reservaciones",
+            "idReservacion",
+            reservId,
+            reserv
+        );
+        res.status(200).json({ rowsAffected });
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
 });
 
 router.delete("/:id", async (req, res) => {
-	/*
+    /*
     #swagger.tags = ['Reservaciones']
     #swagger.description = 'Elimina una reservación por su ID'
     #swagger.summary = 'Elimina una reservación por su ID'
@@ -813,18 +850,18 @@ router.delete("/:id", async (req, res) => {
         }
     }
     */
-	try {
-		const reservId = req.params.id;
-		console.log(`reservId: ${reservId}`);
-		const rowsAffected = await database.delete(
-			"Reservaciones",
-			"idReservacion",
-			reservId
-		);
-		res.status(200).json({ rowsAffected });
-	} catch (err) {
-		res.status(500).json({ error: err?.message });
-	}
+    try {
+        const reservId = req.params.id;
+        console.log(`reservId: ${reservId}`);
+        const rowsAffected = await database.delete(
+            "Reservaciones",
+            "idReservacion",
+            reservId
+        );
+        res.status(200).json({ rowsAffected });
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
 });
 
 export default router;

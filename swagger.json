@@ -74,6 +74,12 @@
                       },
                       "prioridad": {
                         "type": "integer"
+                      },
+                      "logroPrincipal": {
+                        "type": "integer"
+                      },
+                      "colorPreferido": {
+                        "type": "string"
                       }
                     }
                   }
@@ -196,11 +202,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "nombreUsuario": {
-                      "type": "string",
-                      "example": "John Doe"
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "nombreUsuario": {
+                        "type": "string"
+                      }
                     }
                   }
                 }
@@ -228,6 +236,7 @@
     "/usuarios/cambiarPrioridad": {
       "post": {
         "tags": [
+          "Usuarios"
           "Usuarios"
         ],
         "summary": "Cambia los puntos de prioridad de un usuario",
@@ -324,6 +333,10 @@
                     "jwt": {
                       "type": "string",
                       "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiYTAxMTc3NzY3IiwiaWF0IjoxNzE1NzUzNzQzfQ.ml-vMvWq5X8_FdILT9YIPv0oPc9Wlvj3f_N4VhHCAZA"
+                    },
+                    "rol": {
+                      "type": "string",
+                      "example": "Regular"
                     }
                   }
                 }
@@ -401,7 +414,12 @@
                       "example": true
                     },
                     "token_data": {
-                      "type": "object"
+                      "type": "object",
+                      "properties": {
+                        "datosUsuario": {
+                          "type": "string"
+                        }
+                      }
                     }
                   }
                 }
@@ -475,6 +493,12 @@
                       "idMesa": {
                         "type": "integer"
                       },
+                      "estatus": {
+                        "type": "integer"
+                      },
+                      "estatusMateriales": {
+                        "type": "integer"
+                      },
                       "horaInicio": {
                         "type": "string",
                         "format": "date-time"
@@ -488,6 +512,12 @@
                       },
                       "numPersonas": {
                         "type": "integer"
+                      },
+                      "asistencia": {
+                        "type": "null"
+                      },
+                      "nombreAlterno": {
+                        "type": "null"
                       }
                     }
                   }
@@ -621,6 +651,14 @@
                         "type": "integer",
                         "description": "Identificador del grupo o mesa"
                       },
+                      "estatus": {
+                        "type": "integer",
+                        "description": "Estatus de la reservación"
+                      },
+                      "estatusMateriales": {
+                        "type": "integer",
+                        "description": "Estatus de los materiales"
+                      },
                       "title": {
                         "type": "string",
                         "description": "Nombre completo del usuario que hizo la reservación"
@@ -691,6 +729,14 @@
                     "group": {
                       "type": "integer",
                       "description": "Identificador del grupo o mesa"
+                    },
+                    "estatus": {
+                      "type": "integer",
+                      "description": "Estatus de la reservación"
+                    },
+                    "estatusMateriales": {
+                      "type": "integer",
+                      "description": "Estatus de los materiales"
                     },
                     "title": {
                       "type": "string",
@@ -777,6 +823,10 @@
                     "duracion": {
                       "type": "integer",
                       "example": 3
+                    },
+                    "idMesa": {
+                      "type": "integer",
+                      "example": 1
                     },
                     "reservItems": {
                       "type": "array",
@@ -948,33 +998,56 @@
                     "type": "object",
                     "properties": {
                       "idReservacion": {
-                        "type": "integer"
+                        "type": "integer",
+                        "example": 1
                       },
                       "idUsuario": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "a01177767"
                       },
                       "idSala": {
-                        "type": "integer"
+                        "type": "integer",
+                        "example": 2
                       },
                       "idExperiencia": {
-                        "type": "integer"
+                        "type": "integer",
+                        "example": 2
                       },
                       "idMesa": {
-                        "type": "integer"
+                        "type": "integer",
+                        "example": 2
+                      },
+                      "estatus": {
+                        "type": "integer",
+                        "example": 3
+                      },
+                      "estatusMateriales": {
+                        "type": "integer",
+                        "example": 1
                       },
                       "horaInicio": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "example": "1970-01-01T12:00:00.000Z"
                       },
                       "duracion": {
-                        "type": "integer"
+                        "type": "integer",
+                        "example": 3
                       },
                       "fecha": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "example": "2024-01-05T00:00:00.000Z"
                       },
                       "numPersonas": {
-                        "type": "integer"
+                        "type": "integer",
+                        "example": 3
+                      },
+                      "asistencia": {
+                        "type": "null"
+                      },
+                      "nombreAlterno": {
+                        "type": "null"
                       }
                     }
                   }
@@ -1004,23 +1077,12 @@
       }
     },
     "/reservaciones/salasActuales": {
-      "get": {
+      "post": {
         "tags": [
           "Reservaciones"
         ],
         "summary": "Obtiene las reservaciones siguientes de una sala",
         "description": "Obtiene las reservaciones de la fecha actual en adelante de una sala",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID del usuario",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1041,9 +1103,16 @@
                         "type": "integer"
                       },
                       "idExperiencia": {
-                        "type": "integer"
+                        "type": "integer",
+                        "nullable": true
                       },
                       "idMesa": {
+                        "type": "integer"
+                      },
+                      "estatus": {
+                        "type": "integer"
+                      },
+                      "estatusMateriales": {
                         "type": "integer"
                       },
                       "horaInicio": {
@@ -1059,6 +1128,14 @@
                       },
                       "numPersonas": {
                         "type": "integer"
+                      },
+                      "asistencia": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "nombreAlterno": {
+                        "type": "string",
+                        "nullable": true
                       }
                     }
                   }
@@ -1084,7 +1161,23 @@
               }
             }
           }
-        }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idSala": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
       }
     },
     "/reservaciones/ultimas": {

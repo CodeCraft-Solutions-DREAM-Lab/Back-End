@@ -39,7 +39,8 @@ router.post("/usuario", async (req, res) => {
                 schema: {
                     type: 'object',
                     properties: {
-                        jwt: { type: 'string', example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiYTAxMTc3NzY3IiwiaWF0IjoxNzE1NzUzNzQzfQ.ml-vMvWq5X8_FdILT9YIPv0oPc9Wlvj3f_N4VhHCAZA' }
+                        jwt: { type: 'string', example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiYTAxMTc3NzY3IiwiaWF0IjoxNzE1NzUzNzQzfQ.ml-vMvWq5X8_FdILT9YIPv0oPc9Wlvj3f_N4VhHCAZA' },
+                        rol: { type: 'string', example: 'Regular' }
                     }
                 }
             }
@@ -159,7 +160,7 @@ router.post("/token", async (req, res) => {
                     type: 'object',
                     properties: {
                         isAuth: { type: 'boolean', example: true },
-                        token_data: { type: 'object' }
+                        token_data: { type: 'object', properties: { datosUsuario: { type: 'string' } } }
                     }
                 }
             }
