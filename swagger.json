@@ -333,6 +333,10 @@
                     "jwt": {
                       "type": "string",
                       "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiYTAxMTc3NzY3IiwiaWF0IjoxNzE1NzUzNzQzfQ.ml-vMvWq5X8_FdILT9YIPv0oPc9Wlvj3f_N4VhHCAZA"
+                    },
+                    "rol": {
+                      "type": "string",
+                      "example": "Regular"
                     }
                   }
                 }
@@ -410,7 +414,12 @@
                       "example": true
                     },
                     "token_data": {
-                      "type": "object"
+                      "type": "object",
+                      "properties": {
+                        "datosUsuario": {
+                          "type": "string"
+                        }
+                      }
                     }
                   }
                 }
