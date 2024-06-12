@@ -558,11 +558,11 @@ router.post("/salasActuales", async (req, res) => {
     }
 });
 
-router.post("/ultimas", async (req, res) => {
+router.post("/recomendaciones", async (req, res) => {
     /*
     #swagger.tags = ['Reservaciones']
-    #swagger.description = ''
-    #swagger.summary = ''
+    #swagger.description = 'Obtiene las recomendaciones para un usuario, que se componen de: 1. Salas unicas de las ultimas reservaciones, 2. Experiencias unicas de las ultimas reservaciones, 3. Experiencias de las UFs del usuario, 4. Las experiencias más populares.'
+    #swagger.summary = 'Obtiene las recomendaciones para el usuario'
     #swagger.requestBody = {
         required: true,
         content: {
@@ -615,13 +615,12 @@ router.post("/ultimas", async (req, res) => {
     */
     try {
         const usuarioId = req.body.user;
-        console.log(`userId: ${usuarioId}`);
         if (usuarioId) {
             const result = await database.executeProcedure(
-                "getUltimasReservaciones",
+                "getRecomendaciones",
                 { idUsuario: usuarioId }
             );
-            console.log(`Ultimas reservas: ${JSON.stringify(result)}`);
+            //console.log(`Recomendaciones: ${JSON.stringify(result)}`);
             res.status(200).json(result);
         } else {
             res.status(404);
