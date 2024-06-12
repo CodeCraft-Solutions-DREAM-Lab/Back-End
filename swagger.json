@@ -169,7 +169,7 @@
     "/correr-asignacion/": {
       "get": {
         "tags": [
-          "Reservaciones"
+          "Correr asignación"
         ],
         "summary": "Trigger de función de asignaciones",
         "description": "Hacer trigger manual de la función de asignación de reservaciones",

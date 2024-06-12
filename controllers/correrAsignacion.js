@@ -6,28 +6,28 @@ router.use(express.json());
 
 router.get("/", async (req, res) => {
     /*
-#swagger.tags = ['Reservaciones']
-#swagger.description = 'Hacer trigger manual de la función de asignación de reservaciones'
-#swagger.summary = 'Trigger de función de asignaciones'
-#swagger.responses[200] = {
-    description: 'Reservaciones asignadas correctamente.',
-    content: {
-        'text/html': {
-                type: 'Reservaciones asignadas correctamente.',
+    #swagger.tags = ['Correr asignación']
+    #swagger.description = 'Hacer trigger manual de la función de asignación de reservaciones'
+    #swagger.summary = 'Trigger de función de asignaciones'
+    #swagger.responses[200] = {
+        description: 'Reservaciones asignadas correctamente.',
+        content: {
+            'text/html': {
+                    type: 'Reservaciones asignadas correctamente.',
+                }
             }
         }
     }
-}
-#swagger.responses[500] = {
-    description: 'Error al intentar asignar reservaciones.',
-    content: {
-        'text/html': {
-                type: 'Error al intentar asignar reservaciones.',
+    #swagger.responses[500] = {
+        description: 'Error al intentar asignar reservaciones.',
+        content: {
+            'text/html': {
+                    type: 'Error al intentar asignar reservaciones.',
+                }
             }
         }
     }
-}
-*/
+    */
     try {
         await asignarReservaciones();
         res.status(200).send("Reservaciones asignadas correctamente.");
