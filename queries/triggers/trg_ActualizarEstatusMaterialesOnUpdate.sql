@@ -1,6 +1,6 @@
 CREATE OR ALTER TRIGGER trg_ActualizarEstatusMateriales
 ON ReservacionesMateriales
-AFTER UPDATE, INSERT
+AFTER UPDATE
 AS
 BEGIN
     -- Variables para guardar el id de la reservación de la cual se está
