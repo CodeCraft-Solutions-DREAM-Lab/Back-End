@@ -3230,6 +3230,242 @@ VALUES
         '2024-06-05',
         3,
         4
+    ),
+    ---------------------------------------
+    -- Presentacion final
+    ---------------------------------------
+    (
+        'a01280601', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        1, -- idMesa
+        '11:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a00833852', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        5, -- idMesa
+        '13:00:00', -- horaInicio
+        4, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    ---------------------------------------------------------------
+    (
+        'a01177767', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        1, -- idMesa
+        '15:00:00', -- horaInicio
+        2, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a00829814', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        1, -- idMesa
+        '18:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a01198189', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        2, -- idMesa
+        '12:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        '0012007098', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        2, -- idMesa
+        '16:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'l00000010', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        2, -- idMesa
+        '10:00:00', -- horaInicio
+        2, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),---
+    (
+        'l00000020', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        3, -- idMesa
+        '9:00:00', -- horaInicio
+        4, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a01177767', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        3, -- idMesa
+        '13:00:00', -- horaInicio
+        4, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a00829814', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        4, -- idMesa
+        '09:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a01198189', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        4, -- idMesa
+        '13:00:00', -- horaInicio
+        4, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        '0012007098', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        4, -- idMesa
+        '17:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+
+    (
+        'l00000010', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        5, -- idMesa
+        '09:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'l00000020', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        5, -- idMesa
+        '18:00:00', -- horaInicio
+        2, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a01177767', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        5, -- idMesa
+        '09:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a00829814', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        6, -- idMesa
+        '10:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a01198189', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        6, -- idMesa
+        '14:00:00', -- horaInicio
+        4, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        '0012007098', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        7, -- idMesa
+        '09:00:00', -- horaInicio
+        4, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'l00000010', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        7, -- idMesa
+        '15:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'l00000020', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        8, -- idMesa
+        '10:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a01177767', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        8, -- idMesa
+        '13:00:00', -- horaInicio
+        4, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
     );
 
 -------------------------------------------
@@ -3240,43 +3476,35 @@ VALUES
 INSERT INTO
     ReservacionesMateriales (idReservacion, idMaterial, cantidad, estatus)
 VALUES
-    (50, 17, 1, 1),
-    (50, 1, 2, 1),
-    (50, 18, 1, 1),
-    (50, 3, 2, 1),
-    (50, 7, 1, 1),
-    (50, 13, 3, 1),
-    (50, 16, 3, 1),
-    (65, 17, 3, 1),
-    (65, 11, 1, 1),
-    (65, 5, 2, 1),
-    (65, 2, 3, 1),
-    (65, 18, 1, 1),
-    (65, 15, 2, 1),
-    (65, 6, 3, 1),
-    (80, 12, 3, 1),
-    (80, 15, 1, 1),
-    (80, 17, 3, 1),
-    (80, 8, 2, 1),
-    (100, 6, 3, 1),
-    (100, 18, 2, 1),
-    (100, 8, 1, 1),
-    (111, 17, 1, 1),
-    (111, 3, 1, 1),
-    (111, 7, 3, 1),
-    (111, 18, 1, 1),
-    (111, 15, 3, 1),
-    (111, 1, 1, 1),
-    (111, 10, 3, 1),
-    (111, 13, 2, 1),
-    (111, 16, 3, 1),
-    (111, 14, 3, 1),
     (118, 11, 1, 1),
     (118, 14, 1, 1),
     (118, 16, 1, 1),
     (118, 13, 1, 1),
     (118, 9, 3, 1),
-    (118, 8, 3, 1);
+    (126, 13, 1, 1),
+    (126, 9, 3, 1),
+    (127, 13, 1, 7),
+    (127, 9, 3, 7),
+    (128, 13, 1, 7),
+    (128, 9, 3, 7),
+    (129, 13, 1, 1),
+    (129, 9, 3, 7),
+    (130, 13, 1, 7),
+    (130, 9, 3, 7),
+    (133, 13, 1, 1),
+    (133, 9, 3, 7),
+    (135, 13, 1, 7),
+    (135, 9, 3, 1),
+    (136, 13, 1, 7),
+    (136, 9, 3, 7),
+    (138, 13, 1, 7),
+    (138, 9, 3, 7),
+    (141, 13, 1, 7),
+    (141, 9, 3, 7),
+    (143, 13, 1, 7),
+    (143, 9, 3, 7),
+    (145, 13, 1, 7),
+    (145, 9, 3, 1);
 
 -------------------------------------------
 --
