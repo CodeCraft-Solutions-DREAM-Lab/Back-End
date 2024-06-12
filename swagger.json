@@ -2524,13 +2524,13 @@
         "deprecated": true
       }
     },
-    "/reservaciones/ultimas": {
+    "/reservaciones/recomendaciones": {
       "post": {
         "tags": [
           "Reservaciones"
         ],
-        "summary": "",
-        "description": "",
+        "summary": "Obtiene las recomendaciones para el usuario",
+        "description": "Obtiene las recomendaciones para un usuario, que se componen de: 1. Salas unicas de las ultimas reservaciones, 2. Experiencias unicas de las ultimas reservaciones, 3. Experiencias de las UFs del usuario, 4. Las experiencias más populares.",
         "responses": {
           "200": {
             "description": "OK",
