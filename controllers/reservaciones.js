@@ -560,7 +560,58 @@ router.post("/salasActuales", async (req, res) => {
 
 router.post("/ultimas", async (req, res) => {
     /*
-    Documentación de swagger
+    #swagger.tags = ['Reservaciones']
+    #swagger.description = ''
+    #swagger.summary = ''
+    #swagger.requestBody = {
+        required: true,
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        user: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[200] = {
+        description: 'OK',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            idExperiencia: { type: 'integer', nullable: true },
+                            idSala: { type: 'integer' },
+                            nombre: { type: 'string' },
+                            URL: { type: 'string' },
+                            tipo: { type: 'string' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #swagger.responses[404] = {
+        description: 'Not Found'
+    }
+    #swagger.responses[500] = {
+        description: 'Error',
+        content: {
+            'application/json': {
+                schema: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string' }
+                    }
+                }
+            }
+        }
+    }
     */
     try {
         const usuarioId = req.body.user;
