@@ -20,20 +20,20 @@ import ufs from "../controllers/ufs.js";
 const router = express.Router();
 
 // Rutas
-router.use("/usuarios", usuarios);
 router.use("/auth", auth);
+router.use("/correr-asignacion", correrAsignacion);
+router.use("/dashboard", dashboard);
+router.use("/estatus", estatus);
+router.use("/experiencias", experiencias);
+router.use("/logros", logros);
+router.use("/materiales", materiales);
+router.use("/mesas", mesas);
+router.use("/perfil", perfil);
 router.use("/reservaciones", reservaciones);
 router.use("/reservaciones-materiales", reservacionesMateriales);
 router.use("/salas", salas);
-router.use("/experiencias", experiencias);
-router.use("/mesas", mesas);
-router.use("/videowall", videowall);
-router.use("/materiales", materiales);
-router.use("/perfil", perfil);
-router.use("/logros", logros);
-router.use("/dashboard", dashboard);
-router.use("/correr-asignacion", correrAsignacion);
-router.use("/estatus", estatus);
 router.use("/ufs", ufs);
+router.use("/usuarios", usuarios);
+router.use("/videowall", videowall);
 
 export { router };
