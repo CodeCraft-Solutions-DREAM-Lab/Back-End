@@ -7,12 +7,14 @@
     "scripts": {
         "start": "nodemon index.js",
         "dev": "nodemon index.js",
-        "docs": "nodemon --watch ./controllers --exec node swagger.js"
+        "docs": "nodemon --watch ./controllers --exec node swagger.js",
+        "sql": "node ./queries/CombineSQLFiles.js"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "axios": "^1.7.2",
         "body-parser": "^1.20.2",
         "cors": "^2.8.5",
         "cron": "^3.1.7",

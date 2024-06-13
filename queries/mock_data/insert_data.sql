@@ -1,210 +1,9 @@
--- SCRIPT TO DROP ALL THE CURRENT TABLES, CREATE THEM AGAIN AND ADD SAMPLE DATA
--- DROP ALL TABLES IF THEY EXIST
-DROP TABLE IF EXISTS MaterialesRecomendados;
-
-DROP TABLE IF EXISTS MaterialesSalas;
-
-DROP TABLE IF EXISTS ReservacionesMateriales;
-
-DROP TABLE IF EXISTS Reservaciones;
-
-DROP TABLE IF EXISTS Experiencias;
-
-DROP TABLE IF EXISTS Mesas;
-
-DROP TABLE IF EXISTS Salas;
-
-DROP TABLE IF EXISTS Materiales;
-
-DROP TABLE IF EXISTS UsuariosLogros;
-
-DROP TABLE IF EXISTS Logros;
-
-DROP TABLE IF EXISTS HistorialPrioridad;
-
-DROP TABLE IF EXISTS GruposUsuarios;
-
-DROP TABLE IF EXISTS Credenciales;
-
-DROP TABLE IF EXISTS Usuarios;
-
-DROP TABLE IF EXISTS UnidadesFormacion;
-
-DROP TABLE IF EXISTS Estatus;
-
--- CREATE THE TABLES
-CREATE TABLE
-    UnidadesFormacion (
-        idUF INT PRIMARY KEY IDENTITY (1, 1),
-        nombre VARCHAR(255)
-    );
-
-CREATE TABLE
-    Usuarios (
-        idUsuario VARCHAR(10) PRIMARY KEY,
-        nombre VARCHAR(255),
-        apellidoP VARCHAR(255),
-        apellidoM VARCHAR(255),
-        tipo VARCHAR(50),
-        prioridad INT,
-        logroPrincipal INT,
-        colorPreferido VARCHAR(100)
-    );
-
-CREATE TABLE
-    Credenciales (
-        idUsuario VARCHAR(10),
-        contrasena VARCHAR(255),
-        tagId VARCHAR(50) FOREIGN KEY (idUsuario) REFERENCES Usuarios (idUsuario)
-    );
-
-CREATE TABLE
-    GruposUsuarios (
-        idUF INT,
-        idUsuario VARCHAR(10),
-        FOREIGN KEY (idUF) REFERENCES UnidadesFormacion (idUF),
-        FOREIGN KEY (idUsuario) REFERENCES Usuarios (idUsuario),
-        PRIMARY KEY (idUF, idUsuario)
-    );
-
-CREATE TABLE
-    HistorialPrioridad (
-        idUsuario VARCHAR(10),
-        fecha DATE,
-        prioridad INT,
-        motivo VARCHAR(255),
-        FOREIGN KEY (idUsuario) REFERENCES Usuarios (idUsuario),
-    );
-
-CREATE TABLE
-    Logros (
-        idLogro INT PRIMARY KEY IDENTITY (1, 1),
-        nombre VARCHAR(255),
-        descripcion VARCHAR(500),
-        prioridadOtorgada INT,
-        iconoURL VARCHAR(255),
-        color VARCHAR(100),
-        valorMax INT
-    );
-
-CREATE TABLE
-    UsuariosLogros (
-        idLogro INT,
-        idUsuario VARCHAR(10),
-        valorActual INT,
-        obtenido BIT,
-        FOREIGN KEY (idLogro) REFERENCES Logros (idLogro),
-        FOREIGN KEY (idUsuario) REFERENCES Usuarios (idUsuario),
-        PRIMARY KEY (idLogro, idUsuario)
-    );
-
-CREATE TABLE
-    Materiales (
-        idMaterial INT PRIMARY KEY IDENTITY (1, 1),
-        nombre VARCHAR(255),
-        fotoURL VARCHAR(255)
-    );
-
-CREATE TABLE
-    Salas (
-        idSala INT PRIMARY KEY IDENTITY (1, 1),
-        nombre VARCHAR(255),
-        cantidadMesas INT,
-        descripcion VARCHAR(500),
-        fotoURL VARCHAR(255),
-        detallesURL VARCHAR(255),
-        bloqueada BIT
-    );
-
-CREATE TABLE
-    Mesas (
-        idMesa INT PRIMARY KEY IDENTITY (1, 1),
-        idSala INT,
-        cupos INT,
-        FOREIGN KEY (idSala) REFERENCES Salas (idSala)
-    );
-
-CREATE TABLE
-    Experiencias (
-        idExperiencia INT PRIMARY KEY IDENTITY (1, 1),
-        idUF INT,
-        idSala INT,
-        nombre VARCHAR(255),
-        descripcion VARCHAR(500),
-        esAutoDirigida BIT,
-        esExclusivaUF BIT,
-        portadaURL VARCHAR(255),
-        fechaInicio DATE,
-        fechaFin DATE,
-        horaFin TIME,
-        FOREIGN KEY (idUF) REFERENCES UnidadesFormacion (idUF),
-        FOREIGN KEY (idSala) REFERENCES Salas (idSala)
-    );
-
-CREATE TABLE
-    Estatus (
-        idEstatus INT PRIMARY KEY IDENTITY (1, 1),
-        nombre VARCHAR(50),
-        descripcion VARCHAR(100)
-    );
-
-CREATE TABLE
-    Reservaciones (
-        idReservacion INT PRIMARY KEY IDENTITY (1, 1),
-        idUsuario VARCHAR(10),
-        idSala INT,
-        idExperiencia INT,
-        idMesa INT,
-        estatus INT,
-        horaInicio TIME,
-        duracion INT,
-        fecha DATE,
-        numPersonas INT,
-        FOREIGN KEY (idUsuario) REFERENCES Usuarios (idUsuario),
-        FOREIGN KEY (idSala) REFERENCES Salas (idSala),
-        FOREIGN KEY (idExperiencia) REFERENCES Experiencias (idExperiencia),
-        FOREIGN KEY (idMesa) REFERENCES Mesas (idMesa),
-        FOREIGN KEY (estatus) REFERENCES Estatus (idEstatus)
-    );
-
-CREATE TABLE
-    ReservacionesMateriales (
-        idReservacion INT,
-        idMaterial INT,
-        cantidad INT,
-        estatus INT,
-        FOREIGN KEY (idReservacion) REFERENCES Reservaciones (idReservacion),
-        FOREIGN KEY (idMaterial) REFERENCES Materiales (idMaterial),
-        PRIMARY KEY (idReservacion, idMaterial),
-        FOREIGN KEY (estatus) REFERENCES Estatus (idEstatus)
-    );
-
-CREATE TABLE
-    MaterialesSalas (
-        idSala INT,
-        idMaterial INT,
-        cantidad INT,
-        FOREIGN KEY (idSala) REFERENCES Salas (idSala),
-        FOREIGN KEY (idMaterial) REFERENCES Materiales (idMaterial),
-        PRIMARY KEY (idSala, idMaterial)
-    );
-
-CREATE TABLE
-    MaterialesRecomendados (
-        idExperiencia INT,
-        idMaterial INT,
-        cantidad INT,
-        FOREIGN KEY (idExperiencia) REFERENCES Experiencias (idExperiencia),
-        FOREIGN KEY (idMaterial) REFERENCES Materiales (idMaterial),
-        PRIMARY KEY (idExperiencia, idMaterial)
-    );
-
 -- ADD SAMPLE DATA TO THE TABLES
 -- Sample data for Estatus
 INSERT INTO
     Estatus (nombre, descripcion)
 VALUES
-    ('Completado', 'El material ha sido preparado'),
+    ('Preparado', 'El material ha sido preparado'),
     (
         'En progreso',
         'El material esta siendo preparado'
@@ -218,14 +17,23 @@ VALUES
     (
         'Denegada',
         'La solicitud de reserva ha sido negada'
+    ),
+    (
+        'Sin preparar',
+        'El material no ha sido preparado'
     );
 
 -- Sample data for UnidadesFormacion
 INSERT INTO
     UnidadesFormacion (nombre)
 VALUES
-    ('Unidad Formación 1'),
-    ('Unidad Formación 2');
+    ('Interconexión de dispositivos'),
+    ('Construcción de software y toma de decisiones'),
+    ('Análisis y diseño de algoritmos avanzados'),
+    ('Desarrollo de software'),
+    ('Integración de seguridad informática en redes y sistemas de software'),
+    ('Modelación de sistemas multiagentes con gráficas computacionales'),
+    ('Implementación de métodos computacionales');
 
 -- Sample data for Usuarios
 INSERT INTO
@@ -565,7 +373,7 @@ VALUES
         'Cristina',
         'González',
         'Cordova',
-        'Regular',
+        'Profesor',
         362,
         1,
         '#78C2F8'
@@ -575,7 +383,7 @@ VALUES
         'Lorena',
         'Martínez',
         'Hernández',
-        'Regular',
+        'Profesor',
         362,
         1,
         '#78C2F8'
@@ -585,8 +393,28 @@ VALUES
         'Rolando',
         'Martínez',
         'Hernández',
-        'Regular',
+        'Profesor',
         362,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'a00000000',
+        'Estudiante',
+        '',
+        '',
+        'Regular',
+        100,
+        1,
+        '#78C2F8'
+    ),
+    (
+        'admin',
+        'Administrador',
+        '',
+        '',
+        'Admin',
+        9999999,
         1,
         '#78C2F8'
     );
@@ -598,27 +426,27 @@ VALUES
     (
         'a01368580',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '1591815712'
+        '0211620511'
     ),
     (
         'a00835268',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '237162255217'
+        NULL
     ),
     (
         'a01027008',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '92152211219'
+        '3688077404'
     ),
     (
         'a00833125',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '1731252217'
+        '3657171373'
     ),
     (
         'a01198189',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '12577237217'
+        '3656207741'
     ),
     (
         'a00830194',
@@ -628,12 +456,12 @@ VALUES
     (
         'a00227838',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '76172106220'
+        '3697978444'
     ),
     (
         'a00832239',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '1892230218'
+        '3657490365'
     ),
     (
         'a01252605',
@@ -643,67 +471,67 @@ VALUES
     (
         'a01721881',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '6075206219'
+        '3687729980'
     ),
     (
         'a01411863',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '28132203219'
+        '3687547932'
     ),
     (
         'a01721636',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '22125244217'
+        '3656653277'
     ),
     (
         'a01351989',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '551067844'
+        '0743336503'
     ),
     (
         'a01026999',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        NULL
+        '3657223293'
     ),
     (
         'a01721735',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '221155236217'
+        '3656162269'
     ),
     (
         'a00834801',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '20621160198'
+        '3325875150'
     ),
     (
         'a00834434',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '13130218'
+        '3657436429'
     ),
     (
         'a01571142',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '22159249217'
+        '3656989661'
     ),
     (
         'a00830223',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '45113254217'
+        NULL
     ),
     (
         'a00834526',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '188183199219'
+        NULL
     ),
     (
         'a01412726',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '12494208219'
+        '3687865980'
     ),
     (
         'a00833852',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '140148108220'
+        '3698103436'
     ),
     (
         'a00829814',
@@ -713,47 +541,47 @@ VALUES
     (
         'a00833173',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '189215241217'
+        '3656505277'
     ),
     (
         'a01280601',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '157228234217'
+        '3656049821'
     ),
     (
         'a01177767',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '9318251217'
+        '3657110109'
     ),
     (
         'a00833416',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '4579221217'
+        '3655159597'
     ),
     (
         'a00829931',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '188120225219'
+        '3688986812'
     ),
     (
         'a01383393',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '12550230217'
+        '3655742077'
     ),
     (
         'a01384738',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '44226200219'
+        '3687375404'
     ),
     (
         'a00833968',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '174116128192'
+        '3229643950'
     ),
     (
         'a00832807',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '109500218'
+        '3657445997'
     ),
     (
         'l00000010',
@@ -768,10 +596,14 @@ VALUES
     (
         '0012007098',
         'b47db31ae3477535e27cf56c5913ea5861ee2fbdd7afc13595487f562159ec23b76828c0625c7493df9cdf09b358f576dccd7be0b49e4e8a908f92082a9fcf2f',
-        '0012007098'
-    );
-
--- Sample data for GruposUsuarios
+        '2841685520'
+    ),
+    (
+        'admin',
+        'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec',
+        null
+    )
+    -- Sample data for GruposUsuarios
 INSERT INTO
     GruposUsuarios (idUF, idUsuario)
 VALUES
@@ -809,7 +641,8 @@ VALUES
     (1, 'a00832807'),
     (1, 'l00000010'),
     (1, 'l00000020'),
-    (1, '0012007098');
+    (1, '0012007098'),
+    (1, 'a00000000');
 
 -- Sample data for Logros
 INSERT INTO
@@ -876,7 +709,7 @@ VALUES
         1,
         'https://dreamlabstorage.blob.core.windows.net/logros/PriorityAchiever.webp',
         '#F8E478',
-        500
+        1
     ),
     (
         'Five-Star Player',
@@ -907,390 +740,401 @@ VALUES
 INSERT INTO
     UsuariosLogros (idLogro, idUsuario, valorActual, obtenido)
 VALUES
-    (1, '0012007098', 50, 1),
+    (1, '0012007098', 25, 0),
     (2, '0012007098', 5, 0),
     (3, '0012007098', 5, 1),
     (4, '0012007098', 3, 0),
     (5, '0012007098', 3, 1),
     (6, '0012007098', 1, 0),
-    (7, '0012007098', 367, 0),
+    (7, '0012007098', 0, 0),
     (8, '0012007098', 1, 1),
     (9, '0012007098', 0, 0),
     (10, '0012007098', 0, 0),
     -- Para A01368580
-    (1, 'a01368580', 50, 1),
+    (1, 'a01368580', 25, 0),
     (2, 'a01368580', 5, 0),
     (3, 'a01368580', 5, 1),
     (4, 'a01368580', 3, 0),
     (5, 'a01368580', 3, 1),
     (6, 'a01368580', 1, 0),
-    (7, 'a01368580', 367, 0),
+    (7, 'a01368580', 0, 0),
     (8, 'a01368580', 1, 1),
     (9, 'a01368580', 0, 0),
     (10, 'a01368580', 0, 0),
     -- Para a00835268
-    (1, 'a00835268', 50, 1),
+    (1, 'a00835268', 25, 0),
     (2, 'a00835268', 5, 0),
     (3, 'a00835268', 5, 1),
     (4, 'a00835268', 3, 0),
     (5, 'a00835268', 3, 1),
     (6, 'a00835268', 1, 0),
-    (7, 'a00835268', 367, 0),
+    (7, 'a00835268', 0, 0),
     (8, 'a00835268', 1, 1),
     (9, 'a00835268', 0, 0),
     (10, 'a00835268', 0, 0),
     -- Para a01027008
-    (1, 'a01027008', 50, 1),
+    (1, 'a01027008', 25, 0),
     (2, 'a01027008', 5, 0),
     (3, 'a01027008', 5, 1),
     (4, 'a01027008', 3, 0),
     (5, 'a01027008', 3, 1),
     (6, 'a01027008', 1, 0),
-    (7, 'a01027008', 367, 0),
+    (7, 'a01027008', 0, 0),
     (8, 'a01027008', 1, 1),
     (9, 'a01027008', 0, 0),
     (10, 'a01027008', 0, 0),
     -- Para a00833125 y así sucesivamente...
-    (1, 'a00833125', 50, 1),
+    (1, 'a00833125', 25, 0),
     (2, 'a00833125', 5, 0),
     (3, 'a00833125', 5, 1),
     (4, 'a00833125', 3, 0),
     (5, 'a00833125', 3, 1),
     (6, 'a00833125', 1, 0),
-    (7, 'a00833125', 367, 0),
+    (7, 'a00833125', 0, 0),
     (8, 'a00833125', 1, 1),
     (9, 'a00833125', 0, 0),
     (10, 'a00833125', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a01198189', 50, 1),
+    (1, 'a01198189', 25, 0),
     (2, 'a01198189', 5, 0),
     (3, 'a01198189', 5, 1),
     (4, 'a01198189', 3, 0),
     (5, 'a01198189', 3, 1),
     (6, 'a01198189', 1, 0),
-    (7, 'a01198189', 367, 0),
+    (7, 'a01198189', 0, 0),
     (8, 'a01198189', 1, 1),
     (9, 'a01198189', 0, 0),
     (10, 'a01198189', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a00830194', 50, 1),
+    (1, 'a00830194', 25, 0),
     (2, 'a00830194', 5, 0),
     (3, 'a00830194', 5, 1),
     (4, 'a00830194', 3, 0),
     (5, 'a00830194', 3, 1),
     (6, 'a00830194', 1, 0),
-    (7, 'a00830194', 367, 0),
+    (7, 'a00830194', 0, 0),
     (8, 'a00830194', 1, 1),
     (9, 'a00830194', 0, 0),
     (10, 'a00830194', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a00227838', 50, 1),
+    (1, 'a00227838', 25, 0),
     (2, 'a00227838', 5, 0),
     (3, 'a00227838', 5, 1),
     (4, 'a00227838', 3, 0),
     (5, 'a00227838', 3, 1),
     (6, 'a00227838', 1, 0),
-    (7, 'a00227838', 367, 0),
+    (7, 'a00227838', 0, 0),
     (8, 'a00227838', 1, 1),
     (9, 'a00227838', 0, 0),
     (10, 'a00227838', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a00832239', 50, 1),
+    (1, 'a00832239', 25, 0),
     (2, 'a00832239', 5, 0),
     (3, 'a00832239', 5, 1),
     (4, 'a00832239', 3, 0),
     (5, 'a00832239', 3, 1),
     (6, 'a00832239', 1, 0),
-    (7, 'a00832239', 367, 0),
+    (7, 'a00832239', 0, 0),
     (8, 'a00832239', 1, 1),
     (9, 'a00832239', 0, 0),
     (10, 'a00832239', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a01252605', 50, 1),
+    (1, 'a01252605', 25, 0),
     (2, 'a01252605', 5, 0),
     (3, 'a01252605', 5, 1),
     (4, 'a01252605', 3, 0),
     (5, 'a01252605', 3, 1),
     (6, 'a01252605', 1, 0),
-    (7, 'a01252605', 367, 0),
+    (7, 'a01252605', 0, 0),
     (8, 'a01252605', 1, 1),
     (9, 'a01252605', 0, 0),
     (10, 'a01252605', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a01721881', 50, 1),
+    (1, 'a01721881', 25, 0),
     (2, 'a01721881', 5, 0),
     (3, 'a01721881', 5, 1),
     (4, 'a01721881', 3, 0),
     (5, 'a01721881', 3, 1),
     (6, 'a01721881', 1, 0),
-    (7, 'a01721881', 367, 0),
+    (7, 'a01721881', 0, 0),
     (8, 'a01721881', 1, 1),
     (9, 'a01721881', 0, 0),
     (10, 'a01721881', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a01411863', 50, 1),
+    (1, 'a01411863', 25, 0),
     (2, 'a01411863', 5, 0),
     (3, 'a01411863', 5, 1),
     (4, 'a01411863', 3, 0),
     (5, 'a01411863', 3, 1),
     (6, 'a01411863', 1, 0),
-    (7, 'a01411863', 367, 0),
+    (7, 'a01411863', 0, 0),
     (8, 'a01411863', 1, 1),
     (9, 'a01411863', 0, 0),
     (10, 'a01411863', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a01721636', 50, 1),
+    (1, 'a01721636', 25, 0),
     (2, 'a01721636', 5, 0),
     (3, 'a01721636', 5, 1),
     (4, 'a01721636', 3, 0),
     (5, 'a01721636', 3, 1),
     (6, 'a01721636', 1, 0),
-    (7, 'a01721636', 367, 0),
+    (7, 'a01721636', 0, 0),
     (8, 'a01721636', 1, 1),
     (9, 'a01721636', 0, 0),
     (10, 'a01721636', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a01351989', 50, 1),
+    (1, 'a01351989', 25, 0),
     (2, 'a01351989', 5, 0),
     (3, 'a01351989', 5, 1),
     (4, 'a01351989', 3, 0),
     (5, 'a01351989', 3, 1),
     (6, 'a01351989', 1, 0),
-    (7, 'a01351989', 367, 0),
+    (7, 'a01351989', 0, 0),
     (8, 'a01351989', 1, 1),
     (9, 'a01351989', 0, 0),
     (10, 'a01351989', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a01026999', 50, 1),
+    (1, 'a01026999', 25, 0),
     (2, 'a01026999', 5, 0),
     (3, 'a01026999', 5, 1),
     (4, 'a01026999', 3, 0),
     (5, 'a01026999', 3, 1),
     (6, 'a01026999', 1, 0),
-    (7, 'a01026999', 367, 0),
+    (7, 'a01026999', 0, 0),
     (8, 'a01026999', 1, 1),
     (9, 'a01026999', 0, 0),
     (10, 'a01026999', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a01721735', 50, 1),
+    (1, 'a01721735', 25, 0),
     (2, 'a01721735', 5, 0),
     (3, 'a01721735', 5, 1),
     (4, 'a01721735', 3, 0),
     (5, 'a01721735', 3, 1),
     (6, 'a01721735', 1, 0),
-    (7, 'a01721735', 367, 0),
+    (7, 'a01721735', 0, 0),
     (8, 'a01721735', 1, 1),
     (9, 'a01721735', 0, 0),
     (10, 'a01721735', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a00834801', 50, 1),
+    (1, 'a00834801', 25, 0),
     (2, 'a00834801', 5, 0),
     (3, 'a00834801', 5, 1),
     (4, 'a00834801', 3, 0),
     (5, 'a00834801', 3, 1),
     (6, 'a00834801', 1, 0),
-    (7, 'a00834801', 367, 0),
+    (7, 'a00834801', 0, 0),
     (8, 'a00834801', 1, 1),
     (9, 'a00834801', 0, 0),
     (10, 'a00834801', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a00834434', 50, 1),
+    (1, 'a00834434', 25, 0),
     (2, 'a00834434', 5, 0),
     (3, 'a00834434', 5, 1),
     (4, 'a00834434', 3, 0),
     (5, 'a00834434', 3, 1),
     (6, 'a00834434', 1, 0),
-    (7, 'a00834434', 367, 0),
+    (7, 'a00834434', 0, 0),
     (8, 'a00834434', 1, 1),
     (9, 'a00834434', 0, 0),
     (10, 'a00834434', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a01571142', 50, 1),
+    (1, 'a01571142', 25, 0),
     (2, 'a01571142', 5, 0),
     (3, 'a01571142', 5, 1),
     (4, 'a01571142', 3, 0),
     (5, 'a01571142', 3, 1),
     (6, 'a01571142', 1, 0),
-    (7, 'a01571142', 367, 0),
+    (7, 'a01571142', 0, 0),
     (8, 'a01571142', 1, 1),
     (9, 'a01571142', 0, 0),
     (10, 'a01571142', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a00830223', 50, 1),
+    (1, 'a00830223', 25, 0),
     (2, 'a00830223', 5, 0),
     (3, 'a00830223', 5, 1),
     (4, 'a00830223', 3, 0),
     (5, 'a00830223', 3, 1),
     (6, 'a00830223', 1, 0),
-    (7, 'a00830223', 367, 0),
+    (7, 'a00830223', 0, 0),
     (8, 'a00830223', 1, 1),
     (9, 'a00830223', 0, 0),
     (10, 'a00830223', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a00834526', 50, 1),
+    (1, 'a00834526', 25, 0),
     (2, 'a00834526', 5, 0),
     (3, 'a00834526', 5, 1),
     (4, 'a00834526', 3, 0),
     (5, 'a00834526', 3, 1),
     (6, 'a00834526', 1, 0),
-    (7, 'a00834526', 367, 0),
+    (7, 'a00834526', 0, 0),
     (8, 'a00834526', 1, 1),
     (9, 'a00834526', 0, 0),
     (10, 'a00834526', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a01412726', 50, 1),
+    (1, 'a01412726', 25, 0),
     (2, 'a01412726', 5, 0),
     (3, 'a01412726', 5, 1),
     (4, 'a01412726', 3, 0),
     (5, 'a01412726', 3, 1),
     (6, 'a01412726', 1, 0),
-    (7, 'a01412726', 367, 0),
+    (7, 'a01412726', 0, 0),
     (8, 'a01412726', 1, 1),
     (9, 'a01412726', 0, 0),
     (10, 'a01412726', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a00833852', 50, 1),
+    (1, 'a00833852', 25, 0),
     (2, 'a00833852', 5, 0),
     (3, 'a00833852', 5, 1),
     (4, 'a00833852', 3, 0),
     (5, 'a00833852', 3, 1),
     (6, 'a00833852', 1, 0),
-    (7, 'a00833852', 367, 0),
+    (7, 'a00833852', 0, 0),
     (8, 'a00833852', 1, 1),
     (9, 'a00833852', 0, 0),
     (10, 'a00833852', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a00829814', 50, 1),
+    (1, 'a00829814', 25, 0),
     (2, 'a00829814', 5, 0),
     (3, 'a00829814', 5, 1),
     (4, 'a00829814', 3, 0),
     (5, 'a00829814', 3, 1),
     (6, 'a00829814', 1, 0),
-    (7, 'a00829814', 367, 0),
+    (7, 'a00829814', 0, 0),
     (8, 'a00829814', 1, 1),
     (9, 'a00829814', 0, 0),
     (10, 'a00829814', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a00833173', 50, 1),
+    (1, 'a00833173', 25, 0),
     (2, 'a00833173', 5, 0),
     (3, 'a00833173', 5, 1),
     (4, 'a00833173', 3, 0),
     (5, 'a00833173', 3, 1),
     (6, 'a00833173', 1, 0),
-    (7, 'a00833173', 367, 0),
+    (7, 'a00833173', 0, 0),
     (8, 'a00833173', 1, 1),
     (9, 'a00833173', 0, 0),
     (10, 'a00833173', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a01280601', 50, 1),
+    (1, 'a01280601', 25, 0),
     (2, 'a01280601', 5, 0),
     (3, 'a01280601', 5, 1),
     (4, 'a01280601', 3, 0),
     (5, 'a01280601', 3, 1),
     (6, 'a01280601', 1, 0),
-    (7, 'a01280601', 367, 0),
+    (7, 'a01280601', 0, 0),
     (8, 'a01280601', 1, 1),
     (9, 'a01280601', 0, 0),
     (10, 'a01280601', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a01177767', 50, 1),
+    (1, 'a01177767', 25, 0),
     (2, 'a01177767', 5, 0),
     (3, 'a01177767', 5, 1),
     (4, 'a01177767', 3, 0),
     (5, 'a01177767', 3, 1),
     (6, 'a01177767', 1, 0),
-    (7, 'a01177767', 367, 0),
+    (7, 'a01177767', 0, 0),
     (8, 'a01177767', 1, 1),
     (9, 'a01177767', 0, 0),
     (10, 'a01177767', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a00833416', 50, 1),
+    (1, 'a00833416', 25, 0),
     (2, 'a00833416', 5, 0),
     (3, 'a00833416', 5, 1),
     (4, 'a00833416', 3, 0),
     (5, 'a00833416', 3, 1),
     (6, 'a00833416', 1, 0),
-    (7, 'a00833416', 367, 0),
+    (7, 'a00833416', 0, 0),
     (8, 'a00833416', 1, 1),
     (9, 'a00833416', 0, 0),
     (10, 'a00833416', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a00829931', 50, 1),
+    (1, 'a00829931', 25, 0),
     (2, 'a00829931', 5, 0),
     (3, 'a00829931', 5, 1),
     (4, 'a00829931', 3, 0),
     (5, 'a00829931', 3, 1),
     (6, 'a00829931', 1, 0),
-    (7, 'a00829931', 367, 0),
+    (7, 'a00829931', 0, 0),
     (8, 'a00829931', 1, 1),
     (9, 'a00829931', 0, 0),
     (10, 'a00829931', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a01383393', 50, 1),
+    (1, 'a01383393', 25, 0),
     (2, 'a01383393', 5, 0),
     (3, 'a01383393', 5, 1),
     (4, 'a01383393', 3, 0),
     (5, 'a01383393', 3, 1),
     (6, 'a01383393', 1, 0),
-    (7, 'a01383393', 367, 0),
+    (7, 'a01383393', 0, 0),
     (8, 'a01383393', 1, 1),
     (9, 'a01383393', 0, 0),
     (10, 'a01383393', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a01384738', 50, 1),
+    (1, 'a01384738', 25, 0),
     (2, 'a01384738', 5, 0),
     (3, 'a01384738', 5, 1),
     (4, 'a01384738', 3, 0),
     (5, 'a01384738', 3, 1),
     (6, 'a01384738', 1, 0),
-    (7, 'a01384738', 367, 0),
+    (7, 'a01384738', 0, 0),
     (8, 'a01384738', 1, 1),
     (9, 'a01384738', 0, 0),
     (10, 'a01384738', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a00833968', 50, 1),
+    (1, 'a00833968', 25, 0),
     (2, 'a00833968', 5, 0),
     (3, 'a00833968', 5, 1),
     (4, 'a00833968', 3, 0),
     (5, 'a00833968', 3, 1),
     (6, 'a00833968', 1, 0),
-    (7, 'a00833968', 367, 0),
+    (7, 'a00833968', 0, 0),
     (8, 'a00833968', 1, 1),
     (9, 'a00833968', 0, 0),
     (10, 'a00833968', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'a00832807', 50, 1),
+    (1, 'a00832807', 25, 0),
     (2, 'a00832807', 5, 0),
     (3, 'a00832807', 5, 1),
     (4, 'a00832807', 3, 0),
     (5, 'a00832807', 3, 1),
     (6, 'a00832807', 1, 0),
-    (7, 'a00832807', 367, 0),
+    (7, 'a00832807', 0, 0),
     (8, 'a00832807', 1, 1),
     (9, 'a00832807', 0, 0),
     (10, 'a00832807', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'l00000010', 50, 1),
+    (1, 'l00000010', 25, 0),
     (2, 'l00000010', 5, 0),
     (3, 'l00000010', 5, 1),
     (4, 'l00000010', 3, 0),
     (5, 'l00000010', 3, 1),
     (6, 'l00000010', 1, 0),
-    (7, 'l00000010', 367, 0),
+    (7, 'l00000010', 0, 0),
     (8, 'l00000010', 1, 1),
     (9, 'l00000010', 0, 0),
     (10, 'l00000010', 0, 0),
     -- Continuar para las demás matrículas...
-    (1, 'l00000020', 50, 1),
+    (1, 'l00000020', 25, 0),
     (2, 'l00000020', 5, 0),
     (3, 'l00000020', 5, 1),
     (4, 'l00000020', 3, 0),
     (5, 'l00000020', 3, 1),
     (6, 'l00000020', 1, 0),
-    (7, 'l00000020', 367, 0),
+    (7, 'l00000020', 0, 0),
     (8, 'l00000020', 1, 1),
     (9, 'l00000020', 0, 0),
-    (10, 'l00000020', 0, 0);
+    (10, 'l00000020', 0, 0),
+    -- Estudiante de prueba
+    (1, 'a00000000', 25, 0),
+    (2, 'a00000000', 5, 0),
+    (3, 'a00000000', 5, 1),
+    (4, 'a00000000', 3, 0),
+    (5, 'a00000000', 3, 1),
+    (6, 'a00000000', 1, 0),
+    (7, 'a00000000', 0, 0),
+    (8, 'a00000000', 1, 1),
+    (9, 'a00000000', 0, 0),
+    (10, 'a00000000', 0, 0);
 
 -- Sample data for Materiales
 INSERT INTO
@@ -1484,18 +1328,18 @@ INSERT INTO
         horaFin
     )
 VALUES
-    (
-        null,
-        3,
-        'Hackers Event',
-        'Únete a nosotros para explorar los últimos avances en ciberseguridad y pruebas de software en nuestro evento exclusivo. Aprende de expertos de la industria y participa en debates interactivos sobre técnicas y herramientas de hacking ético.',
-        1,
-        0,
-        'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        '2024-01-01',
-        '2024-01-07',
-        '18:00:00'
-    ),
+    -- (
+    --     null,
+    --     3,
+    --     'Hackers Event',
+    --     'Únete a nosotros para explorar los últimos avances en ciberseguridad y pruebas de software en nuestro evento exclusivo. Aprende de expertos de la industria y participa en debates interactivos sobre técnicas y herramientas de hacking ético.',
+    --     1,
+    --     0,
+    --     'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    --     '2024-01-01',
+    --     '2024-01-07',
+    --     '18:00:00'
+    -- ),
     (
         null,
         3,
@@ -1664,6 +1508,35 @@ VALUES
         '2024-03-29',
         '08:00:00'
     );
+
+INSERT INTO
+    Experiencias (
+        idUF,
+        idSala,
+        nombre,
+        descripcion,
+        esAutoDirigida,
+        esExclusivaUF,
+        portadaURL,
+        fechaInicio,
+        fechaFin,
+        instruccionesURL,
+        horaFin
+    )
+VALUES
+    (
+        null,
+        3,
+        'Hackers Event',
+        'Únete a nosotros para explorar los últimos avances en ciberseguridad y pruebas de software en nuestro evento exclusivo. Aprende de expertos de la industria y participa en debates interactivos sobre técnicas y herramientas de hacking ético.',
+        1,
+        0,
+        'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        '2024-01-01',
+        '2024-01-07',
+        'https://firebasestorage.googleapis.com/v0/b/dream-lab-videowall.appspot.com/o/guia_hackers_event.pdf?alt=media&token=7a46f5c0-2c47-4280-bdfe-be90f2f021ed',
+        '18:00:00'
+    )
 
 -- Sample data for Mesas
 INSERT INTO
@@ -2461,8 +2334,9 @@ VALUES
 INSERT INTO
     MaterialesRecomendados (idExperiencia, idMaterial, cantidad)
 VALUES
-    (1, 1, 3),
-    (2, 2, 4);
+    (1, 5, 2), -- Hackers Event, Oculus Quest en New Horizons (Probar cuando hay suficientes materiales)
+    (3, 6, 2), -- GameJam Event, Chromebook en Electric Garage (Probar cuando no hay suficientes materiales)
+    (5, 2, 1); -- Creando tu primer circuito, Surface Pro en Dimension Forge (Probar cuando ya no hay disponibilidad del material)
 
 ---------------------------------------------------------------
 --                                                           --
@@ -3385,6 +3259,242 @@ VALUES
         '2024-06-05',
         3,
         4
+    ),
+    ---------------------------------------
+    -- Presentacion final
+    ---------------------------------------
+    (
+        'a01280601', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        1, -- idMesa
+        '11:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a00833852', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        5, -- idMesa
+        '13:00:00', -- horaInicio
+        4, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    ---------------------------------------------------------------
+    (
+        'a01177767', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        1, -- idMesa
+        '15:00:00', -- horaInicio
+        2, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a00829814', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        1, -- idMesa
+        '18:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a01198189', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        2, -- idMesa
+        '12:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        '0012007098', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        2, -- idMesa
+        '16:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'l00000010', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        2, -- idMesa
+        '10:00:00', -- horaInicio
+        2, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),---
+    (
+        'l00000020', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        3, -- idMesa
+        '9:00:00', -- horaInicio
+        4, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a01177767', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        3, -- idMesa
+        '13:00:00', -- horaInicio
+        4, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a00829814', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        4, -- idMesa
+        '09:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a01198189', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        4, -- idMesa
+        '13:00:00', -- horaInicio
+        4, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        '0012007098', -- idUsuario
+        1, -- idSala
+        null, -- idExperiencia
+        4, -- idMesa
+        '17:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+
+    (
+        'l00000010', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        5, -- idMesa
+        '09:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'l00000020', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        5, -- idMesa
+        '18:00:00', -- horaInicio
+        2, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a01177767', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        5, -- idMesa
+        '09:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a00829814', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        6, -- idMesa
+        '10:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a01198189', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        6, -- idMesa
+        '14:00:00', -- horaInicio
+        4, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        '0012007098', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        7, -- idMesa
+        '09:00:00', -- horaInicio
+        4, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'l00000010', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        7, -- idMesa
+        '15:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'l00000020', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        8, -- idMesa
+        '10:00:00', -- horaInicio
+        3, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
+    ),
+    (
+        'a01177767', -- idUsuario
+        2, -- idSala
+        null, -- idExperiencia
+        8, -- idMesa
+        '13:00:00', -- horaInicio
+        4, -- duracion
+        '2024-06-13', -- fecha yyyy-mm-dd
+        3, -- numPersonas
+        3 -- estatus
     );
 
 -------------------------------------------
@@ -3395,43 +3505,35 @@ VALUES
 INSERT INTO
     ReservacionesMateriales (idReservacion, idMaterial, cantidad, estatus)
 VALUES
-    (50, 17, 1, 1),
-    (50, 1, 2, 1),
-    (50, 18, 1, 1),
-    (50, 3, 2, 1),
-    (50, 7, 1, 1),
-    (50, 13, 3, 1),
-    (50, 16, 3, 1),
-    (65, 17, 3, 1),
-    (65, 11, 1, 1),
-    (65, 5, 2, 1),
-    (65, 2, 3, 1),
-    (65, 18, 1, 1),
-    (65, 15, 2, 1),
-    (65, 6, 3, 1),
-    (80, 12, 3, 1),
-    (80, 15, 1, 1),
-    (80, 17, 3, 1),
-    (80, 8, 2, 1),
-    (100, 6, 3, 1),
-    (100, 18, 2, 1),
-    (100, 8, 1, 1),
-    (111, 17, 1, 1),
-    (111, 3, 1, 1),
-    (111, 7, 3, 1),
-    (111, 18, 1, 1),
-    (111, 15, 3, 1),
-    (111, 1, 1, 1),
-    (111, 10, 3, 1),
-    (111, 13, 2, 1),
-    (111, 16, 3, 1),
-    (111, 14, 3, 1),
     (118, 11, 1, 1),
     (118, 14, 1, 1),
     (118, 16, 1, 1),
     (118, 13, 1, 1),
     (118, 9, 3, 1),
-    (118, 8, 3, 1);
+    (126, 13, 1, 1),
+    (126, 9, 3, 1),
+    (127, 13, 1, 7),
+    (127, 9, 3, 7),
+    (128, 13, 1, 7),
+    (128, 9, 3, 7),
+    (129, 13, 1, 1),
+    (129, 9, 3, 7),
+    (130, 13, 1, 7),
+    (130, 9, 3, 7),
+    (133, 13, 1, 1),
+    (133, 9, 3, 7),
+    (135, 13, 1, 7),
+    (135, 9, 3, 1),
+    (136, 13, 1, 7),
+    (136, 9, 3, 7),
+    (138, 13, 1, 7),
+    (138, 9, 3, 7),
+    (141, 13, 1, 7),
+    (141, 9, 3, 7),
+    (143, 13, 1, 7),
+    (143, 9, 3, 7),
+    (145, 13, 1, 7),
+    (145, 9, 3, 1);
 
 -------------------------------------------
 --

@@ -1,17 +1,12 @@
-DROP PROCEDURE IF EXISTS getSalasDisponibles;
+CREATE OR ALTER PROCEDURE getSalasDisponibles
+AS
+BEGIN
+    SET NOCOUNT ON;
 
-GO;
-
-CREATE PROCEDURE getSalasDisponibles AS BEGIN
-SET
-    NOCOUNT ON;
-
-SELECT
-    nombre AS sala,
-    bloqueada
-FROM
-    Salas;
-
+    SELECT
+        nombre AS sala,
+        bloqueada
+    FROM
+        Salas;
 END;
-
-GO
+GO;

@@ -69,3 +69,5 @@ dist
 
 # Ignore the .venv
 .venv
+
+/queries/combined.sql

@@ -15,7 +15,7 @@ const getSalaName = async (idSala) => {
 const getDate = (date) => {
 	const dateObj = new Date(date);
 
-	const day = dateObj.getDate();
+	const day = dateObj.getUTCDate();
 	const month = dateObj.getMonth() + 1;
 
 	const dayStr = day < 10 ? `0${day}` : `${day}`;
@@ -43,9 +43,9 @@ const getDate = (date) => {
 
 const getHour = (date, hours) => {
 	const dateObj = new Date(date);
-	dateObj.setHours(dateObj.getHours() + hours + 6);
+	dateObj.setHours(dateObj.getHours() + hours);
 
-	return dateObj.toLocaleTimeString().slice(0, -3);
+	return dateObj.toISOString().slice(11, 16);
 };
 
 const getInfoHtml = async (reserv) => {
@@ -66,7 +66,9 @@ const getInfoHtml = async (reserv) => {
 const sendReminder2hrsBefore = async () => {
 	try {
 		const today = new Date();
-		today.setHours(today.getHours() - 6);
+		console.log("Hoy es: ", today);
+		today.setHours(today.getHours() - 6); // UTC-6
+		console.log("Hoy es: ", today);
 
 		const dateLowerbound = new Date(today);
 		dateLowerbound.setHours(dateLowerbound.getHours() + 2);

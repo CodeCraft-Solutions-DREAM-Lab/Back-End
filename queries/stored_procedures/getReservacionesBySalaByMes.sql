@@ -1,27 +1,23 @@
-DROP PROCEDURE IF EXISTS getReservacionesBySalaByMes;
-GO
-
-CREATE PROCEDURE getReservacionesBySalaByMes
+CREATE OR ALTER PROCEDURE getReservacionesBySalaByMes
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT 
+    SELECT
         s.nombre AS name,
-        DATEPART(YEAR, r.fecha) AS year,
-        DATEPART(MONTH, r.fecha) AS month,
+        DATEPART (YEAR, r.fecha) AS year,
+        DATEPART (MONTH, r.fecha) AS month,
         COUNT(r.idReservacion) AS value
-    FROM 
+    FROM
         Reservaciones r
-    JOIN 
-        Salas s ON r.idSala = s.idSala
-    GROUP BY 
+        JOIN Salas s ON r.idSala = s.idSala
+    GROUP BY
         s.nombre,
-        DATEPART(YEAR, r.fecha),
-        DATEPART(MONTH, r.fecha)
-    ORDER BY 
+        DATEPART (YEAR, r.fecha),
+        DATEPART (MONTH, r.fecha)
+    ORDER BY
         year,
-        month, 
+        month,
         name;
 END;
-GO
+GO;

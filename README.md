@@ -8,10 +8,11 @@
 
 -   Se puede consultar el frontend que consume esta API en el repositorio de [Frontend](https://github.com/CodeCraft-Solutions-DREAM-Lab/Front-End).
 -   Asimismo, la aplicación que permite la conexión con el chat de voz se puede encontrar en el repositorio de [RecomendacionesDreamLab](https://github.com/CodeCraft-Solutions-DREAM-Lab/RecomendacionesDreamLab).
+-   El resto de los repositorios del proyecto se pueden encontrar en [CodeCraft Solutions: D.R.E.A.M. Lab](https://github.com/CodeCraft-Solutions-DREAM-Lab).
 
 ## Despliegue
 
-Este API se encuentra desplegado como un App Service de Azure en la siguiente liga: [dreamlab-api.azurewebsites.net](dreamlab-api.azurewebsites.net).
+Este API se encuentra desplegado como un App Service de Azure en la siguiente liga: [https://dreamlab-api.azurewebsites.net](https://dreamlab-api.azurewebsites.net/docs).
 
 ## Configuración
 
@@ -86,8 +87,12 @@ Para configurar el proyecto localmente puedes seguir los siguientes pasos:
 ## Creando una base de datos en Azure
 
 1. Crea una _Azure SQL Database_ junto con un _Azure SQL Server_ siguiendo este [tutorial](https://learn.microsoft.com/es-mx/azure/azure-sql/database/single-database-create-quickstart?view=azuresql&tabs=azure-portal) de Microsoft Learn.
-2. Copia el contenido del archivo [Setup.sql](https://github.com/CodeCraft-Solutions-DREAM-Lab/Back-End/blob/main/queries/Setup.sql) en el query editor de tu _Azure SQL Database_ y córrelo. Este archivo contiene la información necesaria para generar las tablas e insertarles datos de prueba.
-3. Copia el contenido de los archivos de la carpeta de [stored_procedures](https://github.com/CodeCraft-Solutions-DREAM-Lab/Back-End/tree/main/queries/stored_procedures) en el query editor de tu _Azure SQL Database_ y corre cada uno por separado. Estos archivos agregan a la base de datos los stored procedures que son llamados por la API.
+2. En una terminal dentro del proyecto, corre el siguiente comando para generar un archivo combinando todas las queries:
+    ```
+    npm run sql
+    ```
+3. Dirígete a la dirección especificada en la terminal donde se creo el archivo. El mensaje que especifica la dirección dice algo como "Archivos SQL combinados en: {DIRECCION}"
+4. Copia el contenido del archivo en el query editor de tu _Azure SQL Database_ y córrelo. El archivo generará las tablas, triggers, stored procedures y finalmente, insertará datos de prueba.
 
 ## Configurando un correo
 
@@ -113,5 +118,5 @@ npm start
 Para consultar la documentación de swagger sobre los endpoints con los que cuenta esta API visita [esta URL](http://localhost:3000/docs) en tu navegador de preferencia:
 
 ```
-http://localhost:3000/docs
+{URL_API}/docs
 ```
