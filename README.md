@@ -8,10 +8,11 @@
 
 -   Se puede consultar el frontend que consume esta API en el repositorio de [Frontend](https://github.com/CodeCraft-Solutions-DREAM-Lab/Front-End).
 -   Asimismo, la aplicación que permite la conexión con el chat de voz se puede encontrar en el repositorio de [RecomendacionesDreamLab](https://github.com/CodeCraft-Solutions-DREAM-Lab/RecomendacionesDreamLab).
+-   El resto de los repositorios del proyecto se pueden encontrar en [CodeCraft Solutions: D.R.E.A.M. Lab](https://github.com/CodeCraft-Solutions-DREAM-Lab).
 
 ## Despliegue
 
-Este API se encuentra desplegado como un App Service de Azure en la siguiente liga: [dreamlab-api.azurewebsites.net](dreamlab-api.azurewebsites.net).
+Este API se encuentra desplegado como un App Service de Azure en la siguiente liga: [https://dreamlab-api.azurewebsites.net](https://dreamlab-api.azurewebsites.net/docs).
 
 ## Configuración
 
@@ -117,5 +118,5 @@ npm start
 Para consultar la documentación de swagger sobre los endpoints con los que cuenta esta API visita [esta URL](http://localhost:3000/docs) en tu navegador de preferencia:
 
 ```
-http://localhost:3000/docs
+{URL_API}/docs
 ```
